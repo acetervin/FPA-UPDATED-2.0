@@ -340,39 +340,39 @@ export default function Home() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredPosts.slice(0, 3).map((post, index) => (
                 <ScrollAnimationWrapper key={post.id} delay={index * 100}>
-                  <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-none">
-                    <div className="aspect-video bg-gray-200">
-                      <img 
-                        src={post.imageUrl} 
-                        alt={post.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-green-600 bg-green-100 px-3 py-1 rounded-full">
-                            {post.category}
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            {new Date(post.publishedAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 line-clamp-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-600 line-clamp-3">
-                          {post.excerpt}
-                        </p>
-                        <Link href={`/blog/${post.slug}`}>
-                          <Button variant="outline" className="w-full">
+                  <Link href={`/blog/${post.slug}`}>
+                    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-none cursor-pointer hover:scale-105">
+                      <div className="aspect-video bg-gray-200">
+                        <img 
+                          src={post.imageUrl} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full">
+                              {post.category}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              {new Date(post.publishedAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-bold text-gray-900 line-clamp-2 hover:text-yellow-600 transition-colors">
+                            {post.title}
+                          </h3>
+                          <p className="text-gray-600 line-clamp-3">
+                            {post.excerpt}
+                          </p>
+                          <div className="text-yellow-600 font-semibold flex items-center">
                             Read More
                             <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </ScrollAnimationWrapper>
               ))}
             </div>

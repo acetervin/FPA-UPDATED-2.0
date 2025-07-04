@@ -37,12 +37,12 @@ export default function Blog() {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-20 bg-gradient-to-br from-primary/10 to-primary/5">
+      <section className="pt-24 pb-20 bg-gradient-to-br from-yellow-50 to-orange-50">
         <div className="container mx-auto px-6">
           <ScrollAnimationWrapper>
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-                Family Wellness <span className="primary-text">Blog</span>
+                Family Wellness <span className="text-yellow-600">Blog</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Expert guidance, practical tips, and inspiring stories to help you build stronger family relationships and create lasting peace in your home.
@@ -141,39 +141,39 @@ export default function Blog() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post, index) => (
                 <ScrollAnimationWrapper key={post.id} delay={index * 100}>
-                  <Card className="card-hover overflow-hidden h-full">
-                    <img 
-                      src={post.imageUrl} 
-                      alt={post.title} 
-                      className="w-full h-48 object-cover"
-                    />
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <div className="flex items-center space-x-2 mb-4">
-                        <Badge variant="secondary" className="primary-bg text-white">
-                          <Tag className="w-3 h-3 mr-1" />
-                          {post.category}
-                        </Badge>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          {new Date(post.publishedAt).toLocaleDateString()}
+                  <Link href={`/blog/${post.slug}`}>
+                    <Card className="card-hover overflow-hidden h-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105">
+                      <img 
+                        src={post.imageUrl} 
+                        alt={post.title} 
+                        className="w-full h-48 object-cover"
+                      />
+                      <CardContent className="p-6 flex flex-col h-full">
+                        <div className="flex items-center space-x-2 mb-4">
+                          <Badge variant="secondary" className="bg-yellow-600 text-white">
+                            <Tag className="w-3 h-3 mr-1" />
+                            {post.category}
+                          </Badge>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {new Date(post.publishedAt).toLocaleDateString()}
+                          </div>
                         </div>
-                      </div>
-                      
-                      <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
-                        {post.title}
-                      </h3>
-                      
-                      <p className="text-gray-600 mb-4 flex-grow line-clamp-3">
-                        {post.excerpt}
-                      </p>
-                      
-                      <Link href={`/blog/${post.slug}`}>
-                        <Button variant="link" className="primary-text font-semibold p-0 mt-auto">
+                        
+                        <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">
+                          {post.title}
+                        </h3>
+                        
+                        <p className="text-gray-600 mb-4 flex-grow line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                        
+                        <div className="text-yellow-600 font-semibold mt-auto">
                           Read More →
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </ScrollAnimationWrapper>
               ))}
             </div>
@@ -182,18 +182,18 @@ export default function Blog() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-20 primary-bg">
+      <section className="py-20 bg-yellow-600">
         <div className="container mx-auto px-6">
           <ScrollAnimationWrapper>
             <div className="text-center max-w-4xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Stay Updated with Our Latest Articles
               </h2>
-              <p className="text-xl text-white/90 mb-8">
+              <p className="text-xl text-yellow-100 mb-8">
                 Subscribe to our newsletter and never miss our latest insights on family wellness and relationship building.
               </p>
               <Link href="#newsletter">
-                <Button size="lg" className="bg-white text-gray-800 hover:bg-gray-100">
+                <Button size="lg" className="bg-white text-yellow-600 hover:bg-gray-100">
                   Subscribe to Newsletter
                 </Button>
               </Link>
