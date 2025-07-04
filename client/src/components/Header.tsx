@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import logoImage from "@assets/image_1751625452333.png";
 
 export default function Header() {
   const [location] = useLocation();
@@ -16,7 +17,7 @@ export default function Header() {
 
   const NavLink = ({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) => (
     <Link href={href}>
-      <a className={`font-medium transition-colors hover:text-green-600 ${isActive(href) ? 'text-green-600 font-semibold' : 'text-gray-700'} ${className}`}>
+      <a className={`font-medium transition-colors hover:text-yellow-600 ${isActive(href) ? 'text-yellow-600 font-semibold' : 'text-gray-700'} ${className}`}>
         {children}
       </a>
     </Link>
@@ -24,8 +25,12 @@ export default function Header() {
 
   const Logo = () => (
     <Link href="/">
-      <a className="text-2xl font-bold text-gray-900">
-        Family Peace Association
+      <a className="flex items-center">
+        <img 
+          src={logoImage} 
+          alt="Family Peace Association"
+          className="h-12 w-auto"
+        />
       </a>
     </Link>
   );
@@ -43,8 +48,8 @@ export default function Header() {
             <NavLink href="/blog">Blog</NavLink>
             <NavLink href="/contact">Contact</NavLink>
             
-            <Link href="/get-involved">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium">
+            <Link href="/donate">
+              <Button className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded-md font-medium">
                 Donate
               </Button>
             </Link>
@@ -71,8 +76,8 @@ export default function Header() {
                 <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
                   <a className="text-lg font-medium">Contact</a>
                 </Link>
-                <Link href="/get-involved" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                <Link href="/donate" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white">
                     Donate
                   </Button>
                 </Link>

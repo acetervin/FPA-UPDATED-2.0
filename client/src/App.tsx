@@ -14,6 +14,7 @@ import Team from "@/pages/Team";
 import TeamMember from "@/pages/TeamMember";
 import Features from "@/pages/Features";
 import GetInvolved from "@/pages/GetInvolved";
+import Donate from "@/pages/Donate";
 import Causes from "@/pages/Causes";
 import CausePage from "@/pages/CausePage";
 import Contact from "@/pages/Contact";
@@ -43,6 +44,7 @@ function Router() {
           <Route path="/team/:slug" component={TeamMember} />
           <Route path="/features" component={Features} />
           <Route path="/get-involved" component={GetInvolved} />
+          <Route path="/donate" component={Donate} />
           <Route path="/causes" component={Causes} />
           <Route path="/causes/:slug" component={CausePage} />
           <Route path="/contact" component={Contact} />

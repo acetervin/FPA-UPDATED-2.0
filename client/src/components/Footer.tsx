@@ -26,7 +26,7 @@ export default function Footer() {
               <Link href="/features">
                 <a className="block text-gray-400 hover:text-white transition-colors">Features</a>
               </Link>
-              <Link href="/get-involved">
+              <Link href="/donate">
                 <a className="block text-gray-400 hover:text-white transition-colors">Donate</a>
               </Link>
               <Link href="/causes">
@@ -92,7 +92,7 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Account</h4>
             <div className="space-y-2">
-              <Link href="/get-involved">
+              <Link href="/donate">
                 <a className="block text-gray-400 hover:text-white transition-colors">Sign Up</a>
               </Link>
               <Link href="/contact">

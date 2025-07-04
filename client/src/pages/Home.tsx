@@ -34,7 +34,7 @@ export default function Home() {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-50 to-blue-50 pt-24 pb-16 lg:pb-20">
+      <section className="relative bg-gradient-to-br from-yellow-50 to-orange-50 pt-24 pb-16 lg:pb-20">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center min-h-[70vh]">
             {/* Left Content */}
@@ -43,7 +43,7 @@ export default function Home() {
                 <div className="space-y-6">
                   <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
                     Together for How You Can Make a 
-                    <span className="text-green-600"> Difference</span>
+                    <span className="text-yellow-600"> Difference</span>
                   </h1>
                   <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
                     Discover how simple lifestyle changes can contribute to a more sustainable world. Begin your journey towards meaningful change.
@@ -51,8 +51,8 @@ export default function Home() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/get-involved">
-                    <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-md font-medium">
+                  <Link href="/donate">
+                    <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-md font-medium">
                       Explore Causes
                     </Button>
                   </Link>
@@ -75,8 +75,8 @@ export default function Home() {
                 />
                 <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                      <Heart className="w-6 h-6 text-green-600" />
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-yellow-600" />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">50+ Projects</p>
@@ -115,19 +115,19 @@ export default function Home() {
                   </p>
                   <ul className="space-y-3">
                     <li className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                       <span><strong>Community-Driven:</strong> Locally-led initiatives with global impact</span>
                     </li>
                     <li className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                       <span><strong>Science-Based:</strong> Evidence-backed solutions that work</span>
                     </li>
                     <li className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                       <span><strong>Technology-Enhanced:</strong> Smart tools for sustainable living</span>
                     </li>
                     <li className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                       <span><strong>Inclusive:</strong> Solutions that work for everyone, everywhere</span>
                     </li>
                   </ul>
@@ -225,20 +225,20 @@ export default function Home() {
       </section>
 
       {/* Balanced Approach Section */}
-      <section className="py-20 bg-green-600 text-white">
+      <section className="py-20 bg-yellow-600 text-white">
         <div className="container mx-auto px-6">
           <ScrollAnimationWrapper>
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl lg:text-4xl font-bold mb-6">
                 A Balanced Approach
               </h2>
-              <p className="text-xl leading-relaxed mb-8 text-green-100">
+              <p className="text-xl leading-relaxed mb-8 text-yellow-100">
                 We bring together the power of science and compassion, combining research-based environmental initiatives with 
                 community-centered support programs. Our balanced approach ensures that environmental protection 
                 goes hand in hand with social well-being and economic sustainability.
               </p>
               <Link href="/about">
-                <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100 px-8 py-3">
+                <Button size="lg" className="bg-white text-yellow-600 hover:bg-gray-100 px-8 py-3">
                   Learn About Our Approach
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -266,8 +266,8 @@ export default function Home() {
             <ScrollAnimationWrapper delay={100}>
               <Card className="text-center p-8 border-none shadow-lg">
                 <CardContent className="space-y-4">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                    <Heart className="w-8 h-8 text-green-600" />
+                  <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto">
+                    <Heart className="w-8 h-8 text-yellow-600" />
                   </div>
                   <div>
                     <Counter target={2500} suffix="+" className="text-3xl font-bold text-gray-900" />
@@ -392,20 +392,20 @@ export default function Home() {
       )}
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-yellow-600 to-orange-600 text-white">
         <div className="container mx-auto px-6">
           <ScrollAnimationWrapper>
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl lg:text-4xl font-bold mb-6">
                 Ready to Make a Difference?
               </h2>
-              <p className="text-xl leading-relaxed mb-8 text-green-100">
+              <p className="text-xl leading-relaxed mb-8 text-yellow-100">
                 Join our community of changemakers and start creating positive environmental impact today. 
                 Every action counts towards a more sustainable future.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/get-involved">
-                  <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100 px-8 py-3">
+                <Link href="/donate">
+                  <Button size="lg" className="bg-white text-yellow-600 hover:bg-gray-100 px-8 py-3">
                     Get Involved Today
                   </Button>
                 </Link>
