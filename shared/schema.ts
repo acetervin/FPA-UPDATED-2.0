@@ -1,0 +1,128 @@
+import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").notNull().unique(),
+  password: text("password").notNull(),
+});
+
+export const blogPosts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  excerpt: text("excerpt").notNull(),
+  content: text("content").notNull(),
+  category: text("category").notNull(),
+  imageUrl: text("image_url").notNull(),
+  publishedAt: timestamp("published_at").notNull(),
+  featured: boolean("featured").default(false),
+});
+
+export const teamMembers = pgTable("team_members", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  position: text("position").notNull(),
+  bio: text("bio").notNull(),
+  imageUrl: text("image_url").notNull(),
+  email: text("email"),
+  linkedin: text("linkedin"),
+  specialties: text("specialties").array(),
+});
+
+export const causes = pgTable("causes", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description").notNull(),
+  fullDescription: text("full_description").notNull(),
+  imageUrl: text("image_url").notNull(),
+  goalAmount: integer("goal_amount").notNull(),
+  raisedAmount: integer("raised_amount").notNull(),
+  volunteersNeeded: integer("volunteers_needed").notNull(),
+  active: boolean("active").default(true),
+});
+
+export const volunteerApplications = pgTable("volunteer_applications", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  program: text("program").notNull(),
+  experience: text("experience"),
+  availability: text("availability").notNull(),
+  message: text("message"),
+  submittedAt: timestamp("submitted_at").notNull(),
+});
+
+export const contactSubmissions = pgTable("contact_submissions", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  submittedAt: timestamp("submitted_at").notNull(),
+});
+
+export const newsletterSubscriptions = pgTable("newsletter_subscriptions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  subscribedAt: timestamp("subscribed_at").notNull(),
+});
+
+// Insert schemas
+export const insertUserSchema = createInsertSchema(users).pick({
+  username: true,
+  password: true,
+});
+
+export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
+  id: true,
+});
+
+export const insertTeamMemberSchema = createInsertSchema(teamMembers).omit({
+  id: true,
+});
+
+export const insertCauseSchema = createInsertSchema(causes).omit({
+  id: true,
+});
+
+export const insertVolunteerApplicationSchema = createInsertSchema(volunteerApplications).omit({
+  id: true,
+  submittedAt: true,
+});
+
+export const insertContactSubmissionSchema = createInsertSchema(contactSubmissions).omit({
+  id: true,
+  submittedAt: true,
+});
+
+export const insertNewsletterSubscriptionSchema = createInsertSchema(newsletterSubscriptions).omit({
+  id: true,
+  subscribedAt: true,
+});
+
+// Types
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+
+export type TeamMember = typeof teamMembers.$inferSelect;
+export type InsertTeamMember = z.infer<typeof insertTeamMemberSchema>;
+
+export type Cause = typeof causes.$inferSelect;
+export type InsertCause = z.infer<typeof insertCauseSchema>;
+
+export type VolunteerApplication = typeof volunteerApplications.$inferSelect;
+export type InsertVolunteerApplication = z.infer<typeof insertVolunteerApplicationSchema>;
+
+export type ContactSubmission = typeof contactSubmissions.$inferSelect;
+export type InsertContactSubmission = z.infer<typeof insertContactSubmissionSchema>;
+
+export type NewsletterSubscription = typeof newsletterSubscriptions.$inferSelect;
+export type InsertNewsletterSubscription = z.infer<typeof insertNewsletterSubscriptionSchema>;
