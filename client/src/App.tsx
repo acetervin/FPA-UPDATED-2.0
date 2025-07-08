@@ -19,21 +19,19 @@ import Causes from "@/pages/Causes";
 import CausePage from "@/pages/CausePage";
 import Contact from "@/pages/Contact";
 import Legal from "@/pages/Legal";
-import StyleGuide from "@/pages/StyleGuide";
-import Licenses from "@/pages/Licenses";
-import Changelog from "@/pages/Changelog";
-import PasswordPage from "@/pages/PasswordPage";
 import NotFound from "@/pages/not-found";
 
 // Components
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ScrollToTop from "@/components/ScrollToTop";
 
 function Router() {
   return (
     <>
       <Header />
+      <ScrollToTop />
       <main>
         <Switch>
           <Route path="/" component={Home} />
@@ -49,10 +47,6 @@ function Router() {
           <Route path="/causes/:slug" component={CausePage} />
           <Route path="/contact" component={Contact} />
           <Route path="/legal" component={Legal} />
-          <Route path="/style-guide" component={StyleGuide} />
-          <Route path="/licenses" component={Licenses} />
-          <Route path="/changelog" component={Changelog} />
-          <Route path="/password" component={PasswordPage} />
           <Route component={NotFound} />
         </Switch>
       </main>

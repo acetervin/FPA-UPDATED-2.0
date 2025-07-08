@@ -39,80 +39,28 @@ export default function Footer() {
                 <a className="block text-gray-400 hover:text-white transition-colors">Legal</a>
               </Link>
             </div>
+          
           </div>
-
-          {/* CMS Pages */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">CMS Pages</h4>
-            <div className="space-y-2">
-              <Link href="/blog">
-                <a className="block text-gray-400 hover:text-white transition-colors">Blog</a>
-              </Link>
-              <Link href="/blog/building-communication-bridges">
-                <a className="block text-gray-400 hover:text-white transition-colors">Blog Post Page</a>
-              </Link>
-              <Link href="/causes">
-                <a className="block text-gray-400 hover:text-white transition-colors">Causes</a>
-              </Link>
-              <Link href="/causes/family-counseling-program">
-                <a className="block text-gray-400 hover:text-white transition-colors">Causes Page</a>
-              </Link>
-              <Link href="/team">
-                <a className="block text-gray-400 hover:text-white transition-colors">Team Members</a>
-              </Link>
-              <Link href="/team/dr-sarah-johnson">
-                <a className="block text-gray-400 hover:text-white transition-colors">Team Members Page</a>
-              </Link>
+          {/* Contact Icons */}
+          <div className="flex flex-col space-y-4 text-gray-400">
+            <div className="flex items-center space-x-2">
+              <MapPin className="w-5 h-5" />
+              <span>123 Peace St, Harmony City</span>
             </div>
-          </div>
-
-          {/* Essential Pages */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Essential Pages</h4>
-            <div className="space-y-2">
-              <Link href="/style-guide">
-                <a className="block text-gray-400 hover:text-white transition-colors">Style Guide</a>
-              </Link>
-              <Link href="/licenses">
-                <a className="block text-gray-400 hover:text-white transition-colors">Licenses</a>
-              </Link>
-              <Link href="/changelog">
-                <a className="block text-gray-400 hover:text-white transition-colors">Changelog</a>
-              </Link>
-              <Link href="/404">
-                <a className="block text-gray-400 hover:text-white transition-colors">404 Page</a>
-              </Link>
-              <Link href="/password">
-                <a className="block text-gray-400 hover:text-white transition-colors">Password Page</a>
-              </Link>
+            <div className="flex items-center space-x-2">
+              <Phone className="w-5 h-5" />
+              <a href="tel:+1234567890" className="hover:text-white transition-colors">+1 (234) 567-890</a>
             </div>
-          </div>
-
-          {/* Account */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Account</h4>
-            <div className="space-y-2">
-              <Link href="/donate">
-                <a className="block text-gray-400 hover:text-white transition-colors">Sign Up</a>
-              </Link>
-              <Link href="/contact">
-                <a className="block text-gray-400 hover:text-white transition-colors">Log In</a>
-              </Link>
-              <Link href="/password">
-                <a className="block text-gray-400 hover:text-white transition-colors">Reset password</a>
-              </Link>
-              <Link href="/contact">
-                <a className="block text-gray-400 hover:text-white transition-colors">User account</a>
-              </Link>
+            <div className="flex items-center space-x-2">
+              <Mail className="w-5 h-5" />
+              <a href="mailto:info@familypeace.org" className="hover:text-white transition-colors">info@familypeace.org</a>
             </div>
           </div>
         </div>
-        
         {/* Newsletter */}
         <div className="mb-12">
           <Newsletter />
         </div>
-        
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
             © 2024 Family Peace Association. All rights reserved.
