@@ -29,8 +29,8 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Family Peace Association - Building Stronger Families Together</title>
-        <meta name="description" content="Join the Family Peace Association in creating stronger families through counseling, conflict resolution, and community support. Together, we build lasting peace." />
+        <title>Family Peace Association - Building God-Centered Families</title>
+        <meta name="description" content="The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families." />
       </Helmet>
 
       {/* Hero Section */}
@@ -42,25 +42,30 @@ export default function Home() {
               <div className="space-y-8">
                 <div className="space-y-6">
                   <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                    Together for How You Can Make a 
-                    <span className="text-yellow-600"> Difference</span>
+                    Family Peace Association (FPA)
                   </h1>
                   <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                    Discover how simple lifestyle changes can contribute to a more sustainable world. Begin your journey towards meaningful change.
+                    The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families.
+                  </p>
+                  <p className="text-lg text-gray-700 leading-relaxed max-w-lg">
+                    <strong>Our Vision:</strong> A world of peace through God-centered families.
+                  </p>
+                  <p className="text-lg text-gray-700 leading-relaxed max-w-lg">
+                    <strong>Our Mission:</strong> The Family Peace Association seeks to enlighten humanity by uplifting our spiritual consciousness through universal principles and values rooted in God-centered families.
                   </p>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/donate">
-                    <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-md font-medium">
-                      Explore Causes
-                    </Button>
-                  </Link>
                   <Link href="/about">
-                    <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3">
+                    <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-md font-medium">
                       Learn More
                     </Button>
                   </Link>
+                  <a href="mailto:kenya@familypeaceassociation.org">
+                    <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3">
+                      Contact Us
+                    </Button>
+                  </a>
                 </div>
               </div>
             </ScrollAnimationWrapper>

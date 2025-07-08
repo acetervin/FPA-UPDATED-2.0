@@ -25,10 +25,24 @@ export default function About() {
           <ScrollAnimationWrapper>
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-                Our <span className="primary-text">Story</span>
+                Who We Are
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Building stronger families and creating lasting peace through evidence-based interventions, community support, and compassionate care.
+                The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families.
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
+        </div>
+      </section>
+
+      {/* Why the Family Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <ScrollAnimationWrapper>
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Why the Family?</h2>
+              <p className="text-lg text-gray-600 mb-8">
+                The family is the most basic of all social units that addresses our most essential physical, emotional and spiritual needs.
               </p>
             </div>
           </ScrollAnimationWrapper>
@@ -36,36 +50,31 @@ export default function About() {
       </section>
 
       {/* Mission Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <ScrollAnimationWrapper>
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Our Mission</h2>
+              <p className="text-lg text-gray-600 mb-8">
+                The Family Peace Association seeks to enlighten humanity by uplifting our spiritual consciousness through universal principles and values rooted in God-centered families.
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
+        </div>
+      </section>
+
+      {/* Vision Section */}
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <ScrollAnimationWrapper animation="slide-in-left">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-                  Our <span className="primary-text">Mission</span>
-                </h2>
-                <p className="text-lg text-gray-600 mb-6">
-                  The Family Peace Association is dedicated to strengthening family relationships and fostering peaceful conflict resolution within communities. We believe that healthy families are the foundation of a thriving society.
-                </p>
-                <p className="text-lg text-gray-600 mb-8">
-                  Through evidence-based therapeutic interventions, educational programs, and community support networks, we empower families to overcome challenges and build lasting bonds of love, understanding, and respect.
-                </p>
-                <Link href="/get-involved">
-                  <Button className="primary-bg text-white hover:opacity-90">
-                    Join Our Mission
-                  </Button>
-                </Link>
-              </div>
-            </ScrollAnimationWrapper>
-            
-            <ScrollAnimationWrapper animation="slide-in-right">
-              <img 
-                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
-                alt="Community support group meeting" 
-                className="rounded-xl shadow-lg w-full"
-              />
-            </ScrollAnimationWrapper>
-          </div>
+          <ScrollAnimationWrapper>
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Our Vision</h2>
+              <p className="text-lg text-gray-600 mb-8">
+                A world of peace through God-centered families.
+              </p>
+              <p className="text-md text-gray-500">For more information: <a href="mailto:kenya@familypeaceassociation.org" className="text-primary underline">kenya@familypeaceassociation.org</a></p>
+            </div>
+          </ScrollAnimationWrapper>
         </div>
       </section>
 

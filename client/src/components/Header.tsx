@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import logoImage from "@assets/image_1751625452333.png";
+import FpaLogo from "@/assets/Fpa-logo.jpg";
 
 export default function Header() {
   const [location] = useLocation();
@@ -27,9 +27,9 @@ export default function Header() {
     <Link href="/">
       <a className="flex items-center">
         <img 
-          src={logoImage} 
-          alt="Family Peace Association"
-          className="h-12 w-auto"
+          src={FpaLogo} 
+          alt="Family Peace Association Kenya Logo"
+          className="h-14 w-auto"
         />
       </a>
     </Link>
