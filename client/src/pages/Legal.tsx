@@ -264,7 +264,7 @@ export default function Legal() {
                     href="mailto:legal@familypeace.org" 
                     className="text-primary hover:underline font-medium"
                   >
-                    legal@familypeace.org
+                    kenya@familypeaceassociation.org
                   </a>
                 </CardContent>
               </Card>

@@ -8,61 +8,15 @@
       "name": "blog_posts",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "excerpt": {
-          "name": "excerpt",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "content": {
-          "name": "content",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category": {
-          "name": "category",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image_url": {
-          "name": "image_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "published_at": {
-          "name": "published_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "featured": {
-          "name": "featured",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "title": { "name": "title", "type": "text", "primaryKey": false, "notNull": true },
+        "slug": { "name": "slug", "type": "text", "primaryKey": false, "notNull": true },
+        "excerpt": { "name": "excerpt", "type": "text", "primaryKey": false, "notNull": true },
+        "content": { "name": "content", "type": "text", "primaryKey": false, "notNull": true },
+        "category": { "name": "category", "type": "text", "primaryKey": false, "notNull": true },
+        "image_url": { "name": "image_url", "type": "text", "primaryKey": false, "notNull": true },
+        "published_at": { "name": "published_at", "type": "timestamp", "primaryKey": false, "notNull": true },
+        "featured": { "name": "featured", "type": "boolean", "primaryKey": false, "notNull": false, "default": false }
       },
       "indexes": {},
       "foreignKeys": {},
@@ -71,9 +25,7 @@
         "blog_posts_slug_unique": {
           "name": "blog_posts_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -84,67 +36,16 @@
       "name": "causes",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "full_description": {
-          "name": "full_description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image_url": {
-          "name": "image_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "goal_amount": {
-          "name": "goal_amount",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "raised_amount": {
-          "name": "raised_amount",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "volunteers_needed": {
-          "name": "volunteers_needed",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "active": {
-          "name": "active",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": true
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "title": { "name": "title", "type": "text", "primaryKey": false, "notNull": true },
+        "slug": { "name": "slug", "type": "text", "primaryKey": false, "notNull": true },
+        "description": { "name": "description", "type": "text", "primaryKey": false, "notNull": true },
+        "full_description": { "name": "full_description", "type": "text", "primaryKey": false, "notNull": true },
+        "image_url": { "name": "image_url", "type": "text", "primaryKey": false, "notNull": true },
+        "goal_amount": { "name": "goal_amount", "type": "integer", "primaryKey": false, "notNull": true },
+        "raised_amount": { "name": "raised_amount", "type": "integer", "primaryKey": false, "notNull": true },
+        "volunteers_needed": { "name": "volunteers_needed", "type": "integer", "primaryKey": false, "notNull": true },
+        "active": { "name": "active", "type": "boolean", "primaryKey": false, "notNull": false, "default": true }
       },
       "indexes": {},
       "foreignKeys": {},
@@ -153,9 +54,7 @@
         "causes_slug_unique": {
           "name": "causes_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -166,42 +65,12 @@
       "name": "contact_submissions",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "subject": {
-          "name": "subject",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "message": {
-          "name": "message",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "submitted_at": {
-          "name": "submitted_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "name": { "name": "name", "type": "text", "primaryKey": false, "notNull": true },
+        "email": { "name": "email", "type": "text", "primaryKey": false, "notNull": true },
+        "subject": { "name": "subject", "type": "text", "primaryKey": false, "notNull": true },
+        "message": { "name": "message", "type": "text", "primaryKey": false, "notNull": true },
+        "submitted_at": { "name": "submitted_at", "type": "timestamp", "primaryKey": false, "notNull": true }
       },
       "indexes": {},
       "foreignKeys": {},
@@ -215,24 +84,9 @@
       "name": "newsletter_subscriptions",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "subscribed_at": {
-          "name": "subscribed_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "email": { "name": "email", "type": "text", "primaryKey": false, "notNull": true },
+        "subscribed_at": { "name": "subscribed_at", "type": "timestamp", "primaryKey": false, "notNull": true }
       },
       "indexes": {},
       "foreignKeys": {},
@@ -241,9 +95,7 @@
         "newsletter_subscriptions_email_unique": {
           "name": "newsletter_subscriptions_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -254,60 +106,15 @@
       "name": "team_members",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "position": {
-          "name": "position",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "bio": {
-          "name": "bio",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image_url": {
-          "name": "image_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "linkedin": {
-          "name": "linkedin",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "specialties": {
-          "name": "specialties",
-          "type": "text[]",
-          "primaryKey": false,
-          "notNull": false
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "name": { "name": "name", "type": "text", "primaryKey": false, "notNull": true },
+        "slug": { "name": "slug", "type": "text", "primaryKey": false, "notNull": true },
+        "position": { "name": "position", "type": "text", "primaryKey": false, "notNull": true },
+        "bio": { "name": "bio", "type": "text", "primaryKey": false, "notNull": true },
+        "image_url": { "name": "image_url", "type": "text", "primaryKey": false, "notNull": true },
+        "email": { "name": "email", "type": "text", "primaryKey": false, "notNull": false },
+        "linkedin": { "name": "linkedin", "type": "text", "primaryKey": false, "notNull": false },
+        "specialties": { "name": "specialties", "type": "text[]", "primaryKey": false, "notNull": false }
       },
       "indexes": {},
       "foreignKeys": {},
@@ -316,9 +123,7 @@
         "team_members_slug_unique": {
           "name": "team_members_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -329,24 +134,9 @@
       "name": "users",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "username": {
-          "name": "username",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "password": {
-          "name": "password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "username": { "name": "username", "type": "text", "primaryKey": false, "notNull": true },
+        "password": { "name": "password", "type": "text", "primaryKey": false, "notNull": true }
       },
       "indexes": {},
       "foreignKeys": {},
@@ -355,9 +145,7 @@
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         }
       },
       "policies": {},
@@ -368,60 +156,31 @@
       "name": "volunteer_applications",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "program": {
-          "name": "program",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "experience": {
-          "name": "experience",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "availability": {
-          "name": "availability",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "message": {
-          "name": "message",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "submitted_at": {
-          "name": "submitted_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        }
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "name": { "name": "name", "type": "text", "primaryKey": false, "notNull": true },
+        "email": { "name": "email", "type": "text", "primaryKey": false, "notNull": true },
+        "phone": { "name": "phone", "type": "text", "primaryKey": false, "notNull": false },
+        "program": { "name": "program", "type": "text", "primaryKey": false, "notNull": true },
+        "experience": { "name": "experience", "type": "text", "primaryKey": false, "notNull": false },
+        "availability": { "name": "availability", "type": "text", "primaryKey": false, "notNull": true },
+        "message": { "name": "message", "type": "text", "primaryKey": false, "notNull": false },
+        "submitted_at": { "name": "submitted_at", "type": "timestamp", "primaryKey": false, "notNull": true }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.gallery_images": {
+      "name": "gallery_images",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "serial", "primaryKey": true, "notNull": true },
+        "url": { "name": "url", "type": "text", "primaryKey": false, "notNull": true },
+        "created_at": { "name": "created_at", "type": "timestamp", "primaryKey": false, "notNull": true, "default": "NOW()" }
       },
       "indexes": {},
       "foreignKeys": {},

@@ -73,6 +73,15 @@ export const newsletterSubscriptions = pgTable("newsletter_subscriptions", {
   subscribedAt: timestamp("subscribed_at").notNull(),
 });
 
+export const galleryImages = pgTable("gallery_images", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  imageUrl: text("image_url").notNull(),
+  category: text("category").notNull().default('Uncategorized'),
+  uploadedAt: timestamp("uploaded_at").notNull().defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -106,6 +115,11 @@ export const insertNewsletterSubscriptionSchema = createInsertSchema(newsletterS
   subscribedAt: true,
 });
 
+export const insertGalleryImageSchema = createInsertSchema(galleryImages).omit({
+  id: true,
+  uploadedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -127,3 +141,6 @@ export type InsertContactSubmission = z.infer<typeof insertContactSubmissionSche
 
 export type NewsletterSubscription = typeof newsletterSubscriptions.$inferSelect;
 export type InsertNewsletterSubscription = z.infer<typeof insertNewsletterSubscriptionSchema>;
+
+export type GalleryImage = typeof galleryImages.$inferSelect;
+export type InsertGalleryImage = z.infer<typeof insertGalleryImageSchema>;

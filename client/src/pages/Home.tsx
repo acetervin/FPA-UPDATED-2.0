@@ -69,7 +69,7 @@ export default function Home() {
             <ScrollAnimationWrapper animation="slide-in-right">
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
+                  src="https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg" 
                   alt="Community volunteers working together"
                   className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
                 />
@@ -97,38 +97,36 @@ export default function Home() {
             <ScrollAnimationWrapper>
               <div className="text-center mb-16">
                 <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-6">
-                  Embracing Innovation in Environmental Protection
+                 Uplifting Humanity Through Spiritual Principles
                 </h2>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  We combine cutting-edge technology with time-tested conservation methods to create sustainable solutions that benefit both communities and the environment.
+                 We aim to elevate human consciousness by grounding it in universal values rooted in God-centered families. Strong, spiritually connected families are the foundation of a thriving society.
                 </p>
               </div>
             </ScrollAnimationWrapper>
 
             <ScrollAnimationWrapper animation="slide-up" delay={200}>
               <div className="bg-gray-50 rounded-2xl p-8 lg:p-12">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">A New Approach to Conservation</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">A New Approach to Spiritual Care for Creation </h3>
                 <div className="space-y-4 text-gray-600 leading-relaxed">
                   <p>
-                    Our innovative approach combines traditional environmental stewardship with modern technology to create lasting change. 
-                    We believe that sustainable practices should be accessible, effective, and empowering for all communities.
+                    We believe strong, God-centered families are the foundation of a loving, thriving society.
+                     By aligning with divine principles, we aim to elevate human consciousness and bring lasting peace.
                   </p>
                   <ul className="space-y-3">
+
+
                     <li className="flex items-start space-x-3">
                       <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                      <span><strong>Community-Driven:</strong> Locally-led initiatives with global impact</span>
+                      <span><strong>Inclusive and Universal: </strong> Solutions that work for everyone, everywhere.</span>
                     </li>
                     <li className="flex items-start space-x-3">
                       <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                      <span><strong>Science-Based:</strong> Evidence-backed solutions that work</span>
+                      <span><strong>Conscious Living Tools:</strong> Tools to strengthen love, understanding, and unity.</span>
                     </li>
                     <li className="flex items-start space-x-3">
                       <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                      <span><strong>Technology-Enhanced:</strong> Smart tools for sustainable living</span>
-                    </li>
-                    <li className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                      <span><strong>Inclusive:</strong> Solutions that work for everyone, everywhere</span>
+                      <span><strong>Family-centered:</strong> Initiatives rooted in the sacredness of family, with a global reach.</span>
                     </li>
                   </ul>
                 </div>
@@ -144,7 +142,7 @@ export default function Home() {
           <ScrollAnimationWrapper>
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600" 
+                src="https://images.pexels.com/photos/9091896/pexels-photo-9091896.jpeg" 
                 alt="Sustainable farming and environmental protection"
                 className="w-full h-[400px] lg:h-[500px] object-cover rounded-2xl"
               />
@@ -164,8 +162,8 @@ export default function Home() {
                   Overcoming the Challenges
                 </h2>
                 <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                  Environmental challenges require innovative solutions and collective action. We're working to make sustainable practices 
-                  accessible and effective for communities worldwide through research, education, and direct action.
+                  Families face many obstacles, but with faith, love, and collective effort, they can thrive.
+                  We work to support families everywhere by providing guidance, education, and practical tools rooted in divine principles.
                 </p>
                 
                 <div className="space-y-6">
@@ -173,37 +171,37 @@ export default function Home() {
                     <div className="space-y-2">
                       <h4 className="font-semibold text-gray-900">Research</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Climate Impact Studies</li>
-                        <li>• Conservation Strategies</li>
-                        <li>• Community Health Research</li>
-                        <li>• Biodiversity Protection</li>
+                        <li>• Family Well-being Studies</li>
+                        <li>• Faith-Based Support Strategies</li>
+                        <li>• Community Health and Happiness</li>
+                        <li>• Strengthening Bonds and Values</li>
                       </ul>
                     </div>
                     <div className="space-y-2">
                       <h4 className="font-semibold text-gray-900">Education</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Environmental Awareness</li>
-                        <li>• Sustainable Practices</li>
-                        <li>• Youth Programs</li>
-                        <li>• Community Workshops</li>
+                        <li>• Family Values and Principles</li>
+                        <li>• Building Love and Understanding</li>
+                        <li>• Parenting and Youth Programs</li>
+                        <li>• Community Support Workshops</li>
                       </ul>
                     </div>
                     <div className="space-y-2">
                       <h4 className="font-semibold text-gray-900">Action</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Clean Energy Projects</li>
-                        <li>• Waste Reduction</li>
-                        <li>• Habitat Restoration</li>
-                        <li>• Water Conservation</li>
+                        <li>• Family Healing Initiatives</li>
+                        <li>• Relationship Building Activities</li>
+                        <li>• Conflict Resolution Resources</li>
+                        <li>• Parenting Support Networks</li>
                       </ul>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="font-semibold text-gray-900">Technology</h4>
+                      <h4 className="font-semibold text-gray-900">Technology & Resources</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>• Smart Monitoring</li>
-                        <li>• Renewable Energy</li>
-                        <li>• Data Analytics</li>
-                        <li>• Mobile Solutions</li>
+                        <li>• Faith-Driven Counseling Tools</li>
+                        <li>• Family Wellness Apps</li>
+                        <li>• Community Support Platforms</li>
+                        <li>• Spiritual Growth Resources</li>
                       </ul>
                     </div>
                   </div>
@@ -214,7 +212,7 @@ export default function Home() {
             <ScrollAnimationWrapper animation="slide-in-right">
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=700" 
+                  src="https://images.pexels.com/photos/4262424/pexels-photo-4262424.jpeg" 
                   alt="Environmental scientist working in the field"
                   className="w-full h-[600px] object-cover rounded-2xl"
                 />
@@ -233,10 +231,9 @@ export default function Home() {
                 A Balanced Approach
               </h2>
               <p className="text-xl leading-relaxed mb-8 text-yellow-100">
-                We bring together the power of science and compassion, combining research-based environmental initiatives with 
-                community-centered support programs. Our balanced approach ensures that environmental protection 
-                goes hand in hand with social well-being and economic sustainability.
-              </p>
+             We unite the principles of understanding and compassion, blending research-driven support initiatives with community-centered programs. 
+             Our balanced approach fosters a God-centered family environment and harmonious communities, ensuring that peace, well-being, and social support grow hand in hand for a brighter, faith-filled future.
+             </p>
               <Link href="/about">
                 <Button size="lg" className="bg-white text-yellow-600 hover:bg-gray-100 px-8 py-3">
                   Learn About Our Approach
@@ -410,7 +407,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-3">
+                  <Button size="lg" variant="outline" className="border-white text-yellow-600 hover:bg-white/10 px-8 py-3">
                     Contact Us
                   </Button>
                 </Link>

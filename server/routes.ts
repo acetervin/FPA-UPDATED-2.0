@@ -7,6 +7,8 @@ import {
   insertNewsletterSubscriptionSchema
 } from "@shared/schema";
 import { z } from "zod";
+import { db } from './db';
+import { galleryImages } from '../shared/schema';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Blog routes
@@ -145,6 +147,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid data", errors: error.errors });
       }
       res.status(500).json({ message: "Failed to subscribe to newsletter" });
+    }
+  });
+
+  app.get('/api/gallery', async (req, res) => {
+    try {
+      const images = await db.select().from(galleryImages);
+      const filteredImages = images.filter((image) => image.imageUrl);
+      res.json({
+        images: filteredImages.map((img: any) => ({
+          imageUrl: img.imageUrl,
+          title: img.title,
+          description: img.description,
+          category: img.category,
+          uploadedAt: img.uploadedAt,
+        }))
+      });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch gallery images' });
     }
   });
 

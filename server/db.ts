@@ -124,3 +124,5 @@ export class DbStorage implements IStorage {
     return result[0];
   }
 }
+
+export { db };

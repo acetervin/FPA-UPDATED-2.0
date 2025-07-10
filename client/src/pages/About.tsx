@@ -127,37 +127,38 @@ export default function About() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <Card className="h-full">
                 <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Family Peace & Character Education Initiative </h3>
-                <p className="text-gray-600 mb-4">Workshops and resources focused on building character, fostering empathy, and nurturing peaceful relationships within families.</p>
-                </CardContent>
-                </Card>
-                <Card className="h-full">
-                <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Women Outreach and Family Education Program</h3>
-                <p className="text-gray-600 mb-4">Empowering women through outreach, education, and support to strengthen families and promote community well-being.</p>
-                </CardContent>
-                </Card>
-                <Card className="h-full">
-                <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Youth Mentorship & Marriage Preparation</h3>
-                <p className="text-gray-600 mb-4">Guidance and mentorship for youth and young adults to prepare for healthy relationships and successful marriages.</p>
-                </CardContent>
-                </Card>
-                <Card className="h-full">
-                <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Mens Fellowship Academy For Family</h3>
-                <p className="text-gray-600 mb-4">A supportive community for men to develop leadership, parenting, and relationship skills for strong families.</p>
-                </CardContent>
-                </Card>
-                <Card className="h-full">
-                <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Faith & Values Seminars</h3>
+                <h3 className="text-2xl font-bold text-yellow-500 mb-4">Faith and values seminars</h3>
                 <p className="text-gray-600 mb-4">Seminars exploring universal values and spiritual principles to inspire personal growth and family harmony.</p>
                 </CardContent>
                 </Card>
                 <Card className="h-full">
                 <CardContent className="p-6">
-                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Couples Marriage Enrichment Program</h3>
+                <h3 className="text-2xl font-bold text-yellow-500 mb-4">Family peace and character education initiative </h3>
+                <p className="text-gray-600 mb-4">Workshops and resources focused on building character, fostering empathy, and nurturing peaceful relationships within families.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-500 mb-4">Women outreach and family education program</h3>
+                <p className="text-gray-600 mb-4">Empowering women through outreach, education, and support to strengthen families and promote community well-being.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-500 mb-4">Youth mentorship and marriage preparation</h3>
+                <p className="text-gray-600 mb-4">Guidance and mentorship for youth and young adults to prepare for healthy relationships and successful marriages.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-500 mb-4">Mens fellowship academy for family</h3>
+                <p className="text-gray-600 mb-4">A supportive community for men to develop leadership, parenting, and relationship skills for strong families.</p>
+                </CardContent>
+                </Card>
+
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-500 mb-4">Couples marriage enrichment program</h3>
                 <p className="text-gray-600 mb-4">Programs and workshops designed to help couples deepen their connection, improve communication, and enrich their marriages.</p>
                 </CardContent>
               </Card>
@@ -332,7 +333,7 @@ export default function About() {
                   </Button>
                 </Link>
                 <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-white text-gray-800 hover:bg-white/10">
                     Contact Us
                   </Button>
                 </Link>

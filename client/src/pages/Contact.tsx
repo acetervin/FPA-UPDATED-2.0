@@ -201,9 +201,9 @@ export default function Contact() {
                         <div>
                           <h3 className="font-semibold text-gray-800 mb-2">Visit Our Office</h3>
                           <p className="text-gray-600">
-                            123 Peace Avenue<br />
-                            Community City, PC 12345<br />
-                            United States
+                            Wu Yi Plaza, 3rd Floor, Block E8<br />
+                            Galana Road, Kilimani, Nairobi.<br />
+                            P.O. Box 36337-00200 Nairobi, Kenya
                           </p>
                         </div>
                       </div>
@@ -220,12 +220,14 @@ export default function Contact() {
                         <div>
                           <h3 className="font-semibold text-gray-800 mb-2">Call Us</h3>
                           <p className="text-gray-600 mb-2">
-                            Main Office: <a href="tel:+15551234567" className="text-primary hover:underline">(555) 123-PEACE</a>
+                            Mobile: <a href="tel:+254721971194" className="text-primary hover:underline">+254 721 971 194</a>
                           </p>
-                          <p className="text-gray-600">
-                            Crisis Hotline: <a href="tel:+15559876543" className="text-primary hover:underline">(555) 987-6543</a>
+                          <p className="text-gray-600 mb-2">
+                            Mobile: <a href="tel:+254725233261" className="text-primary hover:underline">+254 725 233 261</a>
                           </p>
-                          <p className="text-sm text-gray-500 mt-2">Available 24/7 for emergencies</p>
+                          <p className="text-gray-600 mb-2">
+                            Telephone: <a href="tel:0208020770" className="text-primary hover:underline">0208020770</a>
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -241,13 +243,7 @@ export default function Contact() {
                         <div>
                           <h3 className="font-semibold text-gray-800 mb-2">Email Us</h3>
                           <p className="text-gray-600 mb-1">
-                            General Inquiries: <a href="mailto:info@familypeace.org" className="text-primary hover:underline">info@familypeace.org</a>
-                          </p>
-                          <p className="text-gray-600 mb-1">
-                            Volunteer: <a href="mailto:volunteer@familypeace.org" className="text-primary hover:underline">volunteer@familypeace.org</a>
-                          </p>
-                          <p className="text-gray-600">
-                            Support: <a href="mailto:support@familypeace.org" className="text-primary hover:underline">support@familypeace.org</a>
+                            General Inquiries: <a href="mailto:kenya@familypeaceassociation.org" className="text-primary hover:underline">kenya@familypeaceassociation.org</a>
                           </p>
                         </div>
                       </div>
@@ -304,11 +300,11 @@ export default function Contact() {
                   <div className="text-center">
                     <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-600 mb-2">Interactive Map</h3>
-                    <p className="text-gray-500">123 Peace Avenue, Community City, PC 12345</p>
+                    <p className="text-gray-500">Wu Yi Plaza, 3rd Floor, Room E8, Galana Road, Kilimani, Nairobi</p>
                     <Button 
                       variant="outline" 
                       className="mt-4"
-                      onClick={() => window.open('https://maps.google.com/?q=123+Peace+Avenue,+Community+City,+PC+12345', '_blank')}
+                      onClick={() => window.open('https://maps.google.com/?q=Wu+Yi+Plaza,+Galana+Road,+Kilimani,+Nairobi', '_blank')}
                     >
                       Open in Google Maps
                     </Button>

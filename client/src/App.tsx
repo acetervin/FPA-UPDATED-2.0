@@ -19,6 +19,7 @@ import Causes from "@/pages/Causes";
 import CausePage from "@/pages/CausePage";
 import Contact from "@/pages/Contact";
 import Legal from "@/pages/Legal";
+import Gallery from "@/pages/Gallery";
 import NotFound from "@/pages/not-found";
 
 // Components
@@ -47,6 +48,7 @@ function Router() {
           <Route path="/causes/:slug" component={CausePage} />
           <Route path="/contact" component={Contact} />
           <Route path="/legal" component={Legal} />
+          <Route path="/gallery" component={Gallery} />
           <Route component={NotFound} />
         </Switch>
       </main>

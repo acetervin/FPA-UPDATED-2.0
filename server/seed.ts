@@ -2,7 +2,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import 'dotenv/config';
 import * as schema from '../shared/schema';
-import { blogPosts, teamMembers, causes } from '../shared/schema';
+import { blogPosts, teamMembers, causes, galleryImages } from '../shared/schema';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -17,6 +17,8 @@ async function main() {
   await db.delete(blogPosts);
   await db.delete(teamMembers);
   await db.delete(causes);
+  await db.delete(galleryImages);
+
 
   // Seed Blog Posts
   await db.insert(blogPosts).values([
@@ -237,9 +239,86 @@ async function main() {
 
   ]);
 
+  // Seed Gallery Images
+  const images = [
+    {
+      title: 'Sample Image 1',
+      description: 'A beautiful scene',
+      imageUrl: '/gallery/1.jpg',
+      key: 'gallery/1.jpg',
+      category: 'Events',
+    },
+    {
+      title: 'Sample Image 2',
+      description: 'Another beautiful scene',
+      imageUrl: '/gallery/2.jpg',
+      key: 'gallery/2.jpg',
+      category: 'Community',
+    },
+    {
+      title: 'Sample Image 3',
+      description: 'Yet another beautiful scene',
+      imageUrl: '/gallery/3.jpg',
+      key: 'gallery/3.jpg',
+      category: 'Education',
+    },
+    {
+      title: 'Sample Image 4',
+      description: 'A beautiful scene',
+      imageUrl: '/gallery/4.jpg',
+      key: 'gallery/4.jpg',
+      category: 'Health',
+    },
+    {
+      title: 'Sample Image 5',
+      description: 'Another beautiful scene',
+      imageUrl: '/gallery/5.jpg',
+      key: 'gallery/5.jpg',
+      category: 'Empowerment',
+    },
+    {
+      title: 'Sample Image 6',
+      description: 'Yet another beautiful scene',
+      imageUrl: '/gallery/6.jpg',
+      key: 'gallery/6.jpg',
+      category: 'Relief',
+    },
+    {
+      title: 'Sample Image 7',
+      description: 'A beautiful scene',
+      imageUrl: '/gallery/7.jpg',
+      key: 'gallery/7.jpg',
+      category: 'Events',
+    },
+    {
+      title: 'Sample Image 8',
+      description: 'Another beautiful scene',
+      imageUrl: '/gallery/8.jpg',
+      key: 'gallery/8.jpg',
+      category: 'Community',
+    },
+    {
+      title: 'Sample Image 9',
+      description: 'Yet another beautiful scene',
+      imageUrl: '/gallery/9.jpg',
+      key: 'gallery/9.jpg',
+      category: 'Education',
+    },
+    {
+      title: 'Sample Image 10',
+      description: 'A beautiful environment scene',
+      imageUrl: '/gallery/10.jpg',
+      key: 'gallery/10.jpg',
+      category: 'Environment',
+    },
+  ];
+
+  await db.insert(galleryImages).values(images);
+
   console.log('Database seeded successfully.');
   process.exit(0);
 }
+
 
 main().catch((err) => {
   console.error(err);

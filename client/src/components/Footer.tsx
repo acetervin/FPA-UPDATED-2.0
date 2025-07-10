@@ -48,15 +48,27 @@ export default function Footer() {
           <div className="flex flex-col space-y-4 text-gray-400">
             <div className="flex items-center space-x-2">
               <MapPin className="w-5 h-5" />
-              <span>123 Peace St, Harmony City</span>
+                <span style={{ whiteSpace: 'pre-line' }}>
+                      Wu Yi Plaza, 3rd Floor, Block E8,<br />
+                     Galana Road, Kilimani, Nairobi
+                </span>
             </div>
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
-              <a href="tel:+1234567890" className="hover:text-white transition-colors">+1 (234) 567-890</a>
+              <a href="tel:+254721971194" className="hover:text-white transition-colors">+254 721 971 194</a>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Phone className="w-5 h-5" />
+              <a href="tel:+254725233261" className="hover:text-white transition-colors">+254 725 233 261</a>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Phone className="w-5 h-5" />
+              <a href="tel:0208020770" className="hover:text-white transition-colors">0208020770</a>
             </div>
             <div className="flex items-center space-x-2">
               <Mail className="w-5 h-5" />
-              <a href="mailto:info@familypeace.org" className="hover:text-white transition-colors">info@familypeace.org</a>
+              <a href="mailto:kenya@familypeaceassociation.org" className="hover:text-white transition-colors">kenya@familypeaceassociation.org</a>
             </div>
           </div>
         </div>
@@ -66,7 +78,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Family Peace Association. All rights reserved.
+            © 2025 Family Peace Association. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/legal">
