@@ -154,10 +154,11 @@ export default function Blog() {
                             <Tag className="w-3 h-3 mr-1" />
                             {post.category}
                           </Badge>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <Calendar className="w-3 h-3 mr-1" />
-                            {new Date(post.publishedAt).toLocaleDateString()}
-                          </div>
+                          {post.category === 'events' ? (
+                            <Badge variant={post.endDate && new Date(post.endDate) > new Date() ? 'secondary' : 'destructive'} className={post.endDate && new Date(post.endDate) > new Date() ? 'bg-green-600 text-white' : 'bg-gray-400 text-white'}>
+                              {post.endDate && new Date(post.endDate) > new Date() ? 'Ongoing' : 'Ended'}
+                            </Badge>
+                          ) : null}
                         </div>
                         
                         <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">

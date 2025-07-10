@@ -13,6 +13,11 @@ const db = drizzle(pool, { schema });
 async function main() {
   console.log('Seeding database...');
 
+  // Clear existing data
+  await db.delete(blogPosts);
+  await db.delete(teamMembers);
+  await db.delete(causes);
+
   // Seed Blog Posts
   await db.insert(blogPosts).values([
     {
@@ -26,60 +31,66 @@ async function main() {
       featured: true,
     },
     {
-        title: "Empowering Youth Through Education",
-        slug: "empowering-youth-through-education",
-        excerpt: "Education is a powerful tool for breaking the cycle of poverty. Learn about our educational programs.",
-        content: "In-depth article on youth education programs, success stories, and future plans.",
-        category: "Education",
-        imageUrl: "/images/blog/education.jpg",
-        publishedAt: new Date("2023-02-20"),
-        featured: false,
-      },
-
-      {
-        title: "Sustainable Agriculture for a Better Future",
-        slug: "sustainable-agriculture-for-a-better-future",
-        excerpt: "Our efforts in promoting sustainable farming practices to ensure food security and protect the environment.",
-        content: "A comprehensive look at our sustainable agriculture projects, their impact, and how you can get involved.",
-        category: "Environment",
-        imageUrl: "/images/blog/agriculture.jpg",
-        publishedAt: new Date("2023-03-10"),
-        featured: true,
-      },
-
-      {
-        title: "Healthcare for All: A Basic Human Right",
-        slug: "healthcare-for-all-a-basic-human-right",
-        excerpt: "An overview of our healthcare initiatives aimed at providing medical access to underserved communities.",
-        content: "Details about our mobile clinics, vaccination drives, and partnerships with local health centers.",
-        category: "Health",
-        imageUrl: "/images/blog/healthcare.jpg",
-        publishedAt: new Date("2023-04-05"),
-        featured: false,
-      },
-
-      {
-        title: "Women's Empowerment: Driving Change",
-        slug: "womens-empowerment-driving-change",
-        excerpt: "Highlighting our programs that support women's economic and social empowerment.",
-        content: "Stories of women who have transformed their lives through our vocational training and micro-loan programs.",
-        category: "Empowerment",
-        imageUrl: "/images/blog/women-empowerment.jpg",
-        publishedAt: new Date("2023-05-12"),
-        featured: true,
-      },
-
-      {
-        title: "Disaster Relief: Rebuilding Communities",
-        slug: "disaster-relief-rebuilding-communities",
-        excerpt: "A look at our rapid response and long-term recovery efforts in disaster-stricken areas.",
-        content: "An account of our recent disaster relief operations, the challenges faced, and the resilience of communities.",
-        category: "Relief",
-        imageUrl: "/images/blog/disaster-relief.jpg",
-        publishedAt: new Date("2023-06-22"),
-        featured: false,
-      }
-
+      title: "Empowering Youth Through Education",
+      slug: "empowering-youth-through-education",
+      excerpt: "Education is a powerful tool for breaking the cycle of poverty. Learn about our educational programs.",
+      content: "In-depth article on youth education programs, success stories, and future plans.",
+      category: "Education",
+      imageUrl: "/images/blog/education.jpg",
+      publishedAt: new Date("2023-02-20"),
+      featured: false,
+    },
+    {
+      title: "Sustainable Agriculture for a Better Future",
+      slug: "sustainable-agriculture-for-a-better-future",
+      excerpt: "Our efforts in promoting sustainable farming practices to ensure food security and protect the environment.",
+      content: "A comprehensive look at our sustainable agriculture projects, their impact, and how you can get involved.",
+      category: "Environment",
+      imageUrl: "/images/blog/agriculture.jpg",
+      publishedAt: new Date("2023-03-10"),
+      featured: true,
+    },
+    {
+      title: "Healthcare for All: A Basic Human Right",
+      slug: "healthcare-for-all-a-basic-human-right",
+      excerpt: "An overview of our healthcare initiatives aimed at providing medical access to underserved communities.",
+      content: "Details about our mobile clinics, vaccination drives, and partnerships with local health centers.",
+      category: "Health",
+      imageUrl: "/images/blog/healthcare.jpg",
+      publishedAt: new Date("2023-04-05"),
+      featured: false,
+    },
+    {
+      title: "Women's Empowerment: Driving Change",
+      slug: "womens-empowerment-driving-change",
+      excerpt: "Highlighting our programs that support women's economic and social empowerment.",
+      content: "Stories of women who have transformed their lives through our vocational training and micro-loan programs.",
+      category: "Empowerment",
+      imageUrl: "/images/blog/women-empowerment.jpg",
+      publishedAt: new Date("2023-05-12"),
+      featured: true,
+    },
+    {
+      title: "Disaster Relief: Rebuilding Communities",
+      slug: "disaster-relief-rebuilding-communities",
+      excerpt: "A look at our rapid response and long-term recovery efforts in disaster-stricken areas.",
+      content: "An account of our recent disaster relief operations, the challenges faced, and the resilience of communities.",
+      category: "Relief",
+      imageUrl: "/images/blog/disaster-relief.jpg",
+      publishedAt: new Date("2023-06-22"),
+      featured: false,
+    },
+    {
+      title: "Upcoming Community Workshop",
+      slug: "upcoming-community-workshop",
+      excerpt: "Join us for a workshop on community building and sustainable practices.",
+      content: "Detailed information about the workshop, including speakers, schedule, and registration details.",
+      category: "events",
+      imageUrl: "/images/blog/workshop.jpg",
+      publishedAt: new Date("2023-07-15"),
+      endDate: new Date("2023-07-20"), // Example end date for event
+      featured: false,
+    }
   ]);
 
   // Seed Team Members

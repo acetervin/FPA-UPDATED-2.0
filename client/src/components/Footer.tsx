@@ -20,6 +20,9 @@ export default function Footer() {
               <Link href="/blog">
                 <a className="block text-gray-400 hover:text-white transition-colors">Blog</a>
               </Link>
+              <Link href="/gallery">
+                <a className="block text-gray-400 hover:text-white transition-colors">Gallery</a>
+              </Link>
               <Link href="/team">
                 <a className="block text-gray-400 hover:text-white transition-colors">Team</a>
               </Link>

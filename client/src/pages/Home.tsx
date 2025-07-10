@@ -47,12 +47,7 @@ export default function Home() {
                   <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
                     The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families.
                   </p>
-                  <p className="text-lg text-gray-700 leading-relaxed max-w-lg">
-                    <strong>Our Vision:</strong> A world of peace through God-centered families.
-                  </p>
-                  <p className="text-lg text-gray-700 leading-relaxed max-w-lg">
-                    <strong>Our Mission:</strong> The Family Peace Association seeks to enlighten humanity by uplifting our spiritual consciousness through universal principles and values rooted in God-centered families.
-                  </p>
+
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4">

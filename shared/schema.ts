@@ -17,6 +17,7 @@ export const blogPosts = pgTable("blog_posts", {
   category: text("category").notNull(),
   imageUrl: text("image_url").notNull(),
   publishedAt: timestamp("published_at").notNull(),
+  endDate: timestamp("end_date"), // Optional, only for events
   featured: boolean("featured").default(false),
 });
 

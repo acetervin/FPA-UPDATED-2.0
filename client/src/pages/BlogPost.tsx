@@ -91,6 +91,16 @@ export default function BlogPost() {
                   <Tag className="w-3 h-3 mr-1" />
                   {post.category}
                 </Badge>
+                {/* Remove all references to status, only show badges for events and published */}
+                {post.category === 'events' ? (
+                  <Badge variant={post.endDate && new Date(post.endDate) > new Date() ? 'default' : 'destructive'} className={post.endDate && new Date(post.endDate) > new Date() ? 'bg-green-600 text-white' : 'bg-gray-400 text-white'}>
+                    {post.endDate && new Date(post.endDate) > new Date() ? 'Ongoing' : 'Ended'}
+                  </Badge>
+                ) : (
+                  <Badge variant="default" className="bg-green-600 text-white">
+                    Published
+                  </Badge>
+                )}
                 <div className="flex items-center text-sm text-gray-500">
                   <Calendar className="w-3 h-3 mr-1" />
                   {new Date(post.publishedAt).toLocaleDateString()}

@@ -46,6 +46,7 @@ export default function Header() {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/blog">Blog</NavLink>
+            <NavLink href="/gallery">Gallery</NavLink>
             <NavLink href="/contact">Contact</NavLink>
             
             <Link href="/donate">
@@ -72,6 +73,9 @@ export default function Header() {
                 </Link>
                 <Link href="/blog" onClick={() => setMobileMenuOpen(false)}>
                   <a className="text-lg font-medium">Blog</a>
+                </Link>
+                <Link href="/gallery" onClick={() => setMobileMenuOpen(false)}>
+                  <a className="text-lg font-medium">Gallery</a>
                 </Link>
                 <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
                   <a className="text-lg font-medium">Contact</a>

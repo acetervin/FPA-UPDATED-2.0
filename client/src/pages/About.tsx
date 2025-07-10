@@ -25,24 +25,10 @@ export default function About() {
           <ScrollAnimationWrapper>
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-                Who We Are
+                Who <span className="primary-text">we are</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families.
-              </p>
-            </div>
-          </ScrollAnimationWrapper>
-        </div>
-      </section>
-
-      {/* Why the Family Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <ScrollAnimationWrapper>
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Why the Family?</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                The family is the most basic of all social units that addresses our most essential physical, emotional and spiritual needs.
+                The family peace association (FPA) is an association of individuals, families, and communities that strive to create a peaceful, ideal world through building God-centered families.
               </p>
             </div>
           </ScrollAnimationWrapper>
@@ -50,16 +36,35 @@ export default function About() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20">
         <div className="container mx-auto px-6">
-          <ScrollAnimationWrapper>
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Our Mission</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                The Family Peace Association seeks to enlighten humanity by uplifting our spiritual consciousness through universal principles and values rooted in God-centered families.
-              </p>
-            </div>
-          </ScrollAnimationWrapper>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <ScrollAnimationWrapper animation="slide-in-left">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+                  Our <span className="primary-text">Mission</span>
+                </h2>
+                <p className="text-lg text-gray-600 mb-6">
+                  The Family Peace Association is dedicated to enlightening humanity by uplifting our spiritual consciousness through universal principles and values rooted in God-centered families. We believe that healthy families are the foundation of a thriving society.
+                </p>
+                <p className="text-lg text-gray-600 mb-8">
+                  Through evidence-based therapeutic interventions, educational programs, and community support networks, we empower families to overcome challenges and build lasting bonds of love, understanding, and respect.
+                </p>
+                <Link href="/get-involved">
+                  <Button className="primary-bg text-white hover:opacity-90">
+                    Join Our Mission
+                  </Button>
+                </Link>
+              </div>
+            </ScrollAnimationWrapper>
+            <ScrollAnimationWrapper animation="slide-in-right">
+              <img 
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
+                alt="Community support group meeting" 
+                className="rounded-xl shadow-lg w-full"
+              />
+            </ScrollAnimationWrapper>
+          </div>
         </div>
       </section>
 
@@ -68,13 +73,95 @@ export default function About() {
         <div className="container mx-auto px-6">
           <ScrollAnimationWrapper>
             <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Our Vision</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                A world of peace through God-centered families.
-              </p>
-              <p className="text-md text-gray-500">For more information: <a href="mailto:kenya@familypeaceassociation.org" className="text-primary underline">kenya@familypeaceassociation.org</a></p>
-            </div>
+             </div>
           </ScrollAnimationWrapper>
+        </div>
+      </section>
+
+      {/* Mission Section (Text Right, Image Left) */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <ScrollAnimationWrapper animation="slide-in-left">
+              <img 
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
+                alt="Community support group meeting" 
+                className="rounded-xl shadow-lg w-full"
+              />
+            </ScrollAnimationWrapper>
+            <ScrollAnimationWrapper animation="slide-in-right">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+                  Our <span className="primary-text">Vision</span>
+                </h2>
+                <p className="text-lg text-gray-600 mb-6">
+                  A world of peace through God-centered families.
+                </p>
+                <p className="text-lg text-gray-600 mb-8">
+                  We aspire to build communities rooted in love, respect, and spiritual growth, where families are empowered to create lasting peace for generations to come.
+                </p>
+                <Link href="/get-involved">
+                  <Button className="primary-bg text-white hover:opacity-90">
+                    Join Us
+                  </Button>
+                </Link>
+              </div>
+            </ScrollAnimationWrapper>
+          </div>
+        </div>
+      </section>
+
+      {/* Programs Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <ScrollAnimationWrapper>
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+                Our <span className="primary-text">Programs</span>
+                </h2>
+                <p className="text-xl text-gray-600 mb-8">
+                Explore our diverse programs that empower families, nurture character, and promote peace in our communities.
+                </p>
+                </div>
+                </ScrollAnimationWrapper>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Family Peace & Character Education Initiative </h3>
+                <p className="text-gray-600 mb-4">Workshops and resources focused on building character, fostering empathy, and nurturing peaceful relationships within families.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Women Outreach and Family Education Program</h3>
+                <p className="text-gray-600 mb-4">Empowering women through outreach, education, and support to strengthen families and promote community well-being.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Youth Mentorship & Marriage Preparation</h3>
+                <p className="text-gray-600 mb-4">Guidance and mentorship for youth and young adults to prepare for healthy relationships and successful marriages.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Mens Fellowship Academy For Family</h3>
+                <p className="text-gray-600 mb-4">A supportive community for men to develop leadership, parenting, and relationship skills for strong families.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Faith & Values Seminars</h3>
+                <p className="text-gray-600 mb-4">Seminars exploring universal values and spiritual principles to inspire personal growth and family harmony.</p>
+                </CardContent>
+                </Card>
+                <Card className="h-full">
+                <CardContent className="p-6">
+                <h3 className="text-2xl font-bold text-yellow-700 mb-4">Couples Marriage Enrichment Program</h3>
+                <p className="text-gray-600 mb-4">Programs and workshops designed to help couples deepen their connection, improve communication, and enrich their marriages.</p>
+                </CardContent>
+              </Card>
+              </div>
         </div>
       </section>
 
