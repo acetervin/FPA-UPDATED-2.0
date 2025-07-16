@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import Counter from "@/components/Counter";
+import LogoSlider from "@/components/LogoSlider";
 import { 
   Heart, 
   Users, 
@@ -42,10 +43,10 @@ export default function Home() {
               <div className="space-y-8">
                 <div className="space-y-6">
                   <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                    Family Peace Association (FPA)
+                    Family Peace Association Kenya (FPA)
                   </h1>
                   <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                    The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families.
+                    The Family Peace Association of Kenya (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families.
                   </p>
 
                 </div>
@@ -416,6 +417,11 @@ export default function Home() {
           </ScrollAnimationWrapper>
         </div>
       </section>
+
+      {/* Partner Logos */}
+      <LogoSlider />
+
+      {/* Footer or next section */}
     </>
   );
 }

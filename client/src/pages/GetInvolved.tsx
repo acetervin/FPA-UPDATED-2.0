@@ -209,10 +209,10 @@ export default function GetInvolved() {
 
       {/* Current Causes */}
       {causes && causes.length > 0 && (
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-6">
+        <section  className="py-20 bg-gray-50">
+          <div  className="container mx-auto px-6">
             <ScrollAnimationWrapper>
-              <div className="text-center mb-16">
+              <div id="initiatives" className="text-center mb-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
                   Active <span className="primary-text">Initiatives</span>
                 </h2>
