@@ -9,6 +9,43 @@ export default {
         sans: ['Poppins', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: 'var(--foreground)',
+            h1: {
+              color: 'var(--foreground)',
+              fontWeight: '700',
+            },
+            h2: {
+              color: 'var(--foreground)',
+              fontWeight: '600',
+            },
+            a: {
+              color: 'var(--primary)',
+              '&:hover': {
+                color: 'var(--primary-foreground)',
+              },
+            },
+            blockquote: {
+              borderLeftColor: 'var(--primary)',
+              color: 'var(--muted-foreground)',
+              fontStyle: 'normal',
+            },
+            code: {
+              color: 'var(--primary)',
+              backgroundColor: 'var(--muted)',
+              borderRadius: '0.25rem',
+              padding: '0.25rem',
+            },
+            'pre code': {
+              backgroundColor: 'transparent',
+              padding: '0',
+            },
+          },
+        },
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

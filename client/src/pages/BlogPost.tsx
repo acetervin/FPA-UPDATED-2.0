@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
+import { MarkdownContent } from "@/components/MarkdownContent";
 import { Calendar, Tag, ArrowLeft, User } from "lucide-react";
 import type { BlogPost } from "@shared/schema";
 
@@ -114,6 +115,16 @@ export default function BlogPost() {
               <p className="text-xl text-gray-600 leading-relaxed">
                 {post.excerpt}
               </p>
+
+              {post.category === 'events' && (
+                <div className="mt-8">
+                  <Link href={`/event-registration?name=${encodeURIComponent(post.title)}`}>
+                    <Button size="lg">
+                      Register for this Event
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </header>
           </ScrollAnimationWrapper>
 
@@ -131,11 +142,7 @@ export default function BlogPost() {
           {/* Article Content */}
           <ScrollAnimationWrapper>
             <div className="max-w-4xl mx-auto">
-              <div className="prose prose-lg max-w-none">
-                <div className="text-lg leading-relaxed text-gray-700 whitespace-pre-wrap">
-                  {post.content}
-                </div>
-              </div>
+              <MarkdownContent content={post.content} />
 
               {/* Author Info */}
               <div className="border-t border-gray-200 pt-8 mt-12">

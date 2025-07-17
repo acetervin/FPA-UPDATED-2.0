@@ -4,13 +4,76 @@ import { storage } from "./storage";
 import { 
   insertVolunteerApplicationSchema,
   insertContactSubmissionSchema,
-  insertNewsletterSubscriptionSchema
+  insertNewsletterSubscriptionSchema,
+  events,
+  eventRegistrations,
+  blogPosts
 } from "@shared/schema";
 import { z } from "zod";
 import { db } from './db';
 import { galleryImages } from '../shared/schema';
+import { sql } from 'drizzle-orm';
+import { initiatePayment, handlePaymentCallback } from './payments';
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Fetch event by name
+  app.get("/api/events/by-name/:name", async (req, res) => {
+    try {
+      const { name } = req.params;
+      
+      const event = await db.select().from(events)
+        .where(sql`${events.name} = ${name} AND ${events.active} = true`)
+        .limit(1);
+
+      if (!event.length) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      res.json(event[0]);
+    } catch (error) {
+      console.error('Error fetching event by name:', error);
+      res.status(500).json({ message: "Failed to fetch event by name" });
+    }
+  });
+  // Payment routes
+  app.post("/api/payments/initiate", initiatePayment);
+  app.get("/api/payments/callback", handlePaymentCallback);
+
+  // Event routes
+  app.get("/api/events", async (req, res) => {
+    try {
+      const allEvents = await db.select().from(events)
+        .where(sql`${events.active} = true`)
+        .orderBy(events.date);
+      res.json(allEvents);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      res.status(500).json({ message: "Failed to fetch events" });
+    }
+  });
+
+  app.get("/api/events/:id", async (req, res) => {
+    try {
+      const eventId = parseInt(req.params.id);
+      if (isNaN(eventId)) {
+        return res.status(400).json({ message: "Invalid event ID format" });
+      }
+
+      const event = await db.select().from(events)
+        .where(sql`${events.id} = ${eventId} AND ${events.active} = true`)
+        .limit(1);
+
+      if (!event.length) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      res.json(event[0]);
+    } catch (error) {
+      console.error('Error fetching event:', error);
+      res.status(500).json({ message: "Failed to fetch event" });
+    }
+  });
+
   // Blog routes
   app.get("/api/blog-posts", async (req, res) => {
     try {

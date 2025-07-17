@@ -46,6 +46,42 @@ export const causes = pgTable("causes", {
   active: boolean("active").default(true),
 });
 
+export const events = pgTable("events", {
+  id: serial("id").primaryKey(),
+  date: timestamp("date").notNull(),
+  endDate: timestamp("end_date").notNull(), // Event end date
+  fee: integer("fee").notNull(),
+  location: text("location").notNull(),
+  maxParticipants: integer("max_participants"),
+  active: boolean("active").default(true),
+  name: text("name").notNull().unique(),
+  description: text("description").notNull(),
+  imageUrl: text("image_url").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const eventRegistrations = pgTable("event_registrations", {
+  id: serial("id").primaryKey(),
+  eventId: integer("event_id").references(() => events.id),
+  registrationType: text("registration_type").notNull(), // 'individual' or 'organization'
+  // Individual fields
+  firstName: text("first_name"),
+  middleName: text("middle_name"),
+  surname: text("surname"),
+  // Organization fields
+  organizationName: text("organization_name"),
+  organizationEmail: text("organization_email"),
+  representativeName: text("representative_name"),
+  role: text("role"),
+  // Common fields
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  paymentStatus: text("payment_status").notNull().default('pending'), // 'pending', 'completed', 'failed'
+  paymentReference: text("payment_reference"),
+  amount: integer("amount").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const volunteerApplications = pgTable("volunteer_applications", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),

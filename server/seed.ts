@@ -1,4 +1,6 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { sql, eq } from 'drizzle-orm';
+
 import { Pool } from 'pg';
 import 'dotenv/config';
 import * as schema from '../shared/schema';
@@ -13,15 +15,10 @@ const db = drizzle(pool, { schema });
 async function main() {
   console.log('Seeding database...');
 
-  // Clear existing data
-  await db.delete(blogPosts);
-  await db.delete(teamMembers);
-  await db.delete(causes);
-  await db.delete(galleryImages);
-
-
   // Seed Blog Posts
+  console.log('Seeding blog posts...');
   await db.insert(blogPosts).values([
+
     {
       title: 'The Importance of Clean Water',
       slug: 'importance-of-clean-water',
@@ -93,10 +90,24 @@ async function main() {
       endDate: new Date("2023-07-20"), // Example end date for event
       featured: false,
     }
-  ]);
+  ]).onConflictDoUpdate({
+    target: blogPosts.slug,
+    set: {
+      title: sql`excluded.title`,
+      excerpt: sql`excluded.excerpt`,
+      content: sql`excluded.content`,
+      category: sql`excluded.category`,
+      imageUrl: sql`excluded.image_url`,
+      publishedAt: sql`excluded.published_at`,
+      endDate: sql`excluded.end_date`,
+      featured: sql`excluded.featured`,
+    },
+  });
 
   // Seed Team Members
+  console.log('Seeding team members...');
   await db.insert(teamMembers).values([
+
     {
       name: 'Jane Doe',
       slug: 'jane-doe',
@@ -162,10 +173,23 @@ async function main() {
         specialties: ["Volunteer Management", "Training & Development", "Community Engagement"],
       }
 
-  ]);
+  ]).onConflictDoUpdate({
+    target: teamMembers.slug,
+    set: {
+      name: sql`excluded.name`,
+      position: sql`excluded.position`,
+      bio: sql`excluded.bio`,
+      imageUrl: sql`excluded.image_url`,
+      email: sql`excluded.email`,
+      linkedin: sql`excluded.linkedin`,
+      specialties: sql`excluded.specialties`,
+    },
+  });
 
   // Seed Causes
+  console.log('Seeding causes...');
   await db.insert(causes).values([
+
     {
       title: 'Build a School in Africa',
       slug: 'build-a-school-in-africa',
@@ -237,83 +261,103 @@ async function main() {
         active: true,
       }
 
-  ]);
+  ]).onConflictDoUpdate({
+    target: causes.slug,
+    set: {
+      title: sql`excluded.title`,
+      description: sql`excluded.description`,
+      fullDescription: sql`excluded.full_description`,
+      imageUrl: sql`excluded.image_url`,
+      goalAmount: sql`excluded.goal_amount`,
+      volunteersNeeded: sql`excluded.volunteers_needed`,
+      active: sql`excluded.active`,
+    },
+  });
 
   // Seed Gallery Images
+  console.log('Seeding gallery images...');
   const images = [
     {
       title: 'Sample Image 1',
       description: 'A beautiful scene',
       imageUrl: '/gallery/1.jpg',
-      key: 'gallery/1.jpg',
       category: 'Events',
     },
     {
       title: 'Sample Image 2',
       description: 'Another beautiful scene',
       imageUrl: '/gallery/2.jpg',
-      key: 'gallery/2.jpg',
       category: 'Community',
     },
     {
       title: 'Sample Image 3',
       description: 'Yet another beautiful scene',
       imageUrl: '/gallery/3.jpg',
-      key: 'gallery/3.jpg',
       category: 'Education',
     },
     {
       title: 'Sample Image 4',
       description: 'A beautiful scene',
       imageUrl: '/gallery/4.jpg',
-      key: 'gallery/4.jpg',
       category: 'Health',
     },
     {
       title: 'Sample Image 5',
       description: 'Another beautiful scene',
       imageUrl: '/gallery/5.jpg',
-      key: 'gallery/5.jpg',
       category: 'Empowerment',
     },
     {
       title: 'Sample Image 6',
       description: 'Yet another beautiful scene',
       imageUrl: '/gallery/6.jpg',
-      key: 'gallery/6.jpg',
       category: 'Relief',
     },
     {
       title: 'Sample Image 7',
       description: 'A beautiful scene',
       imageUrl: '/gallery/7.jpg',
-      key: 'gallery/7.jpg',
       category: 'Events',
     },
     {
       title: 'Sample Image 8',
       description: 'Another beautiful scene',
       imageUrl: '/gallery/8.jpg',
-      key: 'gallery/8.jpg',
       category: 'Community',
     },
     {
       title: 'Sample Image 9',
       description: 'Yet another beautiful scene',
       imageUrl: '/gallery/9.jpg',
-      key: 'gallery/9.jpg',
       category: 'Education',
     },
     {
       title: 'Sample Image 10',
       description: 'A beautiful environment scene',
       imageUrl: '/gallery/10.jpg',
-      key: 'gallery/10.jpg',
       category: 'Environment',
     },
   ];
 
-  await db.insert(galleryImages).values(images);
+  for (const image of images) {
+    const existingImage = await db.query.galleryImages.findFirst({
+      where: eq(galleryImages.imageUrl, image.imageUrl),
+    });
+
+    if (existingImage) {
+      await db
+        .update(galleryImages)
+        .set({
+          title: image.title,
+          description: image.description,
+          category: image.category,
+        })
+        .where(eq(galleryImages.id, existingImage.id));
+    } else {
+      await db.insert(galleryImages).values(image);
+    }
+  }
+
 
   console.log('Database seeded successfully.');
   process.exit(0);

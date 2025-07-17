@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,20 @@ import type { BlogPost } from "@shared/schema";
 export default function Blog() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [location, setLocation] = useLocation();
 
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ["/api/blog-posts"],
   });
+
+  // Handle URL parameters for category
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = params.get('category');
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    }
+  }, []);
 
   const categories = blogPosts 
     ? Array.from(new Set(blogPosts.map(post => post.category))) 
@@ -70,7 +80,13 @@ export default function Blog() {
                 <div className="flex gap-2 flex-wrap">
                   <Button
                     variant={selectedCategory === "" ? "default" : "outline"}
-                    onClick={() => setSelectedCategory("")}
+                    onClick={() => {
+                      setSelectedCategory("");
+                      // Remove category from URL
+                      const newUrl = new URL(window.location.href);
+                      newUrl.searchParams.delete('category');
+                      window.history.pushState({}, '', newUrl.toString());
+                    }}
                     size="sm"
                   >
                     All Categories
@@ -79,7 +95,13 @@ export default function Blog() {
                     <Button
                       key={category}
                       variant={selectedCategory === category ? "default" : "outline"}
-                      onClick={() => setSelectedCategory(category)}
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        // Update URL with new category
+                        const newUrl = new URL(window.location.href);
+                        newUrl.searchParams.set('category', category);
+                        window.history.pushState({}, '', newUrl.toString());
+                      }}
                       size="sm"
                     >
                       {category}

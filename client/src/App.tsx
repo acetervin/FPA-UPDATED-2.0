@@ -21,6 +21,7 @@ import Contact from "@/pages/Contact";
 import Legal from "@/pages/Legal";
 import Gallery from "@/pages/Gallery";
 import NotFound from "@/pages/not-found";
+import EventRegistration from "@/pages/EventRegistration";
 
 // Components
 import Header from "@/components/Header";
@@ -49,6 +50,7 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/legal" component={Legal} />
           <Route path="/gallery" component={Gallery} />
+          <Route path="/event-registration" component={EventRegistration} />
           <Route component={NotFound} />
         </Switch>
       </main>
