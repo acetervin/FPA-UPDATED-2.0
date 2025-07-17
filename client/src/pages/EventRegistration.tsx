@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 
 interface IndividualFormData {
   firstName: string;
@@ -239,40 +240,49 @@ export default function EventRegistration() {
         </div>
       );
     }
-    return <div className="container mx-auto py-10">Loading event details...</div>;
+    return (
+      <div className="container mx-auto py-10 animate-pulse">
+        <div className="max-w-4xl mx-auto">
+          <div className="h-[60vh] bg-gray-200 rounded-lg mb-8"></div>
+          <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative bg-gray-900 text-white min-h-[60vh] flex items-center">
+      <div className="relative bg-gray-900 text-white min-h-[60vh] flex items-center overflow-hidden">
         {/* Background Image with Overlay */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden animate-fade-in">
           <img 
             src={event.imageUrl} 
             alt={event.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover animate-scale"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
         </div>
 
         {/* Hero Content */}
-        <div className="relative container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-4xl">
-            {/* Status Badge */}
+        <div className="relative container mx-auto px-4 py-24 md:py-32 mt-16 sm:mt-0">
+          <ScrollAnimationWrapper className="w-full">
+            <div className="max-w-4xl transform transition-all">
+              {/* Status Badge */}
             {!event.active ? (
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-red-500/20 text-red-200 mb-6">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-red-500/20 text-red-200 mb-6 shadow-lg">
+                <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Event Ended
+                <span className="whitespace-nowrap">Event Ended</span>
               </span>
             ) : event.maxParticipants ? (
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-500/20 text-green-200 mb-6">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-500/20 text-green-200 mb-6 shadow-lg">
+                <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Registration Open
+                <span className="whitespace-nowrap">Registration Open</span>
               </span>
             ) : null}
             
@@ -317,24 +327,28 @@ export default function EventRegistration() {
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+          </ScrollAnimationWrapper>
         </div>
       </div>
 
       {/* Registration Form Section */}
       <div className="container mx-auto py-16 px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Register for {event.name}</h2>
-          {event.active ? (
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Complete the registration form below to secure your spot at this event. 
-              Choose between individual or organization registration.
-            </p>
-          ) : null}
-        </div>
+        <ScrollAnimationWrapper className="w-full">
+          <div className="text-center mb-12 transform transition-all">
+            <h2 className="text-3xl font-bold mb-4">Register for {event.name}</h2>
+            {event.active ? (
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Complete the registration form below to secure your spot at this event. 
+                Choose between individual or organization registration.
+              </p>
+            ) : null}
+          </div>
+        </ScrollAnimationWrapper>
         
-        <Card className="p-6 max-w-2xl mx-auto shadow-xl bg-white">
-        <div className="mb-8">
+        <ScrollAnimationWrapper className="w-full" delay={200}>
+          <Card className="p-6 max-w-2xl mx-auto shadow-xl bg-white transform transition-all hover:shadow-2xl duration-300">
+            <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-2">{event.name}</h2>
           {!event.active && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
@@ -513,6 +527,7 @@ export default function EventRegistration() {
           </form>
         )}
         </Card>
+        </ScrollAnimationWrapper>
       </div>
     </div>
   );
