@@ -27,13 +27,13 @@ export default function Header() {
 
   const Logo = () => (
     <Link href="/">
-      <a className="flex items-center">
+      <div className="flex items-center">
         <img 
           src={FpaLogo} 
           alt="Family Peace Association Kenya Logo"
           className="h-14 w-auto"
         />
-      </a>
+      </div>
     </Link>
   );
 

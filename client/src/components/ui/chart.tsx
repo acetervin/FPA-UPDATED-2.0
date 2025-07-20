@@ -363,3 +363,5 @@ export {
   ChartLegendContent,
   ChartStyle,
 }
+
+export { ChartContainer as Chart }

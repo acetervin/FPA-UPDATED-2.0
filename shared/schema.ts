@@ -2,10 +2,41 @@ import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export { createInsertSchema };
+
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  email: text("email").notNull().unique(),
+  role: text("role", { enum: ['admin', 'volunteer', 'donor'] }).notNull().default('donor'),
+  fullName: text("full_name").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  lastLogin: timestamp("last_login"),
+  active: boolean("active").notNull().default(true),
+});
+
+export const media = pgTable("media", {
+  id: serial("id").primaryKey(),
+  title: text("title"),
+  description: text("description"),
+  url: text("url").notNull(),
+  type: text("type").notNull(),
+  size: integer("size").notNull(),
+  uploadedAt: timestamp("uploaded_at").notNull().defaultNow(),
+});
+
+export const donations = pgTable("donations", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  amount: integer("amount").notNull(),
+  causeId: integer("cause_id"),
+  paymentMethod: text("payment_method").notNull(),
+  transactionId: text("transaction_id"),
+  status: text("status", { enum: ['pending', 'completed', 'failed'] }).notNull().default('pending'),
+  anonymous: boolean("anonymous").notNull().default(false),
+  message: text("message"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const blogPosts = pgTable("blog_posts", {

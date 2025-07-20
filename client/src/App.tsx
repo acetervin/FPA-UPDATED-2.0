@@ -23,11 +23,22 @@ import Gallery from "@/pages/Gallery";
 import NotFound from "@/pages/not-found";
 import EventRegistration from "@/pages/EventRegistration";
 
+// Admin Pages
+import AdminLogin from "@/pages/admin/login";
+import AdminDashboard from "@/pages/admin/dashboard";
+import AdminBlogPosts from "@/pages/admin/blog-posts";
+import AdminEvents from "@/pages/admin/events";
+import AdminDonations from "@/pages/admin/donations";
+import AdminUsers from "@/pages/admin/users";
+import AdminVolunteers from "@/pages/admin/volunteers";
+import AdminSettings from "@/pages/admin/settings";
+
 // Components
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollToTop from "@/components/ScrollToTop";
+import ProtectedRoute from "@/components/admin/ProtectedRoute";
 
 function Router() {
   return (
@@ -51,10 +62,64 @@ function Router() {
           <Route path="/legal" component={Legal} />
           <Route path="/gallery" component={Gallery} />
           <Route path="/event-registration" component={EventRegistration} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/login">
+            {() => <AdminLogin />}
+          </Route>
+          <Route path="/admin/dashboard">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminDashboard />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/blog">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminBlogPosts />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/events">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminEvents />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/donations">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminDonations />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/users">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminUsers />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/volunteers">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminVolunteers />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/settings">
+            {() => (
+              <ProtectedRoute requireAdmin>
+                <AdminSettings />
+              </ProtectedRoute>
+            )}
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </main>
-      <Footer />
+      {!location.pathname.startsWith('/admin') && <Footer />}
     </>
   );
 }

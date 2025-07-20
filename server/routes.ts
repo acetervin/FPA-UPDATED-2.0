@@ -7,15 +7,27 @@ import {
   insertNewsletterSubscriptionSchema,
   events,
   eventRegistrations,
-  blogPosts
+  blogPosts,
+  users,
+  donations,
+  createInsertSchema,
+  galleryImages
 } from "@shared/schema";
 import { z } from "zod";
 import { db } from './db';
-import { galleryImages } from '../shared/schema';
 import { sql } from 'drizzle-orm';
 import { initiatePayment, handlePaymentCallback } from './payments';
+import mediaRouter from './routes/media';
+import authRouter from './routes/auth';
+import adminRouter from './routes/admin';
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Register auth routes
+  app.use('/api/auth', authRouter);
+  // Register media routes
+  app.use('/api/media', mediaRouter);
+  // Register admin routes
+  app.use('/api/admin', adminRouter);
   // Fetch event by name
   app.get("/api/events/by-name/:name", async (req, res) => {
     try {
@@ -212,6 +224,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to subscribe to newsletter" });
     }
   });
+
+
 
   app.get('/api/gallery', async (req, res) => {
     try {
