@@ -39,9 +39,20 @@ export async function apiClient<T = any>(
     (headers as any).Authorization = `Bearer ${token}`;
   }
 
+  // Include CSRF token from cookie if available
+  const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('x-csrf-token='))
+    ?.split('=')[1];
+
+  if (csrfToken) {
+    (headers as Record<string, string>)['x-csrf-token'] = csrfToken;
+  }
+
   const response = await fetch(`/api${endpoint}`, {
     ...options,
     headers,
+    credentials: 'include', // Important for CSRF
   });
 
   return handleResponse(response);
@@ -49,8 +60,11 @@ export async function apiClient<T = any>(
 
 // Common API endpoints
 export const adminApi = {
+  // Event Registrations
+  getEventRegistrations: (eventId?: number) =>
+    apiClient(`/admin/event-registrations${eventId ? `?eventId=${eventId}` : ''}`),
   // Media Management
-  getMedia: () => apiClient('/api/media'),
+  getMedia: () => apiClient('/media'),
   uploadMedia: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -59,7 +73,7 @@ export const adminApi = {
       body: formData,
     }).then(handleResponse);
   },
-  deleteMedia: (id: number) => apiClient(`/api/media/${id}`, { method: 'DELETE' }),
+  deleteMedia: (id: number) => apiClient(`/media/${id}`, { method: 'DELETE' }),
 
   // Dashboard
   getDashboardStats: () => 

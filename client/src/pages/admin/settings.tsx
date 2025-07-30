@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { PaymentGatewayStatus } from '@/components/admin/PaymentGatewayStatus';
+import { PaymentGatewayConfig } from '@/components/admin/PaymentGatewayConfig';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Card,
@@ -69,11 +71,55 @@ const settingsSchema = z.object({
   }),
 });
 
+interface PaymentGatewayStatus {
+  gateway: string;
+  status: 'live' | 'maintenance';
+  updatedAt: string;
+}
+
 type SettingsData = z.infer<typeof settingsSchema>;
 
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState('general');
   const { toast } = useToast();
+
+  const { data: gateways = [], isLoading: loadingGateways } = useQuery<PaymentGatewayStatus[]>({
+    queryKey: ['admin', 'payment-gateway-status'],
+    queryFn: async () => {
+      const response = await fetch('/api/admin/payment-gateway-status');
+      if (!response.ok) throw new Error('Failed to fetch gateway statuses');
+      return response.json();
+    },
+  });
+
+  const updateGatewayStatus = async (gateway: string, newStatus: 'live' | 'maintenance') => {
+    try {
+      const response = await fetch('/api/admin/payment-gateway-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gateway,
+          status: newStatus,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to update gateway status');
+      
+      toast({
+        title: 'Success',
+        description: `${gateway} payment gateway is now ${newStatus}`,
+      });
+    } catch (error) {
+      console.error('Error updating gateway status:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update payment gateway status',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const { data: settings, isLoading } = useQuery<SettingsData>({
     queryKey: ['admin', 'settings'],
@@ -282,17 +328,10 @@ export default function AdminSettings() {
                   </TabsContent>
 
                   <TabsContent value="payment">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Payment Settings</CardTitle>
-                        <CardDescription>
-                          Configure your payment gateway settings
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        {/* Payment gateway form fields */}
-                      </CardContent>
-                    </Card>
+                    <div className="space-y-6">
+                      <PaymentGatewayStatus />
+                      <PaymentGatewayConfig />
+                    </div>
                   </TabsContent>
                 </Tabs>
               </CardContent>

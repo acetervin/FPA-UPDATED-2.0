@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'wouter';
 import { Button } from './ui/button';
+import { OptimizedImage } from './ui/optimized-image';
 
 // Dummy logo data - replace with your actual logos
 const logoUrls = [
@@ -77,20 +78,22 @@ export default function LogoSlider() {
             >
               {/* First set of logos */}
               {logoUrls.map((url, index) => (
-                <img 
+                <OptimizedImage 
                   key={`logo-1-${index}`} 
                   src={url} 
                   alt={`Partner ${index + 1}`} 
-                  className="h-16 w-40 object-contain grayscale hover:grayscale-0 transition-all" 
+                  className="h-16 w-40 object-contain grayscale hover:grayscale-0 transition-all"
+                  loadingClassName="animate-pulse bg-gray-200" 
                 />
               ))}
               {/* Duplicate set for seamless loop */}
               {logoUrls.map((url, index) => (
-                <img 
+                <OptimizedImage 
                   key={`logo-2-${index}`} 
                   src={url} 
                   alt={`Partner ${index + 1}`} 
-                  className="h-16 w-40 object-contain grayscale hover:grayscale-0 transition-all" 
+                  className="h-16 w-40 object-contain grayscale hover:grayscale-0 transition-all"
+                  loadingClassName="animate-pulse bg-gray-200" 
                 />
               ))}
             </div>

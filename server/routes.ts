@@ -1,5 +1,6 @@
-import type { Express } from "express";
+import express from 'express';
 import { createServer, type Server } from "http";
+import type { Express, Request, Response } from 'express';
 import { storage } from "./storage";
 import { 
   insertVolunteerApplicationSchema,
@@ -13,6 +14,8 @@ import {
   createInsertSchema,
   galleryImages
 } from "@shared/schema";
+
+
 import { z } from "zod";
 import { db } from './db';
 import { sql } from 'drizzle-orm';
@@ -20,16 +23,33 @@ import { initiatePayment, handlePaymentCallback } from './payments';
 import mediaRouter from './routes/media';
 import authRouter from './routes/auth';
 import adminRouter from './routes/admin';
+import paypalApiRouter from './routes/paypal-api';
+import paypalWebhookRouter from './routes/paypal-webhook';
+import mpesaRouter from './routes/mpesa';
+import currencyRouter from './routes/currency';
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check route
+  app.get('/api/health', (req: Request, res: Response) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
   // Register auth routes
   app.use('/api/auth', authRouter);
+  
+  // Register currency routes
+  app.use('/api/currency', currencyRouter);
   // Register media routes
   app.use('/api/media', mediaRouter);
   // Register admin routes
   app.use('/api/admin', adminRouter);
+  // Register PayPal routes
+  app.use('/api/paypal', paypalApiRouter);
+  app.use('/api/paypal', paypalWebhookRouter);
+  // Register M-Pesa routes
+  app.use('/api/mpesa', mpesaRouter);
   // Fetch event by name
-  app.get("/api/events/by-name/:name", async (req, res) => {
+  app.get("/api/events/by-name/:name", async (req: Request, res: Response) => {
     try {
       const { name } = req.params;
       
@@ -52,7 +72,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/payments/callback", handlePaymentCallback);
 
   // Event routes
-  app.get("/api/events", async (req, res) => {
+  app.get("/api/events", async (req: Request, res: Response) => {
     try {
       const allEvents = await db.select().from(events)
         .where(sql`${events.active} = true`)
@@ -64,7 +84,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/events/:id", async (req, res) => {
+  app.get("/api/events/:id", async (req: Request, res: Response) => {
     try {
       const eventId = parseInt(req.params.id);
       if (isNaN(eventId)) {
@@ -87,7 +107,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Blog routes
-  app.get("/api/blog-posts", async (req, res) => {
+  app.get("/api/blog-posts", async (req: Request, res: Response) => {
     try {
       const posts = await storage.getBlogPosts();
       res.json(posts);
@@ -96,7 +116,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/blog-posts/featured", async (req, res) => {
+  app.get("/api/blog-posts/featured", async (req: Request, res: Response) => {
     try {
       const posts = await storage.getFeaturedBlogPosts();
       res.json(posts);
@@ -105,7 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/blog-posts/category/:category", async (req, res) => {
+  app.get("/api/blog-posts/category/:category", async (req: Request, res: Response) => {
     try {
       const { category } = req.params;
       const posts = await storage.getBlogPostsByCategory(category);
@@ -115,7 +135,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/blog-posts/:slug", async (req, res) => {
+  app.get("/api/blog-posts/:slug", async (req: Request, res: Response) => {
     try {
       const { slug } = req.params;
       const post = await storage.getBlogPost(slug);
@@ -129,7 +149,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Team routes
-  app.get("/api/team-members", async (req, res) => {
+  app.get("/api/team-members", async (req: Request, res: Response) => {
     try {
       const members = await storage.getTeamMembers();
       res.json(members);
@@ -138,7 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/team-members/:slug", async (req, res) => {
+  app.get("/api/team-members/:slug", async (req: Request, res: Response) => {
     try {
       const { slug } = req.params;
       const member = await storage.getTeamMember(slug);
@@ -152,7 +172,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Causes routes
-  app.get("/api/causes", async (req, res) => {
+  app.get("/api/causes", async (req: Request, res: Response) => {
     try {
       const causes = await storage.getCauses();
       res.json(causes);
@@ -161,7 +181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/causes/active", async (req, res) => {
+  app.get("/api/causes/active", async (req: Request, res: Response) => {
     try {
       const causes = await storage.getActiveCauses();
       res.json(causes);
@@ -170,7 +190,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/causes/:slug", async (req, res) => {
+  app.get("/api/causes/:slug", async (req: Request, res: Response) => {
     try {
       const { slug } = req.params;
       const cause = await storage.getCause(slug);
@@ -184,7 +204,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Volunteer application routes
-  app.post("/api/volunteer-applications", async (req, res) => {
+  app.post("/api/volunteer-applications", async (req: Request, res: Response) => {
     try {
       const validatedData = insertVolunteerApplicationSchema.parse(req.body);
       const application = await storage.createVolunteerApplication(validatedData);
@@ -198,7 +218,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Contact submission routes
-  app.post("/api/contact-submissions", async (req, res) => {
+  app.post("/api/contact-submissions", async (req: Request, res: Response) => {
     try {
       const validatedData = insertContactSubmissionSchema.parse(req.body);
       const submission = await storage.createContactSubmission(validatedData);
@@ -212,7 +232,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Newsletter subscription routes
-  app.post("/api/newsletter-subscriptions", async (req, res) => {
+  app.post("/api/newsletter-subscriptions", async (req: Request, res: Response) => {
     try {
       const validatedData = insertNewsletterSubscriptionSchema.parse(req.body);
       const subscription = await storage.createNewsletterSubscription(validatedData);
@@ -225,9 +245,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-
-
-  app.get('/api/gallery', async (req, res) => {
+  app.get('/api/gallery', async (req: Request, res: Response) => {
     try {
       const images = await db.select().from(galleryImages);
       const filteredImages = images.filter((image) => image.imageUrl);

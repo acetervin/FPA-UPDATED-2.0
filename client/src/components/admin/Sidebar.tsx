@@ -58,10 +58,22 @@ export default function AdminSidebar() {
       active: location === "/admin/users",
     },
     {
+      href: "/admin/payments",
+      icon: "fas fa-credit-card",
+      label: "Payments",
+      active: location === "/admin/payments",
+    },
+    {
       href: "/admin/volunteers",
       icon: "fas fa-hands-helping",
       label: "Volunteers",
       active: location === "/admin/volunteers",
+    },
+    {
+      href: "/admin/event-registrations",
+      icon: "fas fa-list-alt",
+      label: "Event Registrations",
+      active: location === "/admin/event-registrations",
     },
     {
       href: "/admin/settings",
@@ -69,41 +81,42 @@ export default function AdminSidebar() {
       label: "Settings",
       active: location === "/admin/settings",
     },
+
   ];
 
   return (
     <div className="w-64 bg-white shadow-lg border-r border-neutral-200 min-h-screen">
       <div className="p-6">
         {/* Logo */}
-        <Link href="/admin/dashboard">
-          <a className="flex items-center space-x-3 mb-8">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <i className="fas fa-hand-holding-heart text-white text-lg"></i>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-neutral-800">Family Peace</h1>
-              <p className="text-sm text-neutral-500">Admin Panel</p>
-            </div>
-          </a>
+        <Link href="/admin/dashboard" className="flex items-center space-x-3 mb-8">
+          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <i className="fas fa-hand-holding-heart text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-neutral-800">Family Peace</h1>
+            <p className="text-sm text-neutral-500">Admin Panel</p>
+          </div>
         </Link>
+
 
         {/* Navigation */}
         <nav className="space-y-2">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <a
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  item.active
-                    ? "bg-primary text-white"
-                    : "text-neutral-600 hover:bg-neutral-100"
-                }`}
-              >
-                <i className={`${item.icon} text-lg`}></i>
-                <span className="font-medium">{item.label}</span>
-              </a>
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                item.active
+                  ? "bg-primary text-white"
+                  : "text-neutral-600 hover:bg-neutral-100"
+              }`}
+            >
+              <i className={`${item.icon} text-lg`}></i>
+              <span className="font-medium">{item.label}</span>
             </Link>
           ))}
         </nav>
+
       </div>
 
       {/* Footer */}

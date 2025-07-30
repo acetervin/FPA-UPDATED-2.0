@@ -4,6 +4,7 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Heart, Users, Target, Award } from "lucide-react";
 import type { TeamMember } from "@shared/schema";
 
@@ -58,10 +59,11 @@ export default function About() {
               </div>
             </ScrollAnimationWrapper>
             <ScrollAnimationWrapper animation="slide-in-right">
-              <img 
+              <OptimizedImage 
                 src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
                 alt="Community support group meeting" 
                 className="rounded-xl shadow-lg w-full"
+                loadingClassName="animate-pulse bg-gray-200"
               />
             </ScrollAnimationWrapper>
           </div>
@@ -293,10 +295,11 @@ export default function About() {
                 <ScrollAnimationWrapper key={member.id} delay={index * 100}>
                   <Card className="card-hover text-center">
                     <CardContent className="p-6">
-                      <img 
+                      <OptimizedImage 
                         src={member.imageUrl} 
                         alt={member.name} 
                         className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                        loadingClassName="animate-pulse bg-gray-200"
                       />
                       <h3 className="text-xl font-bold text-gray-800 mb-2">{member.name}</h3>
                       <p className="text-primary font-medium mb-4">{member.position}</p>

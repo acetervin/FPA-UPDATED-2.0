@@ -8,6 +8,7 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { MarkdownContent } from "@/components/MarkdownContent";
 import { Calendar, Tag, ArrowLeft, User } from "lucide-react";
 import type { BlogPost } from "@shared/schema";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -131,10 +132,11 @@ export default function BlogPost() {
           {/* Featured Image */}
           <ScrollAnimationWrapper animation="scale-in">
             <div className="max-w-4xl mx-auto mb-12">
-              <img 
+              <OptimizedImage 
                 src={post.imageUrl} 
                 alt={post.title} 
                 className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
+                loadingClassName="animate-pulse bg-gray-200"
               />
             </div>
           </ScrollAnimationWrapper>
@@ -180,10 +182,11 @@ export default function BlogPost() {
               {filteredRelatedPosts.map((relatedPost, index) => (
                 <ScrollAnimationWrapper key={relatedPost.id} delay={index * 100}>
                   <Card className="card-hover overflow-hidden h-full">
-                    <img 
+                    <OptimizedImage 
                       src={relatedPost.imageUrl} 
                       alt={relatedPost.title} 
                       className="w-full h-48 object-cover"
+                      loadingClassName="animate-pulse bg-gray-200"
                     />
                     <CardContent className="p-6">
                       <div className="flex items-center space-x-2 mb-4">

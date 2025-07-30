@@ -29,9 +29,9 @@ export default function TransactionTable({ transactions }: TransactionTableProps
 
   const filteredTransactions = transactions.filter((transaction) => {
     const matchesSearch =
-      transaction.customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.id.toLowerCase().includes(searchTerm.toLowerCase());
+      transaction.customer?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      transaction.customer?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      transaction.id.toString().toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || transaction.status === statusFilter;
@@ -114,9 +114,11 @@ export default function TransactionTable({ transactions }: TransactionTableProps
                 </TableCell>
                 <TableCell>
                   <div>
-                    <div className="font-medium">{transaction.customer.name}</div>
+                    <div className="font-medium">
+                      {transaction.customer?.name || 'N/A'}
+                    </div>
                     <div className="text-sm text-neutral-500">
-                      {transaction.customer.email}
+                      {transaction.customer?.email || 'No email provided'}
                     </div>
                   </div>
                 </TableCell>

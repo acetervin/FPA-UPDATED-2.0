@@ -24,13 +24,9 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Create session
-    req.session.userId = user.id;
-    req.session.userRole = user.role;
-
     // Generate JWT token
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user.id, role: user.role, username: user.username },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '24h' }
     );
@@ -50,14 +46,9 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Logout endpoint is now a no-op for JWT auth (client should just delete token)
 router.post('/logout', (req, res) => {
-  req.session.destroy((err: Error | null) => {
-    if (err) {
-      console.error('Logout error:', err);
-      return res.status(500).json({ message: 'Failed to logout' });
-    }
-    res.json({ message: 'Logged out successfully' });
-  });
+  res.json({ message: 'Logged out successfully' });
 });
 
 export default router;

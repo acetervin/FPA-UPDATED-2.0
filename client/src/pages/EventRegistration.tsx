@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface IndividualFormData {
   firstName: string;
@@ -36,14 +37,18 @@ interface Event {
 
 type RegistrationType = 'individual' | 'organization';
 
+type PaymentGateway = 'pesapal' | 'paypal' | 'mpesa';
+
 interface RegistrationFormData {
   registrationType: RegistrationType;
   individual?: IndividualFormData;
   organization?: OrganizationFormData;
+  gateway: PaymentGateway;
 }
 
 export default function EventRegistration() {
   const [registrationType, setRegistrationType] = useState<RegistrationType>('individual');
+  const [gateway, setGateway] = useState<PaymentGateway>('pesapal');
   const [event, setEvent] = useState<Event | null>(null);
   const [error, setError] = useState(false);
   const [formData, setFormData] = useState<RegistrationFormData>({
@@ -54,13 +59,14 @@ export default function EventRegistration() {
       surname: '',
       email: '',
       phone: ''
-    }
+    },
+    gateway: 'pesapal'
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev: RegistrationFormData) => ({
       ...prev,
       [name]: value
     }));
@@ -74,15 +80,13 @@ export default function EventRegistration() {
       if (!event) {
         throw new Error('Event details not loaded');
       }
-      
-      const response = await initiatePayment(formData, event);
-      
+      // Always update formData.gateway before sending
+      const response = await initiatePayment({ ...formData, gateway }, event);
       if (response.success) {
         toast({
           title: "Registration Initiated",
           description: "Please complete the payment process",
         });
-        // Redirect to Pesapal payment page
         window.location.href = response.paymentUrl;
       }
     } catch (error) {
@@ -98,9 +102,10 @@ export default function EventRegistration() {
 
   const handleRegistrationTypeChange = (type: RegistrationType) => {
     setRegistrationType(type);
-    setFormData({
+    setFormData(prev => ({
       registrationType: type,
-      ...(type === 'individual' 
+      gateway: prev.gateway, // always preserve gateway
+      ...(type === 'individual'
         ? {
             individual: {
               firstName: '',
@@ -108,7 +113,8 @@ export default function EventRegistration() {
               surname: '',
               email: '',
               phone: ''
-            }
+            },
+            organization: undefined
           }
         : {
             organization: {
@@ -117,15 +123,16 @@ export default function EventRegistration() {
               representativeName: '',
               role: '',
               phone: ''
-            }
+            },
+            individual: undefined
           }
       )
-    });
+    }));
   };
 
   const handleIndividualInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev: RegistrationFormData) => ({
       ...prev,
       individual: {
         ...prev.individual!,
@@ -136,7 +143,7 @@ export default function EventRegistration() {
 
   const handleOrganizationInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev: RegistrationFormData) => ({
       ...prev,
       organization: {
         ...prev.organization!,
@@ -257,10 +264,11 @@ export default function EventRegistration() {
       <div className="relative bg-gray-900 text-white min-h-[60vh] flex items-center overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 overflow-hidden animate-fade-in">
-          <img 
+          <OptimizedImage 
             src={event.imageUrl} 
             alt={event.name}
             className="w-full h-full object-cover animate-scale"
+            loadingClassName="animate-pulse bg-gray-200"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
         </div>
@@ -357,7 +365,7 @@ export default function EventRegistration() {
           )}
           <p className="text-gray-600 mb-4">{event.description}</p>
           {event.imageUrl && (
-            <img src={event.imageUrl} alt={event.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+            <OptimizedImage src={event.imageUrl} alt={event.name} className="w-full h-48 object-cover rounded-lg mb-4" loadingClassName="animate-pulse bg-gray-200" />
           )}
           <div className="space-y-2">
             <p className="text-lg font-medium">Date: {new Date(event.date).toLocaleDateString()}</p>
@@ -371,11 +379,12 @@ export default function EventRegistration() {
 
         {event.active && (
           <div className="mb-6">
-            <div className="flex gap-4 mb-6">
+            <div className="flex gap-4 mb-6 flex-wrap sm:flex-nowrap">
               <Button
                 type="button"
                 variant={registrationType === 'individual' ? 'default' : 'outline'}
                 onClick={() => handleRegistrationTypeChange('individual')}
+                className="w-full sm:w-auto"
               >
                 Individual Registration
               </Button>
@@ -383,19 +392,38 @@ export default function EventRegistration() {
                 type="button"
                 variant={registrationType === 'organization' ? 'default' : 'outline'}
                 onClick={() => handleRegistrationTypeChange('organization')}
+                className="w-full sm:w-auto"
               >
                 Organization Registration
               </Button>
+
             </div>
           </div>
         )}
 
         {event.active && (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Payment Gateway Selector */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Payment Gateway</label>
+              <select
+                className="block w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                value={gateway}
+                onChange={e => {
+                  setGateway(e.target.value as PaymentGateway);
+                  setFormData(prev => ({ ...prev, gateway: e.target.value as PaymentGateway }));
+                }}
+                required
+              >
+                <option value="pesapal">Pesapal</option>
+                <option value="paypal">PayPal</option>
+                <option value="mpesa">M-Pesa</option>
+              </select>
+            </div>
             {registrationType === 'individual' ? (
             // Individual registration form
             <>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Surname</label>
                   <Input
@@ -533,7 +561,7 @@ export default function EventRegistration() {
   );
 }
 
-// This function will handle the payment initiation with Pesapal
+// This function will handle the payment initiation with the selected gateway
 async function initiatePayment(formData: RegistrationFormData, event: Event) {
   const response = await fetch('/api/payments/initiate', {
     method: 'POST',
@@ -544,6 +572,7 @@ async function initiatePayment(formData: RegistrationFormData, event: Event) {
       formData,
       eventId: event.id,
       amount: event.fee,
+      gateway: formData.gateway,
     }),
   });
 

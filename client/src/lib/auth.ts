@@ -1,84 +1,84 @@
-import React, { useEffect } from 'react';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { useLocation } from 'wouter';
+import { createJSONStorage, persist } from 'zustand/middleware';
+
+interface User {
+  id: number;
+  username: string;
+  role: 'admin' | 'volunteer' | 'donor';
+}
 
 interface AuthState {
   token: string | null;
-  user: {
-    id: number;
-    username: string;
-    role: 'admin' | 'volunteer' | 'donor';
-  } | null;
-  setAuth: (token: string, user: AuthState['user']) => void;
+  user: User | null;
+  isLoading: boolean;
+  setAuth: (token: string, user: User) => void;
   clearAuth: () => void;
+  setLoading: (isLoading: boolean) => void;
 }
 
-export const useAuth = create<AuthState>(
+export const useAuth = create<AuthState>()(
   persist(
     (set) => ({
       token: null,
       user: null,
-      setAuth: (token: string, user: AuthState['user']) => set({ token, user }),
+      isLoading: false,
+      setAuth: (token, user) => set({ token, user, isLoading: false }),
       clearAuth: () => set({ token: null, user: null }),
+      setLoading: (isLoading) => set({ isLoading }),
     }),
     {
       name: 'auth-storage',
+      storage: createJSONStorage(() => sessionStorage),
     }
-  ) as any
+  )
 );
 
-export async function login(username: string, password: string) {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, password }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Login failed');
-  }
-
-  const data = await response.json();
-  useAuth.getState().setAuth(data.token, data.user);
-  return data;
-}
-
-export async function logout() {
-  await fetch('/api/auth/logout', {
-    method: 'POST',
-  });
-  useAuth.getState().clearAuth();
-}
-
 export function useAuthenticatedUser() {
-  const user = useAuth((state: AuthState) => state.user);
-  const token = useAuth((state: AuthState) => state.token);
-  return { user, token, isAuthenticated: !!token };
+  const isLoading = useAuth((state) => state.isLoading);
+  const user = useAuth((state) => state.user);
+  const token = useAuth((state) => state.token);
+  
+  return {
+    isAuthenticated: !!token && !!user,
+    isLoading,
+    user
+  };
 }
 
 export function useIsAdmin() {
-  const user = useAuth((state: AuthState) => state.user);
+  const user = useAuth((state) => state.user);
   return user?.role === 'admin';
 }
 
-export function requireAuth<P extends object>(Component: React.ComponentType<P>) {
-  return function AuthenticatedComponent(props: P) {
-    const { isAuthenticated } = useAuthenticatedUser();
-    const [, setLocation] = useLocation();
+export async function login(username: string, password: string) {
+  const auth = useAuth.getState();
+  auth.setLoading(true);
+  
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password })
+    });
 
-    useEffect(() => {
-      if (!isAuthenticated) {
-        setLocation('/admin/login');
-      }
-    }, [isAuthenticated, setLocation]);
-
-    if (!isAuthenticated) {
-      return null;
+    if (!response.ok) {
+      throw new Error('Invalid credentials');
     }
 
-    return React.createElement(Component, props);
-  };
+    const data = await response.json();
+    auth.setAuth(data.token, data.user);
+    return data;
+  } catch (error) {
+    auth.clearAuth();
+    throw error;
+  } finally {
+    auth.setLoading(false);
+  }
+}
+
+export async function logout() {
+  const auth = useAuth.getState();
+  auth.clearAuth();
 }

@@ -1,108 +1,68 @@
-import { Router } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcryptjs';
+import rateLimit from 'express-rate-limit';
+import { sql, desc } from 'drizzle-orm';
+
 import { db } from '../db';
 import { donations, eventRegistrations, users, blogPosts, events, volunteerApplications } from '@shared/schema';
-import { sql } from 'drizzle-orm';
-import { desc } from 'drizzle-orm';
+import type { PaymentGatewayStatus, PaymentGatewayConfig } from '../types/payment';
+import { paymentGatewayStatus } from '../schema/payment_gateway_status';
+import { paymentGatewayConfig } from '../schema/payment_gateway_config';
+import { requireAuth, requireAdmin } from '../middleware/auth';
+import { encrypt, decrypt, sanitizeError, EncryptionError } from '../utils/encryption';
+import { logAuditEvent, logSecurityEvent } from '../utils/logger';
 
-const router = Router();
+
+
+// Rate limiting to prevent brute force attacks
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+const router = express.Router();
+
+// Apply authentication to all admin routes
+router.use(requireAuth);
+router.use(requireAdmin);
+router.use(apiLimiter);
 
 // Get dashboard stats
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const [
-      totalDonations,
-      totalRegistrations,
-      totalUsers,
-      recentDonations
+      donationStats,
+      eventStats,
+      userStats,
+      gatewayStatus,
+      recentTransactions
     ] = await Promise.all([
-      // Get total donations amount
-      db.select({ 
-        total: sql<number>`sum(${donations.amount})` 
-      }).from(donations).then(rows => rows[0]?.total ?? 0),
-      
-      // Get total event registrations
-      db.select({ 
-        count: sql<number>`count(*)` 
-      }).from(eventRegistrations).then(rows => rows[0]?.count ?? 0),
-      
-      // Get total users
-      db.select({ 
-        count: sql<number>`count(*)` 
-      }).from(users).then(rows => rows[0]?.count ?? 0),
-      
-      // Get recent donations
-      db.select().from(donations).orderBy(desc(donations.createdAt)).limit(5)
-    ]);
-
-    const [
-      successfulDonations,
-      pendingDonations,
-      monthlyStats
-    ] = await Promise.all([
-      // Get count of successful donations
-      db.select({ count: sql<number>`count(*)` })
-        .from(donations)
-        .where(sql`${donations.status} = 'completed'`)
-        .then(rows => rows[0]?.count ?? 0),
-      
-      // Get count of pending donations
-      db.select({ count: sql<number>`count(*)` })
-        .from(donations)
-        .where(sql`${donations.status} = 'pending'`)
-        .then(rows => rows[0]?.count ?? 0),
-
-      // Get monthly stats
       db.select({
-        total: sql<number>`count(*)`,
-        completed: sql<number>`count(case when ${donations.status} = 'completed' then 1 end)`,
-        failed: sql<number>`count(case when ${donations.status} = 'failed' then 1 end)`
-      })
-      .from(donations)
-      .where(sql`${donations.createdAt} >= date_trunc('month', current_date)`)
-      .then(rows => rows[0])
+        total: sql`sum(amount)`,
+        count: sql`count(*)`
+      }).from(donations),
+      db.select({
+        total: sql`count(*)`
+      }).from(events),
+      db.select({
+        total: sql`count(*)`
+      }).from(users),
+      db.select().from(paymentGatewayStatus),
+      db.select()
+        .from(donations)
+        .orderBy(desc(donations.createdAt))
+        .limit(10)
     ]);
-
-    // Calculate success rate
-    const successRate = successfulDonations > 0 
-      ? ((successfulDonations / (successfulDonations + pendingDonations)) * 100).toFixed(1) + '%'
-      : '0%';
-
-    // Get payment methods distribution
-    const paymentMethods = await db
-      .select({
-        method: sql<string>`${donations.paymentMethod}`,
-        count: sql<number>`count(*)`
-      })
-      .from(donations)
-      .groupBy(donations.paymentMethod)
-      .then(rows => rows.reduce((acc, row) => ({
-        ...acc,
-        [row.method]: row.count
-      }), {}));
 
     res.json({
-      totalDonations: totalDonations,
-      donationCount: successfulDonations + pendingDonations,
-      pendingPayments: pendingDonations,
-      successRate,
-      recentTransactions: recentDonations.map(d => ({
-        id: d.id,
-        type: 'donation',
-        amount: d.amount,
-        paymentMethod: d.paymentMethod,
-        status: d.status,
-        customer: {
-          name: d.userId ? 'Anonymous' : 'User ' + d.userId,  // TODO: Join with users table to get actual name
-          email: d.userId ? 'anonymous@example.com' : 'user@example.com'  // TODO: Join with users table to get actual email
-        },
-        createdAt: d.createdAt.toISOString()
-      })),
-      paymentMethods,
-      monthlyStats: {
-        totalTransactions: monthlyStats?.total ?? 0,
-        completedTransactions: monthlyStats?.completed ?? 0,
-        failedTransactions: monthlyStats?.failed ?? 0
-      }
+      stats: {
+        totalDonations: donationStats[0].total || 0,
+        donationCount: donationStats[0].count || 0,
+        totalEvents: eventStats[0].total || 0,
+        totalUsers: userStats[0].total || 0
+      },
+      gatewayStatus,
+      recentTransactions
     });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
@@ -110,24 +70,139 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-// Get recent transactions
-router.get('/transactions', async (req, res) => {
+// Get payment gateway statuses
+router.get('/payment-gateway-status', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const recentTransactions = await db
-      .select()
-      .from(donations)
-      .orderBy(desc(donations.createdAt))
-      .limit(10);
+    const statuses = await db.select().from(paymentGatewayStatus);
+    res.json(statuses);
+  } catch (err) {
+    console.error('Error fetching gateway statuses:', err);
+    res.status(500).json({ error: 'Failed to fetch gateway statuses' });
+  }
+});
 
-    res.json(recentTransactions);
-  } catch (error) {
-    console.error('Error fetching transactions:', error);
-    res.status(500).json({ error: 'Failed to fetch transactions' });
+// Update payment gateway status
+router.post('/payment-gateway-status', async (req: Request, res: Response, next: NextFunction) => {
+  const { gateway, status } = req.body as PaymentGatewayStatus;
+  if (!gateway || !['live', 'maintenance'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid gateway or status' });
+  }
+  try {
+    await db
+      .update(paymentGatewayStatus)
+      .set({ status, updatedAt: new Date() })
+      .where(sql`${paymentGatewayStatus.gateway} = ${gateway}`);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error updating gateway status:', err);
+    res.status(500).json({ error: 'Failed to update gateway status' });
+  }
+});
+
+// Get payment gateway configurations
+router.get('/payment-gateway-config', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const configs = await db.select().from(paymentGatewayConfig);
+    res.json(configs);
+  } catch (err) {
+    console.error('Error fetching gateway configs:', err);
+    res.status(500).json({ error: 'Failed to fetch gateway configurations' });
+  }
+});
+
+// Update payment gateway configuration
+router.post('/payment-gateway-config', async (req: Request, res: Response, next: NextFunction) => {
+  const body = req.body as { gateway?: string, config?: any };
+  const { gateway, config } = body;
+  if (!gateway || !config) {
+    return res.status(400).json({ error: 'Invalid gateway or configuration' });
+  }
+  try {
+    await db
+      .insert(paymentGatewayConfig)
+      .values({ gateway, config: JSON.stringify(config) })
+      .onConflictDoUpdate({
+        target: paymentGatewayConfig.gateway,
+        set: { config: JSON.stringify(config), updatedAt: new Date() }
+      });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error updating gateway config:', err);
+    res.status(500).json({ error: 'Failed to update gateway configuration' });
+  }
+});
+
+// Get PayPal payments for admin
+interface PaymentQuery {
+  startDate?: string;
+  endDate?: string;
+}
+
+router.get('/payments/paypal', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { startDate, endDate } = req.query as { startDate?: string, endDate?: string };
+    let whereClause = sql`${donations.paymentMethod} = 'paypal'`;
+    if (startDate && endDate) {
+      whereClause = sql`${donations.paymentMethod} = 'paypal' AND ${donations.createdAt} >= ${new Date(startDate)} AND ${donations.createdAt} <= ${new Date(endDate)}`;
+    } else if (startDate) {
+      whereClause = sql`${donations.paymentMethod} = 'paypal' AND ${donations.createdAt} >= ${new Date(startDate)}`;
+    } else if (endDate) {
+      whereClause = sql`${donations.paymentMethod} = 'paypal' AND ${donations.createdAt} <= ${new Date(endDate)}`;
+    }
+    const paypalPayments = await db
+      .select({
+        id: donations.id,
+        orderId: donations.transactionId,
+        amount: donations.amount,
+        status: donations.status,
+        createdAt: donations.createdAt,
+        payer: sql`CASE WHEN ${donations.anonymous} = true THEN 'Anonymous' ELSE COALESCE(${users.fullName}, 'Unknown') END`,
+      })
+      .from(donations)
+      .leftJoin(users, sql`${donations.userId} = ${users.id}`)
+      .where(whereClause)
+      .orderBy(desc(donations.createdAt));
+    res.json(paypalPayments);
+  } catch (err) {
+    console.error('Error fetching PayPal payments:', err);
+    res.status(500).json({ error: 'Failed to fetch PayPal payments' });
+  }
+});
+
+// Get M-Pesa payments for admin
+router.get('/payments/mpesa', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { startDate, endDate } = req.query as { startDate?: string, endDate?: string };
+    let whereClause = sql`${donations.paymentMethod} = 'mpesa'`;
+    if (startDate && endDate) {
+      whereClause = sql`${donations.paymentMethod} = 'mpesa' AND ${donations.createdAt} >= ${new Date(startDate)} AND ${donations.createdAt} <= ${new Date(endDate)}`;
+    } else if (startDate) {
+      whereClause = sql`${donations.paymentMethod} = 'mpesa' AND ${donations.createdAt} >= ${new Date(startDate)}`;
+    } else if (endDate) {
+      whereClause = sql`${donations.paymentMethod} = 'mpesa' AND ${donations.createdAt} <= ${new Date(endDate)}`;
+    }
+    const mpesaPayments = await db
+      .select({
+        id: donations.id,
+        transactionId: donations.transactionId,
+        amount: donations.amount,
+        status: donations.status,
+        createdAt: donations.createdAt,
+        payer: sql`CASE WHEN ${donations.anonymous} = true THEN 'Anonymous' ELSE COALESCE(${users.fullName}, 'Unknown') END`,
+      })
+      .from(donations)
+      .leftJoin(users, sql`${donations.userId} = ${users.id}`)
+      .where(whereClause)
+      .orderBy(desc(donations.createdAt));
+    res.json(mpesaPayments);
+  } catch (err) {
+    console.error('Error fetching M-Pesa payments:', err);
+    res.status(500).json({ error: 'Failed to fetch M-Pesa payments' });
   }
 });
 
 // User management routes
-router.get('/users', async (req, res) => {
+router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const usersList = await db.select().from(users);
     res.json(usersList);
@@ -137,14 +212,27 @@ router.get('/users', async (req, res) => {
   }
 });
 
-router.post('/users', async (req, res) => {
+router.post('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const body = req.body as { username?: string, password?: string, email?: string, role?: 'admin' | 'volunteer' | 'donor', fullName?: string };
+    const { username, password, email, role, fullName } = body;
+    if (!username || !password || !email || !fullName) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    // Check for existing user
+    const existing = await db.select().from(users).where(sql`${users.username} = ${username}`);
+    if (existing.length > 0) {
+      return res.status(409).json({ error: 'Username already exists' });
+    }
+    const allowedRoles = ['admin', 'volunteer', 'donor'] as const;
+    const safeRole = allowedRoles.includes(role as any) ? role : 'donor';
+    const hashedPassword = await bcrypt.hash(password, 10);
     const [newUser] = await db.insert(users).values({
-      username: req.body.username,
-      password: req.body.password, // Note: Should be hashed before insertion
-      email: req.body.email,
-      role: req.body.role || 'donor',
-      fullName: req.body.fullName,
+      username,
+      password: hashedPassword,
+      email,
+      role: safeRole,
+      fullName,
       active: true
     }).returning();
     res.status(201).json(newUser);
@@ -155,7 +243,7 @@ router.post('/users', async (req, res) => {
 });
 
 // All donations route
-router.get('/donations', async (req, res) => {
+router.get('/donations', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const donationsList = await db
       .select({
@@ -167,7 +255,6 @@ router.get('/donations', async (req, res) => {
         message: donations.message,
         anonymous: donations.anonymous,
         userId: donations.userId,
-        // Join with users table to get donor information
         donorName: sql<string>`CASE 
           WHEN ${donations.anonymous} = true THEN 'Anonymous'
           WHEN ${users.fullName} IS NOT NULL THEN ${users.fullName}
@@ -182,7 +269,6 @@ router.get('/donations', async (req, res) => {
       .from(donations)
       .leftJoin(users, sql`${donations.userId} = ${users.id}`)
       .orderBy(desc(donations.createdAt));
-    
     res.json(donationsList);
   } catch (err) {
     console.error('Error fetching donations:', err);
@@ -191,7 +277,7 @@ router.get('/donations', async (req, res) => {
 });
 
 // Get all blog posts
-router.get('/blog-posts', async (req, res) => {
+router.get('/blog-posts', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const posts = await db
       .select({
@@ -206,7 +292,6 @@ router.get('/blog-posts', async (req, res) => {
       })
       .from(blogPosts)
       .orderBy(desc(blogPosts.publishedAt));
-
     res.json(posts);
   } catch (err) {
     console.error('Error fetching blog posts:', err);
@@ -215,7 +300,7 @@ router.get('/blog-posts', async (req, res) => {
 });
 
 // Get all events
-router.get('/events', async (req, res) => {
+router.get('/events', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const eventsList = await db
       .select({
@@ -233,7 +318,6 @@ router.get('/events', async (req, res) => {
       })
       .from(events)
       .orderBy(desc(events.date));
-
     // Get registration counts for each event
     const registrationCounts = await db
       .select({
@@ -242,12 +326,10 @@ router.get('/events', async (req, res) => {
       })
       .from(eventRegistrations)
       .groupBy(eventRegistrations.eventId);
-
     const eventsWithRegistrations = eventsList.map(event => ({
       ...event,
       registrations: registrationCounts.find(r => r.eventId === event.id)?.count ?? 0
     }));
-
     res.json(eventsWithRegistrations);
   } catch (err) {
     console.error('Error fetching events:', err);
@@ -256,7 +338,7 @@ router.get('/events', async (req, res) => {
 });
 
 // Get all volunteer applications
-router.get('/volunteer-applications', async (req, res) => {
+router.get('/volunteer-applications', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const applications = await db
       .select({
@@ -268,17 +350,41 @@ router.get('/volunteer-applications', async (req, res) => {
         experience: volunteerApplications.experience,
         availability: volunteerApplications.availability,
         message: volunteerApplications.message,
-
         submittedAt: volunteerApplications.submittedAt
       })
       .from(volunteerApplications)
       .orderBy(desc(volunteerApplications.submittedAt));
-
     res.json(applications);
   } catch (err) {
     console.error('Error fetching volunteer applications:', err);
     res.status(500).json({ error: 'Failed to fetch volunteer applications' });
   }
 });
+
+
+// Get all event registrations (optionally filtered by eventId)
+router.get('/event-registrations', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { eventId } = req.query as { eventId?: string };
+    let registrations;
+    if (eventId) {
+      registrations = await db
+        .select()
+        .from(eventRegistrations)
+        .where(sql`${eventRegistrations.eventId} = ${Number(eventId)}`)
+        .orderBy(desc(eventRegistrations.createdAt));
+    } else {
+      registrations = await db
+        .select()
+        .from(eventRegistrations)
+        .orderBy(desc(eventRegistrations.createdAt));
+    }
+    res.json(registrations);
+  } catch (err) {
+    console.error('Error fetching event registrations:', err);
+    res.status(500).json({ error: 'Failed to fetch event registrations' });
+  }
+});
+
 
 export default router;

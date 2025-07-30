@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
 import { Link, useLocation } from "wouter";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -165,10 +166,11 @@ export default function Blog() {
                 <ScrollAnimationWrapper key={post.id} delay={index * 100}>
                   <Link href={`/blog/${post.slug}`}>
                     <Card className="card-hover overflow-hidden h-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105">
-                      <img 
+                      <OptimizedImage 
                         src={post.imageUrl} 
                         alt={post.title} 
                         className="w-full h-48 object-cover"
+                        loadingClassName="animate-pulse bg-gray-200"
                       />
                       <CardContent className="p-6 flex flex-col h-full">
                         <div className="flex items-center space-x-2 mb-4">

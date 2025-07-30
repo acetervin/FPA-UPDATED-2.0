@@ -2,6 +2,13 @@ import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import PayPalDonateButton from "@/components/PayPalDonateButton";
+import MPesaPayment from "@/components/MPesaPayment";
+import ExchangeRate from "@/components/ExchangeRate";
+import { useState, useEffect } from "react";
+import { toast } from "@/components/ui/use-toast";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { 
   Heart, 
   Users, 
@@ -10,12 +17,102 @@ import {
   Star,
   CreditCard,
   Building,
-  Smartphone
+  Smartphone,
+  X
 } from "lucide-react";
+  // Removed unused imports
 
 export default function Donate() {
+  const [selectedAmount, setSelectedAmount] = useState<string>("");
+  const [customAmount, setCustomAmount] = useState<string>("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"paypal" | "mpesa" | null>(null);
+  const [kesAmount, setKesAmount] = useState<number | null>(null);
+  const [isConverting, setIsConverting] = useState(false);
+
+  // Recurring donations removed
+
+  const handleDonateClick = (amount: string) => {
+    setSelectedAmount(amount);
+    setShowPaymentModal(true);
+  };
+
+  const handleCustomDonate = () => {
+    if (!customAmount || parseFloat(customAmount) <= 0) {
+      toast({
+        title: "Invalid amount",
+        description: "Please enter a valid donation amount",
+        variant: "destructive",
+      });
+      return;
+    }
+    setSelectedAmount(customAmount);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    toast({
+      title: "Thank you for your donation!",
+      description: "Your support helps us make a difference in families' lives.",
+    });
+    setShowPaymentModal(false);
+    setPaymentMethod(null);
+    setSelectedAmount("");
+    setCustomAmount("");
+  };
+
+  const handlePayPalError = (error: any) => {
+    toast({
+      title: "Payment failed",
+      description: "There was an error processing your donation. Please try again.",
+      variant: "destructive",
+    });
+  };
+
+  // Recurring subscription functions removed
+
+  useEffect(() => {
+    if (paymentMethod === 'mpesa' && selectedAmount) {
+      const convertCurrency = async () => {
+        setIsConverting(true);
+        setKesAmount(null);
+        try {
+          const response = await fetch('/api/currency/convert', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: parseFloat(selectedAmount),
+              from: 'USD',
+              to: 'KES',
+            }),
+          });
+          if (!response.ok) throw new Error('Currency conversion failed');
+          const data = await response.json();
+          setKesAmount(data.amount);
+        } catch (error) {
+          console.error(error);
+          toast({
+            title: "Conversion Error",
+            description: "Could not fetch the KES exchange rate. Please try again.",
+            variant: "destructive",
+          });
+          setPaymentMethod(null);
+        } finally {
+          setIsConverting(false);
+        }
+      };
+      convertCurrency();
+    }
+  }, [paymentMethod, selectedAmount]);
+
+  const paypalOptions = {
+    clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID || "",
+    currency: "USD",
+    intent: "capture",
+  };
+
   return (
-    <>
+    <PayPalScriptProvider options={paypalOptions} key={paypalOptions.intent}>
       <Helmet>
         <title>Donate - Family Peace Association</title>
         <meta name="description" content="Support the Family Peace Association's mission to build stronger families through your generous donation. Every contribution makes a difference." />
@@ -74,7 +171,10 @@ export default function Donate() {
                       Provides one hour of professional family counseling to help resolve conflicts and strengthen relationships.
                     </p>
                   </div>
-                  <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white">
+                  <Button 
+                    className="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                    onClick={() => handleDonateClick("50")}
+                  >
                     Donate $50
                   </Button>
                 </CardContent>
@@ -99,7 +199,10 @@ export default function Donate() {
                       Covers three counseling sessions plus access to our family resource library and workshops.
                     </p>
                   </div>
-                  <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white">
+                  <Button 
+                    className="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                    onClick={() => handleDonateClick("150")}
+                  >
                     Donate $150
                   </Button>
                 </CardContent>
@@ -119,7 +222,10 @@ export default function Donate() {
                       Full access to all our programs including counseling, workshops, and ongoing family support services.
                     </p>
                   </div>
-                  <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white">
+                  <Button 
+                    className="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                    onClick={() => handleDonateClick("300")}
+                  >
                     Donate $300
                   </Button>
                 </CardContent>
@@ -143,14 +249,23 @@ export default function Donate() {
                     className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-yellow-500 focus:border-yellow-500 block flex-1 min-w-0 w-full text-sm p-2.5"
                     placeholder="Enter amount"
                     min="1"
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
                   />
                 </div>
-                <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white">
+                <Button 
+                  className="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                  onClick={handleCustomDonate}
+                >
                   Donate Custom Amount
                 </Button>
               </CardContent>
             </Card>
           </ScrollAnimationWrapper>
+
+          <div className="my-8 flex justify-center">
+            <ExchangeRate />
+          </div>
         </div>
       </section>
 
@@ -203,10 +318,11 @@ export default function Donate() {
 
             <ScrollAnimationWrapper animation="slide-in-right">
               <div className="relative">
-                <img 
+                <OptimizedImage 
                   src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=700" 
                   alt="Happy family after counseling session"
                   className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
+                  loadingClassName="animate-pulse bg-gray-200"
                 />
                 <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg">
                   <div className="flex items-center space-x-4">
@@ -313,6 +429,95 @@ export default function Donate() {
           </ScrollAnimationWrapper>
         </div>
       </section>
-    </>
+
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg max-w-md w-full">
+            <div className="text-center mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-bold text-gray-900">Complete Your Donation</h3>
+                <button
+                  onClick={() => {
+                    setShowPaymentModal(false);
+                    setPaymentMethod(null);
+                  }}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              <p className="text-gray-600">Amount: ${selectedAmount} USD</p>
+              {paymentMethod === 'mpesa' && (
+                <div className="text-gray-600 mt-2">
+                  {isConverting ? (
+                    <span>Converting to KES...</span>
+                  ) : kesAmount ? (
+                    <strong>Approx. {kesAmount.toFixed(2)} KES</strong>
+                  ) : (
+                    <span className="text-red-500">Could not get KES amount.</span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {!paymentMethod ? (
+              <div className="space-y-4">
+                <Button
+                  onClick={() => setPaymentMethod('paypal')}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                >
+                  Pay with PayPal
+                </Button>
+                <Button
+                  onClick={() => setPaymentMethod('mpesa')}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  Pay with M-Pesa
+                </Button>
+              </div>
+            ) : paymentMethod === 'paypal' ? (
+              <div>
+                <PayPalDonateButton
+                  amount={selectedAmount}
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePayPalError}
+                />
+                <button
+                  onClick={() => setPaymentMethod(null)}
+                  className="mt-4 w-full text-gray-600 hover:text-gray-900"
+                >
+                  Back to Payment Methods
+                </button>
+              </div>
+            ) : (
+              <div>
+                {isConverting ? (
+                  <div className="flex justify-center items-center h-24">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                ) : kesAmount ? (
+                  <MPesaPayment
+                    amount={kesAmount.toFixed(2)}
+                    onSuccess={handlePaymentSuccess}
+                    onError={handlePayPalError}
+                  />
+                ) : (
+                  <p className="text-center text-red-500">
+                    There was an error converting the currency. Please try again.
+                  </p>
+                )}
+                <button
+                  onClick={() => setPaymentMethod(null)}
+                  className="mt-4 w-full text-gray-600 hover:text-gray-900"
+                >
+                  Back to Payment Methods
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </PayPalScriptProvider>
   );
 }

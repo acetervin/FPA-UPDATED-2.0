@@ -5,6 +5,9 @@ import { Pool } from 'pg';
 import 'dotenv/config';
 import * as schema from '../shared/schema';
 import { blogPosts, teamMembers, causes, galleryImages } from '../shared/schema';
+import { seedDonations } from './seed-donations';
+import { seedRegistrations } from './seed-registrations';
+import { seedPaymentGateways } from './seed-payment-gateways';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -357,6 +360,10 @@ async function main() {
       await db.insert(galleryImages).values(image);
     }
   }
+
+  await seedDonations();
+  await seedRegistrations();
+  await seedPaymentGateways();
 
 
   console.log('Database seeded successfully.');

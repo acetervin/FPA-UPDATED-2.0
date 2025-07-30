@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface GalleryImage {
   imageUrl: string;
@@ -117,10 +118,11 @@ const Gallery: React.FC = () => {
                   {imgs.map((img, index) => (
                     <ScrollAnimationWrapper key={img.imageUrl + index} delay={index * 100}>
                       <div className="overflow-hidden rounded-lg shadow-lg aspect-w-4 aspect-h-3">
-                        <img 
+                        <OptimizedImage 
                           src={img.imageUrl} 
                           alt={img.title || `Gallery image ${index + 1}`} 
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          loadingClassName="animate-pulse bg-gray-200" 
                         />
                       </div>
                       {img.title && <div className="mt-2 text-center font-medium">{img.title}</div>}

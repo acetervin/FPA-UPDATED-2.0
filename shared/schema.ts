@@ -14,7 +14,10 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lastLogin: timestamp("last_login"),
   active: boolean("active").notNull().default(true),
+  twoFactorSecret: text("two_factor_secret"),
+  twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
 });
+
 
 export const media = pgTable("media", {
   id: serial("id").primaryKey(),
@@ -24,6 +27,34 @@ export const media = pgTable("media", {
   type: text("type").notNull(),
   size: integer("size").notNull(),
   uploadedAt: timestamp("uploaded_at").notNull().defaultNow(),
+});
+
+export const recurringDonations = pgTable("recurring_donations", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  amount: integer("amount").notNull(),
+  causeId: integer("cause_id").references(() => causes.id),
+  frequency: text("frequency", { enum: ['monthly', 'quarterly', 'yearly'] }).notNull(),
+  nextDonationDate: timestamp("next_donation_date").notNull(),
+  status: text("status", { enum: ['active', 'paused', 'cancelled'] }).notNull().default('active'),
+  paymentMethod: text("payment_method").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  lastDonationDate: timestamp("last_donation_date"),
+  failedAttempts: integer("failed_attempts").notNull().default(0),
+});
+
+export const paymentGatewayStatus = pgTable('payment_gateway_status', {
+  id: serial('id').primaryKey(),
+  gateway: text('gateway').notNull().unique(),
+  status: text('status', { enum: ['live', 'maintenance'] }).notNull().default('live'),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const paymentGatewayConfig = pgTable('payment_gateway_config', {
+  gateway: text('gateway').primaryKey(),
+  config: text('config').notNull(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const donations = pgTable("donations", {
@@ -37,6 +68,7 @@ export const donations = pgTable("donations", {
   anonymous: boolean("anonymous").notNull().default(false),
   message: text("message"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  recurringDonationId: integer("recurring_donation_id").references(() => recurringDonations.id),
 });
 
 export const blogPosts = pgTable("blog_posts", {
@@ -109,9 +141,11 @@ export const eventRegistrations = pgTable("event_registrations", {
   phone: text("phone").notNull(),
   paymentStatus: text("payment_status").notNull().default('pending'), // 'pending', 'completed', 'failed'
   paymentReference: text("payment_reference"),
+  gateway: text("gateway"),
   amount: integer("amount").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
 
 export const volunteerApplications = pgTable("volunteer_applications", {
   id: serial("id").primaryKey(),
@@ -187,6 +221,15 @@ export const insertGalleryImageSchema = createInsertSchema(galleryImages).omit({
   uploadedAt: true,
 });
 
+export const insertPaymentGatewayStatusSchema = createInsertSchema(paymentGatewayStatus).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export const insertPaymentGatewayConfigSchema = createInsertSchema(paymentGatewayConfig).omit({
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -211,3 +254,9 @@ export type InsertNewsletterSubscription = z.infer<typeof insertNewsletterSubscr
 
 export type GalleryImage = typeof galleryImages.$inferSelect;
 export type InsertGalleryImage = z.infer<typeof insertGalleryImageSchema>;
+
+export type PaymentGatewayStatus = typeof paymentGatewayStatus.$inferSelect;
+export type InsertPaymentGatewayStatus = z.infer<typeof insertPaymentGatewayStatusSchema>;
+
+export type PaymentGatewayConfig = typeof paymentGatewayConfig.$inferSelect;
+export type InsertPaymentGatewayConfig = z.infer<typeof insertPaymentGatewayConfigSchema>;

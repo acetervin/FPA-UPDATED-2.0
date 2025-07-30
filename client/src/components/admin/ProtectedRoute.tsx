@@ -9,10 +9,12 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const [, setLocation] = useLocation();
-  const { isAuthenticated } = useAuthenticatedUser();
+  const { isAuthenticated, isLoading } = useAuthenticatedUser();
   const isAdmin = useIsAdmin();
 
   useEffect(() => {
+    if (isLoading) return;
+
     if (!isAuthenticated) {
       setLocation('/admin/login');
       return;
@@ -22,9 +24,9 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
       setLocation('/admin/unauthorized');
       return;
     }
-  }, [isAuthenticated, isAdmin, requireAdmin, setLocation]);
+  }, [isAuthenticated, isAdmin, requireAdmin, setLocation, isLoading]);
 
-  if (!isAuthenticated || (requireAdmin && !isAdmin)) {
+  if (isLoading || !isAuthenticated || (requireAdmin && !isAdmin)) {
     return null;
   }
 

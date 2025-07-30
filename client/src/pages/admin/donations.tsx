@@ -34,8 +34,8 @@ export default function AdminDonations() {
   });
 
     const filteredDonations = donations?.filter(donation => {
-    const matchesSearch = donation.transactionId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (donation.message || '').toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = (donation.transactionId?.toString() || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (donation.message?.toString() || '').toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || donation.status === statusFilter;
     

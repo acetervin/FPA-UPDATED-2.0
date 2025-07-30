@@ -202,3 +202,11 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary) / 0.8);
 }
+/* Add this to the bottom of the file or in your global CSS if not already present */
+
+@media (max-width: 480px) {
+  .sm\\:flex-nowrap {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+}

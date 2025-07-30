@@ -2,7 +2,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import type { DashboardStats } from "@/types";
 
 interface StatsCardsProps {
-  stats: DashboardStats;
+  stats: {
+    totalDonations: number;
+    donationCount: number;
+    totalEvents: number;
+    totalUsers: number;
+  };
 }
 
 interface StatCard {
@@ -19,39 +24,47 @@ export default function StatsCards({ stats }: StatsCardsProps) {
   const cards: StatCard[] = [
     {
       title: "Total Donations",
-      value: `KES ${stats.totalDonations.toLocaleString()}`,
-      change: `${stats.donationCount} donations this month`,
+      value: stats.totalDonations.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'KES'
+      }),
+      change: `${stats.donationCount} donations received`,
       changeType: "positive",
       icon: "fas fa-heart",
-      iconBg: "bg-primary/10",
-      iconColor: "text-primary",
-    },
-    {
-      title: "Success Rate",
-      value: `${stats.successRate}%`,
-      change: "Payment Success Rate",
-      changeType: "neutral",
-      icon: "fas fa-check-circle",
       iconBg: "bg-success/10",
-      iconColor: "text-success",
+      iconColor: "text-success"
     },
     {
-      title: "Pending Payments",
-      value: stats.pendingPayments.toString(),
-      change: "Awaiting Confirmation",
-      changeType: "warning",
-      icon: "fas fa-clock",
-      iconBg: "bg-warning/10",
-      iconColor: "text-warning",
+      title: "Total Users",
+      value: stats.totalUsers.toString(),
+      change: "Active members",
+      changeType: "neutral",
+      icon: "fas fa-users",
+      iconBg: "bg-primary/10",
+      iconColor: "text-primary"
     },
     {
-      title: "Monthly Transactions",
-      value: stats.monthlyStats.totalTransactions.toString(),
-      change: `${((stats.monthlyStats.completedTransactions / stats.monthlyStats.totalTransactions) * 100).toFixed(1)}% completion rate`,
-      changeType: stats.monthlyStats.failedTransactions === 0 ? "positive" : "neutral",
-      icon: "fas fa-chart-line",
+      title: "Total Events",
+      value: stats.totalEvents.toString(),
+      change: "Events organized",
+      changeType: "neutral",
+      icon: "fas fa-calendar",
       iconBg: "bg-info/10",
-      iconColor: "text-info",
+      iconColor: "text-info"
+    },
+    {
+      title: "Average Donation",
+      value: stats.donationCount > 0 
+        ? (stats.totalDonations / stats.donationCount).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'KES'
+          })
+        : "KES 0",
+      change: "Per donation",
+      changeType: "neutral",
+      icon: "fas fa-chart-bar",
+      iconBg: "bg-warning/10",
+      iconColor: "text-warning"
     },
   ];
 

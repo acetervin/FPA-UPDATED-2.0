@@ -32,12 +32,15 @@ export default function AdminEvents() {
   });
 
   const filteredEvents = events?.filter(event => {
-    const matchesSearch = 
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!event) return false;
     
-    const matchesStatus = statusFilter === 'all' || event.status === statusFilter;
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = 
+      (event.name?.toLowerCase() || '').includes(searchLower) ||
+      (event.description?.toLowerCase() || '').includes(searchLower) ||
+      (event.location?.toLowerCase() || '').includes(searchLower);
+    
+    const matchesStatus = statusFilter === 'all' || event.active === (statusFilter === 'active');
     
     return matchesSearch && matchesStatus;
   });
@@ -100,10 +103,8 @@ export default function AdminEvents() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="upcoming">Upcoming</SelectItem>
-                      <SelectItem value="ongoing">Ongoing</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -124,12 +125,9 @@ export default function AdminEvents() {
                       />
                       <div className="absolute top-2 right-2">
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          event.status === 'upcoming' ? 'bg-primary/10 text-primary' :
-                          event.status === 'ongoing' ? 'bg-success/10 text-success' :
-                          event.status === 'completed' ? 'bg-neutral-100 text-neutral-600' :
-                          'bg-error/10 text-error'
+                          event.active ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-600'
                         }`}>
-                          {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                          {event.active ? 'Active' : 'Inactive'}
                         </span>
                       </div>
                     </div>

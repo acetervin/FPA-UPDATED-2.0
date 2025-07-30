@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import Counter from "@/components/Counter";
 import LogoSlider from "@/components/LogoSlider";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { 
   Heart, 
   Users, 
@@ -52,10 +53,10 @@ export default function Home() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/about">
+                  <Link href="/blog?category=events">
                     <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-md font-medium">
-                      Learn More
-                    </Button>
+                      Featured Events
+                    </Button> 
                   </Link>
                   <a href="mailto:kenya@familypeaceassociation.org">
                     <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3">
@@ -69,10 +70,11 @@ export default function Home() {
             {/* Right Image */}
             <ScrollAnimationWrapper animation="slide-in-right">
               <div className="relative">
-                <img 
+                <OptimizedImage 
                   src="https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg" 
                   alt="Community volunteers working together"
                   className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
+                  loadingClassName="animate-pulse bg-gray-200"
                 />
                 <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg">
                   <div className="flex items-center space-x-4">
@@ -341,10 +343,11 @@ export default function Home() {
                   <Link href={`/blog/${post.slug}`}>
                     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-none cursor-pointer hover:scale-105">
                       <div className="aspect-video bg-gray-200">
-                        <img 
+                        <OptimizedImage 
                           src={post.imageUrl} 
                           alt={post.title}
                           className="w-full h-full object-cover"
+                          loadingClassName="animate-pulse bg-gray-200"
                         />
                       </div>
                       <CardContent className="p-6">

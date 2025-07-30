@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import FpaLogo from "@/assets/Fpa-logo.jpg";
+import { OptimizedImage } from "./ui/optimized-image";
 
 export default function Header() {
   const [location] = useLocation();
@@ -18,20 +19,19 @@ export default function Header() {
   };
 
   const NavLink = ({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) => (
-    <Link href={href}>
-      <a className={`font-medium transition-colors hover:text-yellow-600 ${isActive(href) ? 'text-yellow-600 font-semibold' : 'text-gray-700'} ${className}`}>
-        {children}
-      </a>
+    <Link href={href} className={`font-medium transition-colors hover:text-yellow-600 ${isActive(href) ? 'text-yellow-600 font-semibold' : 'text-gray-700'} ${className}`}>
+      {children}
     </Link>
   );
 
   const Logo = () => (
     <Link href="/">
       <div className="flex items-center">
-        <img 
+        <OptimizedImage 
           src={FpaLogo} 
           alt="Family Peace Association Kenya Logo"
           className="h-14 w-auto"
+          loadingClassName="animate-pulse bg-gray-200"
         />
       </div>
     </Link>

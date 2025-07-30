@@ -1,28 +1,31 @@
 export interface DashboardStats {
-  totalDonations: number;
-  donationCount: number;
-  pendingPayments: number;
-  successRate: string;
-  recentTransactions: Transaction[];
-  paymentMethods: Record<string, number>;
-  monthlyStats: {
-    totalTransactions: number;
-    completedTransactions: number;
-    failedTransactions: number;
+  stats: {
+    totalDonations: number;
+    donationCount: number;
+    totalEvents: number;
+    totalUsers: number;
   };
+  gatewayStatus: Array<{
+    gateway: string;
+    status: 'live' | 'maintenance';
+    updatedAt: string;
+  }>;
+  recentTransactions: Transaction[];
 }
 
 export interface Transaction {
-  id: string;
+  id: string | number;
   type: 'donation' | 'registration';
   amount: number;
   paymentMethod: string;
-  status: 'pending' | 'completed' | 'failed';
+  status: 'pending' | 'completed' | 'failed' | string;
   customer: {
     name: string;
     email: string;
   };
   createdAt: string;
+  message?: string;
+  userId?: number;
 }
 
 export interface PaymentInitiationResponse {

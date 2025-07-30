@@ -1,9 +1,50 @@
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import { z } from 'zod';
 import { doubleCsrf } from 'csrf-csrf';
+import crypto from 'crypto';
+
+// Declare session properties
+declare module 'express-session' {
+  interface SessionData {
+    userId: string;
+    userRole: string;
+    id: string;
+    lastActive: Date;
+    ipAddress: string;
+  }
+}
+
+// Encryption configuration
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || crypto.randomBytes(32);
+const IV_LENGTH = 16;
+
+// Encryption utility for sensitive data
+export function encrypt(text: string): string {
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return `${iv.toString('hex')}:${encrypted}`;
+}
+
+export function decrypt(text: string): string {
+  try {
+    const [ivHex, encryptedHex] = text.split(':');
+    if (!ivHex || !encryptedHex) {
+      throw new Error('Invalid encrypted text format');
+    }
+    const iv = Buffer.from(ivHex, 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+    let decrypted = decipher.update(encryptedHex, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  } catch (error) {
+    throw new Error('Failed to decrypt data');
+  }
+}
 
 // CSRF Protection
 const csrfUtils = doubleCsrf({
@@ -42,12 +83,98 @@ export const rateLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later',
 });
 
+// Stricter auth route limiter
+export const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 attempts per window per IP
+  message: 'Too many login attempts, please try again later',
+  handler: (req: Request, res: Response) => {
+    console.error(`Auth rate limit exceeded for IP ${req.ip}`);
+    res.status(429).json({
+      message: 'Too many login attempts, please try again later',
+    });
+  },
+});
+
+// IP blocking middleware for suspicious activity
+const blockedIPs = new Set<string>();
+const suspiciousAttempts = new Map<string, number>();
+
+export const ipFilter = (req: Request, res: Response, next: NextFunction) => {
+  const ip = req.ip || req.socket.remoteAddress;
+  
+  if (!ip) {
+    console.error('No IP address found in request');
+    return res.status(400).json({ message: 'Bad request' });
+  }
+
+  if (blockedIPs.has(ip)) {
+    console.error(`Blocked IP attempt: ${ip}`);
+    return res.status(403).json({ message: 'Access denied' });
+  }
+
+  // Track suspicious attempts
+  const attempts = suspiciousAttempts.get(ip) || 0;
+  if (attempts > 10) { // Block after 10 suspicious attempts
+    blockedIPs.add(ip);
+    suspiciousAttempts.delete(ip);
+    console.error(`IP blocked due to suspicious activity: ${ip}`);
+    return res.status(403).json({ message: 'Access denied' });
+  }
+
+  // Increment attempts
+  suspiciousAttempts.set(ip, attempts + 1);
+
+  next();
+};
+
 // CORS configuration
-export const corsMiddleware = cors({
+const corsOptions: CorsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://familypeace.org'] 
     : ['http://localhost:5173'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+  maxAge: 600 // 10 minutes
+};
+
+export const corsMiddleware = cors(corsOptions);
+
+// ...existing code...
+
+// Sanitize error messages
+export function sanitizeError(error: any): { message: string; code?: string } {
+  // Only include error details in development
+  if (process.env.NODE_ENV === 'development') {
+    return {
+      message: error.message || 'An error occurred',
+      code: error.code
+    };
+  }
+  // Generic error message in production
+  return {
+    message: 'An error occurred',
+    code: 'INTERNAL_ERROR'
+  };
+}
+
+// Helmet configuration with CSP
+export const helmetMiddleware = helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.paypal.com", "https://www.sandbox.paypal.com"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://api.paypal.com", "https://api.sandbox.paypal.com"],
+      frameSrc: ["'self'", "https://www.paypal.com", "https://www.sandbox.paypal.com"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Required for PayPal SDK
+  crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }, // Required for PayPal popup
+  crossOriginResourcePolicy: { policy: "cross-origin" }, // Required for external resources
 });
 
 // Helmet security headers
@@ -93,12 +220,53 @@ export function validateInput<T extends z.ZodType>(schema: T) {
   };
 }
 
+// Session activity tracking middleware
+export function trackSessionActivity(req: Request, res: Response, next: NextFunction) {
+  if (req.session) {
+    const currentTime = new Date();
+    const lastActive = req.session.lastActive || currentTime;
+    const currentIp = req.ip || req.socket.remoteAddress || 'unknown';
+    
+    // Check for session timeout (30 minutes)
+    const timeoutMs = 30 * 60 * 1000; // 30 minutes in milliseconds
+    if (currentTime.getTime() - lastActive.getTime() > timeoutMs) {
+      req.session.destroy((err) => {
+        if (err) console.error('Session destruction error:', err);
+      });
+      return res.status(440).json({ message: 'Session expired' });
+    }
+    
+    // Check for IP change (potential session hijacking)
+    if (req.session.ipAddress && req.session.ipAddress !== currentIp) {
+      console.error(`Potential session hijacking detected: IP changed from ${req.session.ipAddress} to ${currentIp}`);
+      req.session.destroy((err) => {
+        if (err) console.error('Session destruction error:', err);
+      });
+      return res.status(403).json({ message: 'Session invalidated' });
+    }
+    
+    // Update session
+    req.session.lastActive = currentTime;
+    req.session.ipAddress = currentIp;
+  }
+  next();
+}
+
 // Authentication middleware
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (!req.session || !req.session.userId) {
     res.status(401).json({ message: 'Unauthorized' });
     return;
   }
+  
+  // Verify session integrity
+  if (!req.session.userRole || !req.session.id) {
+    req.session.destroy((err) => {
+      if (err) console.error('Session destruction error:', err);
+    });
+    return res.status(401).json({ message: 'Invalid session' });
+  }
+  
   next();
 }
 
