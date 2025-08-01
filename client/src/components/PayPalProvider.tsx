@@ -10,8 +10,9 @@ export default function PayPalProvider({ children }: PayPalProviderProps) {
 
     if (!clientId) {
         console.error('PayPal client ID is not configured');
-        return null;
+        return <>{children}</>;
     }
+
 
     return (
         <PayPalScriptProvider options={{

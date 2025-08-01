@@ -23,8 +23,10 @@ export default defineConfig({
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
   },
+  publicDir: "../public",
   root: path.resolve(import.meta.dirname, "client"),
   build: {
+
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     rollupOptions: {
@@ -108,9 +110,9 @@ export default defineConfig({
         "**/.env*"
       ],
       allow: [
-        "**/client/**",
-        "**/public/**"
+        ".."
       ]
     },
+
   },
 });

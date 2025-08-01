@@ -8,17 +8,17 @@ import bodyParser from 'body-parser';
 
 
 const app: Express = express();
-import { registerRoutes } from "./routes";
-import { setupVite } from "./vite";
-import { logError, logSecurity, logInfo } from "./utils/logger";
+import { registerRoutes } from "./routes.js";
+import { setupVite } from "./vite.js";
+import { logError, logSecurity, logInfo } from "./utils/logger.js";
 import 'dotenv/config';
 import helmet from 'helmet';
-import { sessionConfig } from './config/session';
-import { sessionMiddleware, secureSession, sessionActivityLogger } from './middleware/session';
-import { csrfProtection, generateCsrfToken, validateCsrfToken } from './middleware/csrf';
-import { xssSanitizer, sqlInjectionCheck } from './middleware/validation';
-import { errorHandler } from './middleware/error';
-import { rateLimiter, authLimiter, ipFilter, trackSessionActivity } from './middleware/security';
+import { sessionConfig } from './config/session.js';
+import { sessionMiddleware, secureSession, sessionActivityLogger } from './middleware/session.js';
+import { csrfProtection, generateCsrfToken, validateCsrfToken } from './middleware/csrf.js';
+import { xssSanitizer, sqlInjectionCheck } from './middleware/validation.js';
+import { errorHandler } from './middleware/error.js';
+import { rateLimiter, authLimiter, ipFilter, trackSessionActivity } from './middleware/security.js';
 import session from 'express-session';
 import cors from "cors";
 import path from "path";

@@ -1,10 +1,14 @@
 import express, { type Express } from "express";
-import fs from "fs";
-import path from "path";
-import { createServer as createViteServer } from "vite/node";
-import { type Server } from "http";
-import viteConfig from "../vite.config";
+import fs from "node:fs";
+import path from "node:path";
+import { createServer as createViteServer } from "vite";
+import { type Server } from "node:http";
+import { fileURLToPath } from "node:url";
 import { nanoid } from "nanoid";
+import type { UserConfig } from "vite";
+
+// Import vite config dynamically to avoid ESM/CJS issues
+const viteConfig: UserConfig = await import("../vite.config.js").then(m => m.default);
 
 
 export function log(message: string, source = "express") {
@@ -16,6 +20,8 @@ export function log(message: string, source = "express") {
   });
   console.log(`${formattedTime} [${source}] ${message}`);
 }
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
@@ -37,7 +43,7 @@ export async function setupVite(app: Express, server: Server) {
 
     try {
       const clientTemplate = path.resolve(
-        import.meta.dirname,
+        __dirname,
         "..",
         "client",
         "index.html",
@@ -59,7 +65,7 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(__dirname, "..", "dist", "public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(

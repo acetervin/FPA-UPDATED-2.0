@@ -1,7 +1,7 @@
-# Copilot Activity Log
+# FPA Activity Log
 
 ## Project: CompassionClone
-Start Date: July 20, 2025
+Start Date: July 02, 2025
 
 ## Project Overview
 Frontend:

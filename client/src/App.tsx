@@ -1,11 +1,6 @@
 import { Switch, Route, useLocation } from "wouter";
 import { Suspense, lazy } from 'react';
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import PayPalProvider from "@/components/PayPalProvider";
-import { Helmet } from "react-helmet";
+
 
 // Core Pages (Not Lazy Loaded)
 import Home from "@/pages/Home";
@@ -43,8 +38,8 @@ const AdminEventRegistrations = lazy(() => import("@/pages/admin/event-registrat
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollToTop from "@/components/ScrollToTop";
+
 import ProtectedRoute from "@/components/admin/ProtectedRoute";
 
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -262,21 +257,8 @@ function Router() {
 
 
 function App() {
-  return (
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <PayPalProvider>
-          <TooltipProvider>
-            <Helmet>
-              <html lang="en" />
-            </Helmet>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </PayPalProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
-  );
+  return <Router />;
 }
+
 
 export default App;
