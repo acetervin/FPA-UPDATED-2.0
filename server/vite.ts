@@ -3,6 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { type Server } from "http";
 import { nanoid } from "nanoid";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Create __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export async function setupVite(app: Express, httpServer: Server) {
   const { createServer: createViteServer } = await import("vite");
@@ -23,7 +29,8 @@ export async function setupVite(app: Express, httpServer: Server) {
       const clientTemplate = path.resolve(
         __dirname,
         "..",
-        "client",
+        "dist",
+        "public",
         "index.html",
       );
 

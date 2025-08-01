@@ -4,6 +4,8 @@ import { Session, SessionData } from 'express-session';
 import type { Request, Response, NextFunction, Express } from 'express';
 import serveStatic from 'serve-static';
 import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 
 
@@ -31,6 +33,10 @@ import cookieParser from 'cookie-parser';
 // Enable compression
 import compression from 'compression';
 app.use(compression());
+
+// Create __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Cache control for static assets
 app.use(serveStatic('dist/public', {
@@ -223,9 +229,9 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
       await setupVite(app, httpServer);
     } else {
       // Serve static files in production
-      app.use(serveStatic(path.join(__dirname, '../client/dist')));
+      app.use(serveStatic(path.join(__dirname, '../dist/public')));
       app.get('*', (req: Request, res: Response) => {
-        res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+        res.sendFile(path.join(__dirname, '../dist/public/index.html'));
       });
     }
 
