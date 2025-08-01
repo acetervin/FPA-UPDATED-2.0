@@ -1,41 +1,19 @@
 import express, { type Express } from "express";
 import fs from "node:fs";
 import path from "node:path";
-import { createServer as createViteServer } from "vite";
-import { type Server } from "node:http";
-import { fileURLToPath } from "node:url";
+import { type Server } from "http";
 import { nanoid } from "nanoid";
-import type { UserConfig } from "vite";
 
-// Import vite config dynamically to avoid ESM/CJS issues
-const viteConfig: UserConfig = await import("../vite.config.js").then(m => m.default);
-
-
-export function log(message: string, source = "express") {
-  const formattedTime = new Date().toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  });
-  console.log(`${formattedTime} [${source}] ${message}`);
-}
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-export async function setupVite(app: Express, server: Server) {
-  const serverOptions = {
-    middlewareMode: true,
-    hmr: { server },
-    allowedHosts: true as const,
-  };
-
+export async function setupVite(app: Express, httpServer: Server) {
+  const { createServer: createViteServer } = await import("vite");
+  const { default: viteConfig } = await import("../vite.config.js");
   const vite = await createViteServer({
     ...viteConfig,
     configFile: false,
-    server: serverOptions,
+    server: viteConfig.server,
     appType: "custom",
   });
+
 
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
