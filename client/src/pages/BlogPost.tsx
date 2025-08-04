@@ -136,7 +136,6 @@ export default function BlogPost() {
                 src={post.imageUrl} 
                 alt={post.title} 
                 className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
-                loadingClassName="animate-pulse bg-gray-200"
               />
             </div>
           </ScrollAnimationWrapper>
@@ -186,7 +185,6 @@ export default function BlogPost() {
                       src={relatedPost.imageUrl} 
                       alt={relatedPost.title} 
                       className="w-full h-48 object-cover"
-                      loadingClassName="animate-pulse bg-gray-200"
                     />
                     <CardContent className="p-6">
                       <div className="flex items-center space-x-2 mb-4">

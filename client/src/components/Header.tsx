@@ -31,7 +31,6 @@ export default function Header() {
           src={FpaLogo} 
           alt="Family Peace Association Kenya Logo"
           className="h-14 w-auto"
-          loadingClassName="animate-pulse bg-gray-200"
         />
       </div>
     </Link>

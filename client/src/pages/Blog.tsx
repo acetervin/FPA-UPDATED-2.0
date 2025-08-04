@@ -170,7 +170,6 @@ export default function Blog() {
                         src={post.imageUrl} 
                         alt={post.title} 
                         className="w-full h-48 object-cover"
-                        loadingClassName="animate-pulse bg-gray-200"
                       />
                       <CardContent className="p-6 flex flex-col h-full">
                         <div className="flex items-center space-x-2 mb-4">

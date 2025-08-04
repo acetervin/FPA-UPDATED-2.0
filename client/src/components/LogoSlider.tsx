@@ -83,7 +83,6 @@ export default function LogoSlider() {
                   src={url} 
                   alt={`Partner ${index + 1}`} 
                   className="h-16 w-40 object-contain grayscale hover:grayscale-0 transition-all"
-                  loadingClassName="animate-pulse bg-gray-200" 
                 />
               ))}
               {/* Duplicate set for seamless loop */}
@@ -93,7 +92,6 @@ export default function LogoSlider() {
                   src={url} 
                   alt={`Partner ${index + 1}`} 
                   className="h-16 w-40 object-contain grayscale hover:grayscale-0 transition-all"
-                  loadingClassName="animate-pulse bg-gray-200" 
                 />
               ))}
             </div>

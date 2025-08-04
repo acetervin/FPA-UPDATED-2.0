@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -96,7 +97,7 @@ export default function AdminBlogPosts() {
                 {filteredPosts?.map((post) => (
                   <Card key={post.id}>
                     <CardHeader className="relative">
-                      <img
+                      <OptimizedImage
                         src={post.imageUrl}
                         alt={post.title}
                         className="w-full h-48 object-cover rounded-t-lg"

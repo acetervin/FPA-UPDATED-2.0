@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import {
   Select,
   SelectContent,
@@ -36,11 +37,11 @@ export default function AdminEvents() {
     
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
-      (event.name?.toLowerCase() || '').includes(searchLower) ||
+      (event.title?.toLowerCase() || '').includes(searchLower) ||
       (event.description?.toLowerCase() || '').includes(searchLower) ||
       (event.location?.toLowerCase() || '').includes(searchLower);
     
-    const matchesStatus = statusFilter === 'all' || event.active === (statusFilter === 'active');
+    const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? ['upcoming', 'ongoing'].includes(event.status) : event.status === 'completed' || event.status === 'cancelled');
     
     return matchesSearch && matchesStatus;
   });
@@ -118,22 +119,22 @@ export default function AdminEvents() {
                 {filteredEvents?.map((event) => (
                   <Card key={event.id} className="overflow-hidden">
                     <div className="relative h-48">
-                      <img
-                        src={event.imageUrl}
+                          <OptimizedImage
+                            src={event.imageUrl}
                         alt={event.title}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute top-2 right-2">
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          event.active ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-600'
+                          ['upcoming', 'ongoing'].includes(event.status) ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-600'
                         }`}>
-                          {event.active ? 'Active' : 'Inactive'}
-                        </span>
-                      </div>
-                    </div>
+                           {statusFilter === 'active' ? 'Active' : 'Inactive'}
+                         </span>
+                       </div>
+                     </div>
                     
                     <CardContent className="p-4">
-                      <h3 className="font-bold text-lg mb-2">{event.title}</h3>
+                  <h3 className="font-bold text-lg mb-2">{event.title}</h3>
                       <p className="text-sm text-neutral-600 mb-4 line-clamp-2">
                         {event.description}
                       </p>

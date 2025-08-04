@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Mail, Linkedin, Heart } from "lucide-react";
 import type { TeamMember } from "@shared/schema";
@@ -58,8 +59,8 @@ export default function Team() {
                 <ScrollAnimationWrapper key={member.id} delay={index * 100}>
                   <Card className="card-hover h-full">
                     <CardContent className="p-6 text-center">
-                      <img 
-                        src={member.imageUrl} 
+                      <OptimizedImage
+                        src={member.imageUrl}
                         alt={member.name} 
                         className="w-32 h-32 rounded-full mx-auto mb-6 object-cover shadow-lg"
                       />

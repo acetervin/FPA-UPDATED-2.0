@@ -220,12 +220,6 @@ export default function Contact() {
                         <div>
                           <h3 className="font-semibold text-gray-800 mb-2">Call Us</h3>
                           <p className="text-gray-600 mb-2">
-                            Mobile: <a href="tel:+254721971194" className="text-primary hover:underline">+254 721 971 194</a>
-                          </p>
-                          <p className="text-gray-600 mb-2">
-                            Mobile: <a href="tel:+254725233261" className="text-primary hover:underline">+254 725 233 261</a>
-                          </p>
-                          <p className="text-gray-600 mb-2">
                             Telephone: <a href="tel:0208020770" className="text-primary hover:underline">0208020770</a>
                           </p>
                         </div>

@@ -74,7 +74,6 @@ export default function Home() {
                   src="https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg" 
                   alt="Community volunteers working together"
                   className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
-                  loadingClassName="animate-pulse bg-gray-200"
                 />
                 <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg">
                   <div className="flex items-center space-x-4">
@@ -143,14 +142,14 @@ export default function Home() {
       <section className="py-16">
         <div className="container mx-auto px-6">
           <ScrollAnimationWrapper>
-            <div className="relative">
-              <img 
-                src="https://images.pexels.com/photos/9091896/pexels-photo-9091896.jpeg" 
-                alt="Sustainable farming and environmental protection"
-                className="w-full h-[400px] lg:h-[500px] object-cover rounded-2xl"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 rounded-2xl"></div>
-            </div>
+              <div className="relative">
+                <OptimizedImage 
+                  src="https://images.pexels.com/photos/9091896/pexels-photo-9091896.jpeg" 
+                  alt="Sustainable farming and environmental protection"
+                  className="w-full h-[400px] lg:h-[500px] object-cover rounded-2xl"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-20 rounded-2xl"></div>
+              </div>
           </ScrollAnimationWrapper>
         </div>
       </section>
@@ -214,7 +213,7 @@ export default function Home() {
 
             <ScrollAnimationWrapper animation="slide-in-right">
               <div className="relative">
-                <img 
+                <OptimizedImage 
                   src="https://images.pexels.com/photos/4262424/pexels-photo-4262424.jpeg" 
                   alt="Environmental scientist working in the field"
                   className="w-full h-[600px] object-cover rounded-2xl"
@@ -347,7 +346,6 @@ export default function Home() {
                           src={post.imageUrl} 
                           alt={post.title}
                           className="w-full h-full object-cover"
-                          loadingClassName="animate-pulse bg-gray-200"
                         />
                       </div>
                       <CardContent className="p-6">

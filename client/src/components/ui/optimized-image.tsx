@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -15,25 +14,12 @@ export function OptimizedImage({
   loadingClassName,
   ...props 
 }: OptimizedImageProps) {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
-  
-  // Convert image URL to use Cloudinary or similar service
-  const optimizedSrc = src.startsWith('data:') ? src : `${src}?quality=auto&format=webp`;
-  
+  // Simple img component without any loading states or transitions
   return (
     <img
-      src={optimizedSrc}
+      src={src}
       alt={alt}
-      className={cn(
-        className,
-        !loaded && loadingClassName,
-        "transition-opacity duration-300",
-        loaded ? "opacity-100" : "opacity-0"
-      )}
-      onLoad={() => setLoaded(true)}
-      onError={() => setError(true)}
-      loading="lazy"
+      className={cn(className)}
       {...props}
     />
   );

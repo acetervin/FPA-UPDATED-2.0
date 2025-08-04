@@ -322,7 +322,6 @@ export default function Donate() {
                   src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=700" 
                   alt="Happy family after counseling session"
                   className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
-                  loadingClassName="animate-pulse bg-gray-200"
                 />
                 <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg">
                   <div className="flex items-center space-x-4">

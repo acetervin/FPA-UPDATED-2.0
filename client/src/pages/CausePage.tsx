@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { ArrowLeft, Users, Target, Calendar, CheckCircle, Heart } from "lucide-react";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import type { Cause } from "@shared/schema";
 
 export default function CausePage() {
@@ -125,7 +126,7 @@ export default function CausePage() {
             </ScrollAnimationWrapper>
 
             <ScrollAnimationWrapper animation="slide-in-right">
-              <img 
+              <OptimizedImage 
                 src={cause.imageUrl} 
                 alt={cause.title} 
                 className="rounded-xl shadow-lg w-full"

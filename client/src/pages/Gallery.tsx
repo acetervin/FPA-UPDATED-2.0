@@ -13,13 +13,12 @@ interface GalleryImage {
 
 const CATEGORY_LIST = [
   'All Categories',
-  'Health',
-  'Education',
-  'Environment',
-  'Empowerment',
-  'Relief',
-  'Events',
-  'Community',
+  'Character Education',
+  'Women Empowerment',
+  'Youth Mentorship',
+  'Couples Enrichment',
+  'Men Fellowship',
+  
 ];
 
 const Gallery: React.FC = () => {
@@ -122,7 +121,6 @@ const Gallery: React.FC = () => {
                           src={img.imageUrl} 
                           alt={img.title || `Gallery image ${index + 1}`} 
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                          loadingClassName="animate-pulse bg-gray-200" 
                         />
                       </div>
                       {img.title && <div className="mt-2 text-center font-medium">{img.title}</div>}

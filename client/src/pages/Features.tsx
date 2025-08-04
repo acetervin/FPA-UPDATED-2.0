@@ -114,7 +114,6 @@ export default function Features() {
                     src={service.image} 
                     alt={service.title} 
                     className="w-full h-48 object-cover"
-                    loadingClassName="animate-pulse bg-gray-200"
                   />
                   <CardContent className="p-8">
                     <div className="flex items-center mb-6">

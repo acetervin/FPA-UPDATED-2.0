@@ -267,8 +267,7 @@ export default function EventRegistration() {
           <OptimizedImage 
             src={event.imageUrl} 
             alt={event.name}
-            className="w-full h-full object-cover animate-scale"
-            loadingClassName="animate-pulse bg-gray-200"
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
         </div>
@@ -365,7 +364,7 @@ export default function EventRegistration() {
           )}
           <p className="text-gray-600 mb-4">{event.description}</p>
           {event.imageUrl && (
-            <OptimizedImage src={event.imageUrl} alt={event.name} className="w-full h-48 object-cover rounded-lg mb-4" loadingClassName="animate-pulse bg-gray-200" />
+            <OptimizedImage src={event.imageUrl} alt={event.name} className="w-full h-48 object-cover rounded-lg mb-4" />
           )}
           <div className="space-y-2">
             <p className="text-lg font-medium">Date: {new Date(event.date).toLocaleDateString()}</p>

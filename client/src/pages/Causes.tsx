@@ -159,7 +159,7 @@ export default function Causes() {
               {causes.map((cause, index) => (
                 <ScrollAnimationWrapper key={cause.id} delay={index * 200}>
                   <Card className="card-hover overflow-hidden h-full">
-                    <img 
+                    <OptimizedImage 
                       src={cause.imageUrl} 
                       alt={cause.title} 
                       className="w-full h-64 object-cover"

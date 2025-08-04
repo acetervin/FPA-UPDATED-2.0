@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { ArrowLeft, Mail, Linkedin, Heart, Award, Users } from "lucide-react";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import type { TeamMember } from "@shared/schema";
 
 export default function TeamMemberPage() {
@@ -88,7 +89,7 @@ export default function TeamMemberPage() {
             <ScrollAnimationWrapper animation="slide-in-left">
               <Card className="text-center">
                 <CardContent className="p-8">
-                  <img 
+                  <OptimizedImage 
                     src={member.imageUrl} 
                     alt={member.name} 
                     className="w-64 h-64 rounded-full mx-auto mb-6 object-cover shadow-lg"
@@ -199,7 +200,7 @@ export default function TeamMemberPage() {
                 <ScrollAnimationWrapper key={otherMember.id} delay={index * 100}>
                   <Card className="card-hover h-full">
                     <CardContent className="p-6 text-center">
-                      <img 
+                      <OptimizedImage 
                         src={otherMember.imageUrl} 
                         alt={otherMember.name} 
                         className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
