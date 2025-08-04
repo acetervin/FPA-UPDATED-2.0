@@ -25,7 +25,8 @@ import { sessionMiddleware, secureSession, sessionActivityLogger } from './middl
 import { csrfProtection, generateCsrfToken, validateCsrfToken } from './middleware/csrf.js';
 import { xssSanitizer, sqlInjectionCheck } from './middleware/validation.js';
 import { errorHandler } from './middleware/error.js';
-import { rateLimiter, authLimiter, ipFilter, trackSessionActivity } from './middleware/security.js';
+import { rateLimiter, authLimiter, trackSessionActivity } from './middleware/security.js';
+
 import session from 'express-session';
 import cors from "cors";
 import path from "path";
@@ -150,10 +151,10 @@ app.use(sqlInjectionCheck);
 
 // Security features that are only enabled in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(ipFilter); // IP blocking for suspicious activity
   app.use(rateLimiter); // General rate limiting
   app.use('/api/auth/*', authLimiter); // Stricter rate limiting for auth routes
 }
+
 
 app.use(trackSessionActivity); // Track session activity for security
 

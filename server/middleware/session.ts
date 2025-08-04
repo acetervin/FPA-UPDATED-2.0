@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { sessionConfig, regenerateSession } from '../config/session';
+import { sessionConfig, regenerateSession } from '../config/session.js';
 
 export const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // Check if session is expired

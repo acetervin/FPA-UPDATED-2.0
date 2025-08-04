@@ -17,6 +17,16 @@ declare module 'express-session' {
   }
 }
 
+// Augment the Request object to include validatedData for custom middleware
+declare global {
+  namespace Express {
+    interface Request {
+      validatedData?: any;
+    }
+  }
+}
+
+
 // Encryption configuration
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || crypto.randomBytes(32);
 const IV_LENGTH = 16;
@@ -236,14 +246,17 @@ export function trackSessionActivity(req: Request, res: Response, next: NextFunc
       return res.status(440).json({ message: 'Session expired' });
     }
     
-    // Check for IP change (potential session hijacking)
-    if (req.session.ipAddress && req.session.ipAddress !== currentIp) {
-      console.error(`Potential session hijacking detected: IP changed from ${req.session.ipAddress} to ${currentIp}`);
-      req.session.destroy((err) => {
-        if (err) console.error('Session destruction error:', err);
-      });
-      return res.status(403).json({ message: 'Session invalidated' });
-    }
+    // The IP address check for session hijacking has been removed.
+    // In a production environment with load balancers or proxies, the internal IP can change
+    // between requests for the same user, causing false positives and invalidating sessions.
+    // if (req.session.ipAddress && req.session.ipAddress !== currentIp) {
+    //   console.error(`Potential session hijacking detected: IP changed from ${req.session.ipAddress} to ${currentIp}`);
+    //   req.session.destroy((err) => {
+    //     if (err) console.error('Session destruction error:', err);
+    //   });
+    //   return res.status(403).json({ message: 'Session invalidated' });
+    // }
+
     
     // Update session
     req.session.lastActive = currentTime;

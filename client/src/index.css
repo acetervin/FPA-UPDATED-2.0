@@ -212,3 +212,23 @@
     gap: 0.5rem !important;
   }
 }
+
+/* 
+  Hide the default close button from the shadcn/ui SheetContent component.
+  We are using a custom close button inside the header of the sheet.
+  This selector targets the default button which is a direct child of the sheet content.
+  Using !important to ensure it overrides the component library's styles.
+*/
+[data-radix-dialog-content] > button {
+  display: none !important;
+}
+
+
+/* 
+  Hide the default close button from the shadcn/ui SheetContent component.
+  We are using a custom close button inside the header of the sheet.
+  This selector targets the default button which is a direct child of the sheet content.
+*/
+[data-radix-dialog-content] > button {
+  display: none;
+}

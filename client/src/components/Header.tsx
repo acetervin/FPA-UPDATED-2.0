@@ -1,10 +1,25 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { ChevronDown, Menu, X } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
 import FpaLogo from "@/assets/Fpa-logo.jpg";
 import { OptimizedImage } from "./ui/optimized-image";
 
@@ -18,8 +33,24 @@ export default function Header() {
     return false;
   };
 
-  const NavLink = ({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) => (
-    <Link href={href} className={`font-medium transition-colors hover:text-yellow-600 ${isActive(href) ? 'text-yellow-600 font-semibold' : 'text-gray-700'} ${className}`}>
+  const NavLink = ({
+    href,
+    children,
+    className = "",
+    onClick,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    className?: string;
+    onClick?: () => void;
+  }) => (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`font-medium transition-colors hover:text-yellow-600 ${
+        isActive(href) ? "text-yellow-600 font-semibold" : "text-gray-700"
+      } ${className}`}
+    >
       {children}
     </Link>
   );
@@ -27,8 +58,8 @@ export default function Header() {
   const Logo = () => (
     <Link href="/">
       <div className="flex items-center">
-        <OptimizedImage 
-          src={FpaLogo} 
+        <OptimizedImage
+          src={FpaLogo}
           alt="Family Peace Association Kenya Logo"
           className="h-14 w-auto"
         />
@@ -41,7 +72,7 @@ export default function Header() {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Logo />
-          
+
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             <NavLink href="/">Home</NavLink>
@@ -50,9 +81,11 @@ export default function Header() {
               <DropdownMenuTrigger asChild>
                 <span
                   className="font-medium transition-colors hover:text-yellow-600 text-gray-700 cursor-pointer flex items-center"
-                  onMouseEnter={e => e.currentTarget.click()}
-                  onMouseLeave={e => {
-                    const menu = document.querySelector('[data-radix-dropdown-menu-content]');
+                  onMouseEnter={(e) => e.currentTarget.click()}
+                  onMouseLeave={(e) => {
+                    const menu = document.querySelector(
+                      "[data-radix-dropdown-menu-content]"
+                    );
                     if (menu) (menu as HTMLElement).blur();
                   }}
                 >
@@ -77,9 +110,11 @@ export default function Header() {
               <DropdownMenuTrigger asChild>
                 <span
                   className="font-medium transition-colors hover:text-yellow-600 text-gray-700 cursor-pointer flex items-center"
-                  onMouseEnter={e => e.currentTarget.click()}
-                  onMouseLeave={e => {
-                    const menu = document.querySelector('[data-radix-dropdown-menu-content]');
+                  onMouseEnter={(e) => e.currentTarget.click()}
+                  onMouseLeave={(e) => {
+                    const menu = document.querySelector(
+                      "[data-radix-dropdown-menu-content]"
+                    );
                     if (menu) (menu as HTMLElement).blur();
                   }}
                 >
@@ -106,7 +141,7 @@ export default function Header() {
               </Button>
             </Link>
           </div>
-          
+
           {/* Mobile Menu Button */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -114,51 +149,112 @@ export default function Header() {
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
-              <div className="flex flex-col space-y-6 mt-6">
-                <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                  <a className="text-lg font-medium">Home</a>
-                </Link>
-                {/* About Dropdown for Mobile */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <span className="text-lg font-medium cursor-pointer">About</span>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem asChild>
-                      <Link href="/services" onClick={() => setMobileMenuOpen(false)}>Our Services</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/about" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/team" onClick={() => setMobileMenuOpen(false)}>Team</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                {/* Get Involved Dropdown for Mobile */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <span className="text-lg font-medium cursor-pointer">Get Involved</span>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem asChild>
-                      <Link href="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/get-involved#initiatives" onClick={() => setMobileMenuOpen(false)}>Campaigns</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/volunteer" onClick={() => setMobileMenuOpen(false)}>Volunteer</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Link href="/gallery" onClick={() => setMobileMenuOpen(false)}>
-                  <a className="text-lg font-medium">Gallery</a>
-                </Link>
-                <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-                  <a className="text-lg font-medium">Contact</a>
-                </Link>
+            <SheetContent
+              side="right"
+              className="w-full max-w-sm p-0 flex flex-col"
+            >
+              <div className="flex justify-between items-center p-4 border-b">
+                <Logo />
+                <SheetClose asChild>
+                  <Button variant="ghost" size="icon">
+                    <X className="h-6 w-6" />
+                  </Button>
+                </SheetClose>
+              </div>
+
+              <div className="flex-grow p-6 overflow-y-auto">
+                <div className="flex flex-col space-y-2">
+                  <NavLink
+                    href="/"
+                    className="text-lg py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Home
+                  </NavLink>
+
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="about" className="border-b-0">
+                      <AccordionTrigger className="text-lg font-medium hover:no-underline py-2">
+                        About
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex flex-col space-y-2 pl-4 pt-2">
+                          <NavLink
+                            href="/features"
+                            className="text-base"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Our Services
+                          </NavLink>
+                          <NavLink
+                            href="/about"
+                            className="text-base"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            About Us
+                          </NavLink>
+                          <NavLink
+                            href="/team"
+                            className="text-base"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Team
+                          </NavLink>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem
+                      value="get-involved"
+                      className="border-b-0"
+                    >
+                      <AccordionTrigger className="text-lg font-medium hover:no-underline py-2">
+                        Get Involved
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex flex-col space-y-2 pl-4 pt-2">
+                          <NavLink
+                            href="/blog"
+                            className="text-base"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Blog
+                          </NavLink>
+                          <NavLink
+                            href="/get-involved#initiatives"
+                            className="text-base"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Campaigns
+                          </NavLink>
+                          <NavLink
+                            href="/volunteer"
+                            className="text-base"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Volunteer
+                          </NavLink>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+
+                  <NavLink
+                    href="/gallery"
+                    className="text-lg py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Gallery
+                  </NavLink>
+                  <NavLink
+                    href="/contact"
+                    className="text-lg py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Contact
+                  </NavLink>
+                </div>
+              </div>
+              <div className="p-6 mt-auto border-t">
                 <Link href="/donate" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full bg-yellow-600 hover:bg-yellow-700 text-white">
                     Donate
