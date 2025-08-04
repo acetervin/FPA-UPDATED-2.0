@@ -33,12 +33,11 @@ const csrfUtils = doubleCsrf({
 export const csrfProtection = csrfUtils.doubleCsrfProtection;
 
 export const generateCsrfToken = (req: Request, res: Response, next: NextFunction) => {
-  if (process.env.NODE_ENV === 'development' || req.method === 'GET') {
-    const token = csrfUtils.generateCsrfToken(req, res);
-    res.setHeader('X-CSRF-Token', token);
-  }
+  const token = csrfUtils.generateCsrfToken(req, res);
+  res.setHeader('X-CSRF-Token', token);
   next();
 };
+
 
 export const validateCsrfToken = (req: Request, res: Response, next: NextFunction) => {
   if (process.env.NODE_ENV === 'development') {
