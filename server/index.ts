@@ -10,7 +10,12 @@ import { dirname } from 'path';
 
 
 const app: Express = express();
+
+// Trust the first proxy to get the real IP address for rate limiting.
+app.set('trust proxy', 1);
+
 import { registerRoutes } from "./routes.js";
+
 import { setupVite } from "./vite.js";
 import { logError, logSecurity, logInfo } from "./utils/logger.js";
 import 'dotenv/config';

@@ -1,7 +1,8 @@
 import rateLimit from 'express-rate-limit';
 import RedisStore from 'rate-limit-redis';
-import { redisClient } from '../config/redis';
-import { logSecurity } from '../utils/logger';
+import { redisClient } from '../config/redis.js';
+import { logSecurity } from '../utils/logger.js';
+
 
 // Base rate limit configuration
 const baseConfig = {
@@ -18,7 +19,13 @@ const baseConfig = {
 // General API rate limiter
 export const apiLimiter = rateLimit({
   ...baseConfig,
+  skip: (req) => {
+    // Skip localhost requests, useful for internal health checks or when running behind a proxy
+    const ip = req.ip;
+    return ip === '127.0.0.1' || ip === '::1';
+  },
   handler: (req, res) => {
+
     logSecurity('Rate limit exceeded', {
       type: 'RATE_LIMIT_EXCEEDED',
       ip: req.ip,
@@ -37,7 +44,13 @@ export const authLimiter = rateLimit({
   ...baseConfig,
   windowMs: parseInt(process.env.AUTH_RATE_LIMIT_WINDOW_MS || '900000'),
   max: parseInt(process.env.AUTH_RATE_LIMIT_MAX || '5'),
+  skip: (req) => {
+    // Skip localhost requests
+    const ip = req.ip;
+    return ip === '127.0.0.1' || ip === '::1';
+  },
   handler: (req, res) => {
+
     logSecurity('Authentication rate limit exceeded', {
       type: 'AUTH_RATE_LIMIT_EXCEEDED',
       ip: req.ip,
