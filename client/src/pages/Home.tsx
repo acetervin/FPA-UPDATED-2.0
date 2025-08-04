@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+
 import { Link } from "wouter";
 import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
@@ -6,7 +8,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import Counter from "@/components/Counter";
 import LogoSlider from "@/components/LogoSlider";
+import EventPopup from "@/components/EventPopup";
+import { getLatestEvent } from "@/lib/api";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+
 import { 
   Heart, 
   Users, 
@@ -19,10 +24,44 @@ import {
 } from "lucide-react";
 import type { BlogPost, Cause } from "@shared/schema";
 
+interface Event {
+  name: string;
+  description: string;
+  date: string;
+  image_url: string;
+}
+
 export default function Home() {
+  const [latestEvent, setLatestEvent] = useState<Event | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const popupShown = sessionStorage.getItem('eventPopupShown');
+    if (!popupShown) {
+      getLatestEvent()
+        .then(data => {
+          if (data) {
+            setLatestEvent(data as Event);
+            setShowPopup(true);
+          }
+        })
+        .catch(error => {
+          if (error.status !== 404) {
+            console.error("Failed to fetch latest event:", error);
+          }
+        });
+    }
+  }, []);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    sessionStorage.setItem('eventPopupShown', 'true');
+  };
+
   const { data: featuredPosts } = useQuery<BlogPost[]>({
     queryKey: ["/api/blog-posts/featured"],
   });
+
 
   const { data: activeCauses } = useQuery<Cause[]>({
     queryKey: ["/api/causes/active"],
@@ -30,7 +69,11 @@ export default function Home() {
 
   return (
     <>
+      {showPopup && latestEvent && (
+        <EventPopup event={latestEvent} onClose={handleClosePopup} />
+      )}
       <Helmet>
+
         <title>Family Peace Association - Building God-Centered Families</title>
         <meta name="description" content="The Family Peace Association (FPA) is an association of individuals, families and communities that strive to create a peaceful, ideal world through building God-centered families." />
       </Helmet>

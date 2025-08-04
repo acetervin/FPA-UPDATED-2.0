@@ -58,8 +58,11 @@ export async function apiClient<T = any>(
   return handleResponse(response);
 }
 
+export const getLatestEvent = () => apiClient('/events/latest');
+
 // Common API endpoints
 export const adminApi = {
+
   // Event Registrations
   getEventRegistrations: (eventId?: number) =>
     apiClient(`/admin/event-registrations${eventId ? `?eventId=${eventId}` : ''}`),

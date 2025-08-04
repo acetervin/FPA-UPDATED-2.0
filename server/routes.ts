@@ -1,7 +1,7 @@
 import express from 'express';
 import { createServer, type Server } from "http";
 import type { Express, Request, Response } from 'express';
-import { storage } from "./storage";
+import { storage } from "./storage.js";
 import { 
   insertVolunteerApplicationSchema,
   insertContactSubmissionSchema,
@@ -13,20 +13,23 @@ import {
   donations,
   createInsertSchema,
   galleryImages
-} from "@shared/schema";
+} from "../shared/schema.js";
+
 
 
 import { z } from "zod";
-import { db } from './db';
-import { sql } from 'drizzle-orm';
-import { initiatePayment, handlePaymentCallback } from './payments';
-import mediaRouter from './routes/media';
-import authRouter from './routes/auth';
-import adminRouter from './routes/admin';
-import paypalApiRouter from './routes/paypal-api';
-import paypalWebhookRouter from './routes/paypal-webhook';
-import mpesaRouter from './routes/mpesa';
-import currencyRouter from './routes/currency';
+import { db } from './db.js';
+import { sql, gte, desc } from 'drizzle-orm';
+import { initiatePayment, handlePaymentCallback } from './payments.js';
+
+import mediaRouter from './routes/media.js';
+import authRouter from './routes/auth.js';
+import adminRouter from './routes/admin.js';
+import paypalApiRouter from './routes/paypal-api.js';
+import paypalWebhookRouter from './routes/paypal-webhook.js';
+import mpesaRouter from './routes/mpesa.js';
+import currencyRouter from './routes/currency.js';
+
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Health check route
@@ -48,8 +51,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/paypal', paypalWebhookRouter);
   // Register M-Pesa routes
   app.use('/api/mpesa', mpesaRouter);
+  // Fetch latest event
+  app.get("/api/events/latest", async (req, res) => {
+    try {
+      const [latestEvent] = await db
+        .select()
+        .from(events)
+        .where(gte(events.date, new Date()))
+        .orderBy(desc(events.date))
+        .limit(1);
+
+      if (!latestEvent) {
+        return res.status(404).json({ message: 'No upcoming events found' });
+      }
+
+      res.json(latestEvent);
+    } catch (error) {
+      console.error('Error fetching latest event:', error);
+      res.status(500).json({ message: "Failed to fetch latest event" });
+    }
+  });
   // Fetch event by name
   app.get("/api/events/by-name/:name", async (req: Request, res: Response) => {
+
     try {
       const { name } = req.params;
       
@@ -250,8 +274,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const images = await db.select().from(galleryImages);
       const filteredImages = images.filter((image) => image.imageUrl);
       res.json({
-        images: filteredImages.map((img: any) => ({
+        images: filteredImages.map((img) => ({
           imageUrl: img.imageUrl,
+
           title: img.title,
           description: img.description,
           category: img.category,
