@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import SEO from "@/components/SEO";
 
 interface GalleryImage {
   imageUrl: string;
@@ -57,6 +58,7 @@ const Gallery: React.FC = () => {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Gallery - Family Peace Association</title>
         <meta name="description" content="Explore moments from our events, programs, and community work. See the impact of our mission in action." />

@@ -8,6 +8,7 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { ArrowLeft, Users, Target, Calendar, CheckCircle, Heart } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import type { Cause } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 export default function CausePage() {
   const { slug } = useParams();
@@ -63,6 +64,7 @@ export default function CausePage() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>{cause.title} - Family Peace Association</title>
         <meta name="description" content={cause.description} />

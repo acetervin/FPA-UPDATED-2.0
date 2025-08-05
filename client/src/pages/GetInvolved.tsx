@@ -28,6 +28,7 @@ import {
   MapPin
 } from "lucide-react";
 import type { Cause } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 const volunteerApplicationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -89,6 +90,7 @@ export default function GetInvolved() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Get Involved - Family Peace Association</title>
         <meta name="description" content="Join our mission to strengthen families and build peaceful communities. Discover volunteer opportunities, ways to support, and community partnerships." />

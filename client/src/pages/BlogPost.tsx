@@ -9,6 +9,7 @@ import { MarkdownContent } from "@/components/MarkdownContent";
 import { Calendar, Tag, ArrowLeft, User } from "lucide-react";
 import type { BlogPost } from "@shared/schema";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import SEO from "@/components/SEO";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -64,6 +65,7 @@ export default function BlogPost() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>{post.title} - Family Peace Association Blog</title>
         <meta name="description" content={post.excerpt} />

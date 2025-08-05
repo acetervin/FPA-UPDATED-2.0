@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Shield, Eye, FileText, Scale, ArrowLeft, Mail, Phone } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function Legal() {
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Legal Information - Family Peace Association</title>
         <meta name="description" content="Privacy policy, terms of service, and legal information for the Family Peace Association website and services." />

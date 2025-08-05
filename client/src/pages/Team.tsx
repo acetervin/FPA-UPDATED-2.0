@@ -7,6 +7,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Mail, Linkedin, Heart } from "lucide-react";
 import type { TeamMember } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 export default function Team() {
   const { data: teamMembers, isLoading } = useQuery<TeamMember[]>({
@@ -15,6 +16,7 @@ export default function Team() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Our Team - Family Peace Association</title>
         <meta name="description" content="Meet the dedicated professionals and volunteers working to strengthen families and build peaceful communities through expert guidance and compassionate care." />

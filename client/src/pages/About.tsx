@@ -7,6 +7,7 @@ import { Link } from "wouter";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Heart, Users, Target, Award } from "lucide-react";
 import type { TeamMember } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 export default function About() {
   const { data: teamMembers } = useQuery<TeamMember[]>({
@@ -15,6 +16,7 @@ export default function About() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>About Us - Family Peace Association</title>
         <meta name="description" content="Learn about our mission, values, and the dedicated team working to build stronger families and create lasting peace in communities." />

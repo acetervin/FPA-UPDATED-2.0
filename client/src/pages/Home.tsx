@@ -11,6 +11,7 @@ import LogoSlider from "@/components/LogoSlider";
 import EventPopup from "@/components/EventPopup";
 import { getLatestEvent } from "@/lib/api";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import SEO from "@/components/SEO";
 
 import { 
   Heart, 
@@ -69,6 +70,7 @@ export default function Home() {
 
   return (
     <>
+      <SEO />
       {showPopup && latestEvent && (
         <EventPopup event={latestEvent} onClose={handleClosePopup} />
       )}

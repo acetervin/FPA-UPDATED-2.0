@@ -20,7 +20,7 @@ import {
   Smartphone,
   X
 } from "lucide-react";
-  // Removed unused imports
+import SEO from "@/components/SEO";
 
 export default function Donate() {
   const [selectedAmount, setSelectedAmount] = useState<string>("");
@@ -113,6 +113,7 @@ export default function Donate() {
 
   return (
     <PayPalScriptProvider options={paypalOptions} key={paypalOptions.intent}>
+      <SEO />
       <Helmet>
         <title>Donate - Family Peace Association</title>
         <meta name="description" content="Support the Family Peace Association's mission to build stronger families through your generous donation. Every contribution makes a difference." />

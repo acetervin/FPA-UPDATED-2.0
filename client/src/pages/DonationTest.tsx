@@ -1,20 +1,24 @@
 import { useState } from 'react';
-import PayPalClient from '../components/PayPalClient';
+// import PayPalClient from '../components/PayPalClient';
+
+import SEO from "@/components/SEO";
 
 export default function DonationTest() {
     const [amount, setAmount] = useState<number>(10);
-    const [status, setStatus] = useState<string>('');
+    // const [status, setStatus] = useState<string>('');
 
-    const handleSuccess = (details: any) => {
-        setStatus(`Payment completed! Order ID: ${details.id}`);
-    };
+    // const handleSuccess = (details: any) => {
+    //     setStatus(`Payment completed! Order ID: ${details.id}`);
+    // };
 
-    const handleError = (error: any) => {
-        setStatus(`Error: ${error.message}`);
-    };
+    // const handleError = (error: any) => {
+    //     setStatus(`Error: ${error.message}`);
+    // };
+
 
     return (
         <div className="container mx-auto p-4">
+            <SEO />
             <h1 className="text-2xl font-bold mb-4">Donation Test</h1>
             
             <div className="mb-4">
@@ -32,19 +36,20 @@ export default function DonationTest() {
             </div>
 
             <div className="mb-4">
-                <PayPalClient
+                {/* <PayPalClient
                     amount={amount}
                     description="Test donation"
                     onSuccess={handleSuccess}
                     onError={handleError}
-                />
+                /> */}
             </div>
 
-            {status && (
+            {/* {status && (
                 <div className="mt-4 p-4 rounded-md bg-gray-100">
                     <p className="text-sm text-gray-900">{status}</p>
                 </div>
-            )}
+            )} */}
+
         </div>
     );
 }

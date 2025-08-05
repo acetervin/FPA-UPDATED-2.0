@@ -8,6 +8,7 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { ArrowLeft, Mail, Linkedin, Heart, Award, Users } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import type { TeamMember } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 export default function TeamMemberPage() {
   const { slug } = useParams();
@@ -66,6 +67,7 @@ export default function TeamMemberPage() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>{member.name} - {member.position} | Family Peace Association</title>
         <meta name="description" content={`Meet ${member.name}, ${member.position} at Family Peace Association. ${member.bio.slice(0, 150)}...`} />

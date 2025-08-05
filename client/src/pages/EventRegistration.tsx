@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import SEO from "@/components/SEO";
 
 interface IndividualFormData {
   firstName: string;

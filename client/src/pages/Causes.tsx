@@ -7,8 +7,11 @@ import { Progress } from "@/components/ui/progress";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Users, Heart, Target, TrendingUp } from "lucide-react";
 import type { Cause } from "@shared/schema";
+import SEO from "@/components/SEO";
+// import OptimizedImage from "@/components/OptimizedImage";
 
 export default function Causes() {
+
   const { data: causes, isLoading } = useQuery<Cause[]>({
     queryKey: ["/api/causes"],
   });
@@ -20,6 +23,7 @@ export default function Causes() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Our Causes - Family Peace Association</title>
         <meta name="description" content="Discover our family peace initiatives and programs designed to strengthen relationships, resolve conflicts, and build lasting community support." />
@@ -159,14 +163,15 @@ export default function Causes() {
               {causes.map((cause, index) => (
                 <ScrollAnimationWrapper key={cause.id} delay={index * 200}>
                   <Card className="card-hover overflow-hidden h-full">
-                    <OptimizedImage 
+                    {/* <OptimizedImage 
                       src={cause.imageUrl} 
                       alt={cause.title} 
                       className="w-full h-64 object-cover"
-                    />
+                    /> */}
                     <CardContent className="p-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
+
                           <h3 className="text-2xl font-bold text-gray-800 mb-2">{cause.title}</h3>
                           <p className="text-gray-600 mb-4">{cause.description}</p>
                         </div>

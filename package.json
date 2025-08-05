@@ -165,7 +165,6 @@
     "zod-validation-error": "^3.4.0",
     "zustand": "^5.0.6"
   },
-
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.6",

@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Search, Calendar, Tag } from "lucide-react";
 import type { BlogPost } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 export default function Blog() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,6 +43,7 @@ export default function Blog() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Blog - Family Peace Association</title>
         <meta name="description" content="Read our latest articles on family wellness, conflict resolution, and building stronger relationships. Expert insights and practical advice for families." />

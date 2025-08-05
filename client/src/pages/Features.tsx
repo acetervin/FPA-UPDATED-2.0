@@ -18,10 +18,12 @@ import {
   MapPin,
   Headphones
 } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function Features() {
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Our Services & Features - Family Peace Association</title>
         <meta name="description" content="Discover our comprehensive family support services including counseling, conflict resolution, support groups, and educational workshops designed to strengthen relationships." />

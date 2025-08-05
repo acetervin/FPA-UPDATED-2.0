@@ -13,6 +13,7 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -62,6 +63,7 @@ export default function Contact() {
 
   return (
     <>
+      <SEO />
       <Helmet>
         <title>Contact Us - Family Peace Association</title>
         <meta name="description" content="Get in touch with the Family Peace Association. Contact us for support, questions about our services, or to learn more about volunteer opportunities." />
