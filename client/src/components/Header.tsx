@@ -126,11 +126,9 @@ export default function Header() {
                   <Link href="/blog">Blog</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/get-involved#initiatives">Campaigns</Link>
+                  <Link href="/get-involved#initiatives">Campaigns & Volunteers</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/volunteer">Volunteer</Link>
-                </DropdownMenuItem>
+              
               </DropdownMenuContent>
             </DropdownMenu>
             <NavLink href="/gallery">Gallery</NavLink>
@@ -224,15 +222,9 @@ export default function Header() {
                             className="text-base"
                             onClick={() => setMobileMenuOpen(false)}
                           >
-                            Campaigns
+                            Campaigns & Volunteers
                           </NavLink>
-                          <NavLink
-                            href="/volunteer"
-                            className="text-base"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Volunteer
-                          </NavLink>
+                         
                         </div>
                       </AccordionContent>
                     </AccordionItem>

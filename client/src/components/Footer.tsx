@@ -27,13 +27,13 @@ export default function Footer() {
                 <a className="block text-gray-400 hover:text-white transition-colors">Team</a>
               </Link>
               <Link href="/features">
-                <a className="block text-gray-400 hover:text-white transition-colors">Features</a>
+                <a className="block text-gray-400 hover:text-white transition-colors">Services</a>
               </Link>
               <Link href="/donate">
                 <a className="block text-gray-400 hover:text-white transition-colors">Donate</a>
               </Link>
               <Link href="/causes">
-                <a className="block text-gray-400 hover:text-white transition-colors">Causes</a>
+                <a className="block text-gray-400 hover:text-white transition-colors">Initiatives</a>
               </Link>
               <Link href="/contact">
                 <a className="block text-gray-400 hover:text-white transition-colors">Contact</a>
@@ -53,15 +53,7 @@ export default function Footer() {
                      Galana Road, Kilimani, Nairobi
                 </span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5" />
-              <a href="tel:+254721971194" className="hover:text-white transition-colors">+254 721 971 194</a>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5" />
-              <a href="tel:+254725233261" className="hover:text-white transition-colors">+254 725 233 261</a>
-            </div>
+            
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
               <a href="tel:0208020770" className="hover:text-white transition-colors">0208020770</a>
@@ -87,9 +79,9 @@ export default function Footer() {
             <Link href="/legal">
               <a className="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a>
             </Link>
-            <Link href="/licenses">
+          {/*<Link href="/licenses">
               <a className="text-gray-400 hover:text-white transition-colors text-sm">Licenses</a>
-            </Link>
+            </Link>*/}
           </div>
         </div>
       </div>

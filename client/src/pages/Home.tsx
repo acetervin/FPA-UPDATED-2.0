@@ -448,7 +448,7 @@ export default function Home() {
                 Every action counts towards a more sustainable future.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/donate">
+                <Link href="/get-involved#initiatives">
                   <Button size="lg" className="bg-white text-yellow-600 hover:bg-gray-100 px-8 py-3">
                     Get Involved Today
                   </Button>

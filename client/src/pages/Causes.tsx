@@ -25,7 +25,7 @@ export default function Causes() {
     <>
       <SEO />
       <Helmet>
-        <title>Our Causes - Family Peace Association</title>
+        <title>Our Initiatives - Family Peace Association</title>
         <meta name="description" content="Discover our family peace initiatives and programs designed to strengthen relationships, resolve conflicts, and build lasting community support." />
       </Helmet>
 
@@ -35,7 +35,7 @@ export default function Causes() {
           <ScrollAnimationWrapper>
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-                Our <span className="primary-text">Causes</span>
+                Our <span className="primary-text">Initiatives</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Explore our family peace initiatives and programs designed to strengthen relationships, resolve conflicts, and build lasting support in our communities.
