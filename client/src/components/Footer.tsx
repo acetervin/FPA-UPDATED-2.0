@@ -6,10 +6,10 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white py-16">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
-          {/* Navigation */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {/* 🧭 Explore */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Navigation</h4>
+            <h4 className="text-lg font-semibold mb-4">Explore</h4>
             <div className="space-y-2">
               <Link href="/">
                 <a className="block text-gray-400 hover:text-white transition-colors">Home</a>
@@ -23,17 +23,23 @@ export default function Footer() {
               <Link href="/gallery">
                 <a className="block text-gray-400 hover:text-white transition-colors">Gallery</a>
               </Link>
-              <Link href="/team">
-                <a className="block text-gray-400 hover:text-white transition-colors">Team</a>
-              </Link>
               <Link href="/features">
                 <a className="block text-gray-400 hover:text-white transition-colors">Services</a>
               </Link>
-              <Link href="/donate">
-                <a className="block text-gray-400 hover:text-white transition-colors">Donate</a>
-              </Link>
               <Link href="/causes">
                 <a className="block text-gray-400 hover:text-white transition-colors">Initiatives</a>
+              </Link>
+            </div>
+          </div>
+          {/* 📞 Support & Info */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Support & Info</h4>
+            <div className="space-y-2">
+              <Link href="/team">
+                <a className="block text-gray-400 hover:text-white transition-colors">Team</a>
+              </Link>
+              <Link href="/donate">
+                <a className="block text-gray-400 hover:text-white transition-colors">Donate</a>
               </Link>
               <Link href="/contact">
                 <a className="block text-gray-400 hover:text-white transition-colors">Contact</a>
@@ -42,7 +48,24 @@ export default function Footer() {
                 <a className="block text-gray-400 hover:text-white transition-colors">Legal</a>
               </Link>
             </div>
-          
+          </div>
+          {/* 🌐 Socials */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Socials</h4>
+            <div className="flex space-x-4">
+              <a href="https://facebook.com/familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-400 hover:text-white transition-colors">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="https://twitter.com/familypeaceassoc" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-400 hover:text-white transition-colors">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="https://instagram.com/familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="https://linkedin.com/company/familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-white transition-colors">
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </div>
           </div>
           {/* Contact Icons */}
           <div className="flex flex-col space-y-4 text-gray-400">
@@ -53,7 +76,6 @@ export default function Footer() {
                      Galana Road, Kilimani, Nairobi
                 </span>
             </div>
-            
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
               <a href="tel:0208020770" className="hover:text-white transition-colors">0208020770</a>
@@ -68,11 +90,11 @@ export default function Footer() {
         <div className="mb-12">
           <Newsletter />
         </div>
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-400 text-sm text-center md:text-left">
             © 2025 Family Peace Association. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 mt-4 md:mt-0 items-center">
             <Link href="/legal">
               <a className="text-gray-400 hover:text-white transition-colors text-sm">Privacy Policy</a>
             </Link>
