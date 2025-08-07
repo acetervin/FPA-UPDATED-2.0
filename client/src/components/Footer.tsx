@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Heart, MapPin, Phone, Mail, Facebook, Linkedin, Instagram, Twitter } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import Newsletter from "./Newsletter";
 
 export default function Footer() {
@@ -53,17 +54,20 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Socials</h4>
             <div className="flex space-x-4">
-              <a href="https://facebook.com/familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.facebook.com/share/1CY6v9ykyQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-gray-400 hover:text-white transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://twitter.com/familypeaceassoc" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-gray-400 hover:text-white transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="https://instagram.com/familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.instagram.com/familypeacekenya" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com/company/familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-white transition-colors">
                 <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="tiktok.com/@familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="text-gray-400 hover:text-white transition-colors">
+                <SiTiktok className="w-5 h-5" />
               </a>
             </div>
           </div>
