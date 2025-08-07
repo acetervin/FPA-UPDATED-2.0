@@ -352,8 +352,20 @@ export default function Contact() {
                 <Card className="border-red-200">
                   <CardContent className="p-6 text-center">
                     <Phone className="w-8 h-8 text-red-600 mx-auto mb-3" />
-                    <h3 className="font-semibold text-gray-800 mb-2">Crisis Hotline</h3>
-                    <p className="text-2xl font-bold text-red-600 mb-2">(555) 987-6543</p>
+                    <h3 className="font-semibold text-gray-800 mb-2">Crisis Hotlines</h3>
+                    <div className="mb-2">
+                      <div className="text-gray-800 text-base mt-2">
+                        <div className="mb-1">
+                          <span className="font-semibold">Red Cross:</span> <span className="text-red-600">1199</span>
+                        </div>
+                        <div className="mb-1">
+                          <span className="font-semibold">EMKF:</span> <span className="text-red-600">0800 723 253</span>
+                        </div>
+                        <div className="mb-1">
+                          <span className="font-semibold">Niskize:</span> <span className="text-red-600">0900 620 800</span>
+                        </div>
+                      </div>
+                    </div>
                     <p className="text-sm text-gray-600">Available 24/7</p>
                   </CardContent>
                 </Card>

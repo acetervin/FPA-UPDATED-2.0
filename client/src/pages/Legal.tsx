@@ -58,7 +58,7 @@ export default function Legal() {
                   <Shield className="w-6 h-6 text-primary" />
                   <span>Privacy Policy</span>
                 </CardTitle>
-                <p className="text-gray-600">Last updated: December 2024</p>
+                <p className="text-gray-600">Last updated: December 2025</p>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
@@ -284,7 +284,7 @@ export default function Legal() {
                     href="tel:+15551234567" 
                     className="text-primary hover:underline font-medium"
                   >
-                    (555) 123-PEACE
+                    (020) 802-0770
                   </a>
                 </CardContent>
               </Card>
