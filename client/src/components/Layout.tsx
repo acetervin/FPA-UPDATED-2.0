@@ -5,8 +5,10 @@ import Header from './Header';
 import Footer from './Footer';
 import { Toaster } from './Toaster';
 import { ErrorBoundary } from './ErrorBoundary';
+import EventPopup from './EventPopup';
 
 interface LayoutProps {
+
   children: React.ReactNode;
   title?: string;
   description?: string;
@@ -37,6 +39,7 @@ export function Layout({
 
       {!isAdminPage && !hideFooter && <Footer />}
       <Toaster />
+      {!isAdminPage && <EventPopup />}
     </ErrorBoundary>
   );
 }

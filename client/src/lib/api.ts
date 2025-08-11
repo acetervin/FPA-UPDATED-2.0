@@ -60,7 +60,10 @@ export async function apiClient<T = any>(
 
 export const getLatestEvent = () => apiClient('/events/latest');
 
+export const getFeaturedActiveEvents = () => apiClient('/events/featured-active');
+
 // Common API endpoints
+
 export const adminApi = {
 
   // Event Registrations

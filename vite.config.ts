@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
+    ...(process.env.NODE_ENV !== "development" &&
     process.env.REPL_ID !== undefined
       ? [
           await import("@replit/vite-plugin-cartographer").then((m) =>
@@ -59,6 +59,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
+
         secure: true,
         xfwd: true,
         cookieDomainRewrite: 'localhost',
@@ -80,6 +81,7 @@ export default defineConfig({
       '/admin': {
         target: 'http://localhost:3001',
         changeOrigin: true,
+
         secure: true,
         xfwd: true,
         cookieDomainRewrite: 'localhost',

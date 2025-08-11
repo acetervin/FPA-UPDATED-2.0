@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { db } from '../db.js';
-import { events } from '../../shared/schema.js';
-import { desc, gte } from 'drizzle-orm';
+import { events, blogPosts } from '../../shared/schema.js';
+import { asc, desc, gte, and, eq } from 'drizzle-orm';
+
 
 const router = Router();
 
@@ -23,5 +24,32 @@ router.get('/latest', async (req, res, next) => {
     next(error);
   }
 });
+
+router.get('/featured-active', async (req, res, next) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const featuredEvents = await db
+      .select()
+      .from(events)
+      .innerJoin(blogPosts, eq(events.name, blogPosts.title))
+      .where(
+        and(
+          eq(blogPosts.featured, true),
+          eq(events.active, true),
+          gte(events.endDate, today)
+        )
+      )
+      .orderBy(asc(events.date));
+
+
+    res.json(featuredEvents);
+  } catch (error) {
+    console.error('Error fetching featured active events:', error);
+    next(error);
+  }
+});
+
 
 export default router;
