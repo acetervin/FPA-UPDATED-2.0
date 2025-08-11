@@ -53,7 +53,7 @@ export default defineConfig({
     minify: 'terser',
   },
   server: {
-    host: process.env.NODE_ENV === 'development' ? 'localhost' : false, // Only expose localhost in development
+    host: process.env.NODE_ENV === 'production' ? 'localhost' : false, // Only expose localhost in development
     port: 5173,
     proxy: {
       '/api': {
