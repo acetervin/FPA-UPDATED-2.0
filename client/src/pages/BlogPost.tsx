@@ -240,7 +240,7 @@ export default function BlogPost() {
                 </Button>
               </Link>
               <Link href="/get-involved">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white text-gray-800 hover:bg-white/10">
                   Get Involved
                 </Button>
               </Link>
