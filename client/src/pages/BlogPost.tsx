@@ -121,14 +121,15 @@ export default function BlogPost() {
 
               {post.category === 'events' && (
                 <div className="mt-8">
-                  {/**     */}
+                  {/*    */}
                  {/* <Link href={`/event-registration?name=${encodeURIComponent(post.title)}`}>*/}
 
-                 <a href="https://forms.gle/HT9jg73hPrynaWLu7" target="_blank" rel="noopener noreferrer">
+                 {/* <a href="https://forms.gle/HT9jg73hPrynaWLu7" target="_blank" rel="noopener noreferrer">
                     <Button size="lg">
                       Register for this Event
                     </Button>
-                  </a>
+                  </a> */}
+
                 </div>
               )}
             </header>
