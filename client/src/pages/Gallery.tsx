@@ -28,6 +28,7 @@ const CATEGORY_LIST = [
   'Youth Mentorship',
   'Couples Enrichment',
   'Men Fellowship',
+  'Other',
 ];
 
 const ImagesGallery: React.FC = () => {
