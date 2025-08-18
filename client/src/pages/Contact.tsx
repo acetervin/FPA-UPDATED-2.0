@@ -239,7 +239,7 @@ export default function Contact() {
                         <div>
                           <h3 className="font-semibold text-gray-800 mb-2">Email Us</h3>
                           <p className="text-gray-600 mb-1">
-                            General Inquiries: <a href="mailto:kenya@familypeaceassociation.org" className="text-primary hover:underline">kenya@familypeaceassociation.org</a>
+                            General Inquiries: <a href="mailto:kenya@familypeace.org" className="text-primary hover:underline">kenya@familypeaceassociation.org</a>
                           </p>
                         </div>
                       </div>
