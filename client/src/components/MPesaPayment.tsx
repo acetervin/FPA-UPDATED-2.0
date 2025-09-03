@@ -4,7 +4,9 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { usePaymentGatewayStatus } from '@/hooks/use-payment-gateway-status';
 import { z } from 'zod';
+import { apiClient } from '@/lib/api';
 import CurrencyAmount from '@/components/ui/CurrencyAmount';
+
 
 interface MPesaPaymentProps {
   amount: string;
@@ -27,25 +29,17 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
   useEffect(() => {
     const fetchKesAmount = async () => {
       try {
-        const response = await fetch('/api/currency/convert', {
+        const data = await apiClient<{ amount: number }>('/currency/convert', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({
             amount: Number(amount),
             from: 'USD',
             to: 'KES',
           }),
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to convert currency');
-        }
-
-        const data = await response.json();
         setKesAmount(data.amount);
       } catch (error) {
+
         console.error('Failed to convert currency:', error);
         toast({
           variant: "destructive",
@@ -75,14 +69,10 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
 
   const checkPaymentStatus = async (checkoutRequestId: string) => {
     try {
-      const response = await fetch(`/api/mpesa/status/${checkoutRequestId}`);
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to check payment status');
-      }
+      const data = await apiClient<{ ResultCode?: string; message?: string }>(`/mpesa/status/${checkoutRequestId}`);
 
       if (data.ResultCode === '0') {
+
         toast({
           title: 'Payment Successful',
           description: 'Thank you for your donation!',
@@ -134,11 +124,8 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
       phoneNumberSchema.parse(phoneNumber);
 
       setIsLoading(true);
-      const response = await fetch('/api/mpesa/initiate', {
+      const data = await apiClient<{ CheckoutRequestID?: string; error?: string }>('/mpesa/initiate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           phoneNumber,
           amount: parseFloat(amount),
@@ -147,9 +134,8 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
         }),
       });
 
-      const data = await response.json();
 
-      if (response.ok && data.CheckoutRequestID) {
+      if (data.CheckoutRequestID) {
         setCheckoutId(data.CheckoutRequestID);
         toast({
           title: 'Check your phone',
@@ -159,6 +145,7 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
       } else {
         throw new Error(data.error || 'Failed to initiate payment');
       }
+
     } catch (error) {
       setIsLoading(false);
       const message = error instanceof z.ZodError 

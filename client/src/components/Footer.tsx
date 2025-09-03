@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Heart, MapPin, Phone, Mail, Facebook, Linkedin, Instagram, Twitter } from "lucide-react";
-import { SiTiktok } from "react-icons/si";
+import { SiTiktok, SiYoutube } from "react-icons/si";
 import Newsletter from "./Newsletter";
 
 export default function Footer() {
@@ -63,11 +63,11 @@ export default function Footer() {
               <a href="https://www.instagram.com/familypeacekenya" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-white transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </a>
               <a href="tiktok.com/@familypeaceassociation" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="text-gray-400 hover:text-white transition-colors">
                 <SiTiktok className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@FamilyPeaceAssociationKenya" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-gray-400 hover:text-white transition-colors">
+                <SiYoutube className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -82,11 +82,11 @@ export default function Footer() {
             </div>
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
-              <a href="tel:0208020770" className="hover:text-white transition-colors">0208020770</a>
+              <a href="tel:07331155199" className="hover:text-white transition-colors">0208020770/07331155199</a>
             </div>
             <div className="flex items-center space-x-2">
               <Mail className="w-5 h-5" />
-              <a href="mailto:kenya@familypeaceassociation.org" className="hover:text-white transition-colors">kenya@familypeaceassociation.org</a>
+              <a href="mailto:kenya@familypeaceassociation.org" className="hover:text-white transition-colors">kenya@familypeace.org</a>
             </div>
           </div>
         </div>

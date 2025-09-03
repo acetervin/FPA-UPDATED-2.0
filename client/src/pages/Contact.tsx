@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import SEO from "@/components/SEO";
 
@@ -37,28 +36,45 @@ export default function Contact() {
     },
   });
 
-  const contactMutation = useMutation({
-    mutationFn: (data: ContactForm) => 
-      apiRequest("POST", "/api/contact-submissions", data),
-    onSuccess: () => {
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for contacting us. We'll get back to you soon.",
+  const onSubmit = async (data: ContactForm) => {
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "fdef2d8b-a9db-4554-8b90-37a9e33d7ac8",
+          from_name: data.name,
+          subject: `Contact Form: ${data.subject}`,
+          email: data.email,
+          replyto: data.email,
+          message: data.message,
+          // Honeypot field for spam prevention
+          botcheck: "",
+        }),
       });
-      form.reset();
-      queryClient.invalidateQueries({ queryKey: ["/api/contact-submissions"] });
-    },
-    onError: (error: any) => {
+      const result = await response.json();
+      if (result.success) {
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for contacting us. We'll get back to you soon.",
+        });
+        form.reset();
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to send message. Please try again.",
+        description: error?.message || "Failed to send message. Please try again.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: ContactForm) => {
-    contactMutation.mutate(data);
+    }
   };
 
   return (
@@ -98,8 +114,12 @@ export default function Contact() {
                     <h2 className="text-2xl font-bold text-gray-800">Send Us a Message</h2>
                   </div>
                   
+                  {/* Use Form for logic only, wrap fields in native form */}
                   <Form {...form}>
+                    {/* Native form starts here */}
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      {/* Honeypot field for spam prevention */}
+                      <input type="text" name="botcheck" style={{ display: 'none' }} autoComplete="off" tabIndex={-1} />
                       <div className="grid md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
@@ -165,9 +185,9 @@ export default function Contact() {
                       <Button 
                         type="submit" 
                         className="w-full primary-bg text-white hover:opacity-90"
-                        disabled={contactMutation.isPending}
+                        disabled={false}
                       >
-                        {contactMutation.isPending ? (
+                        {false ? (
                           "Sending..."
                         ) : (
                           <>
@@ -224,6 +244,9 @@ export default function Contact() {
                           <p className="text-gray-600 mb-2">
                             Telephone: <a href="tel:0208020770" className="text-primary hover:underline">0208020770</a>
                           </p>
+                          <p className="text-gray-600 mb-2">
+                            Telephone: <a href="tel:0208020770" className="text-primary hover:underline">07331155199</a>
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -239,7 +262,7 @@ export default function Contact() {
                         <div>
                           <h3 className="font-semibold text-gray-800 mb-2">Email Us</h3>
                           <p className="text-gray-600 mb-1">
-                            General Inquiries: <a href="mailto:kenya@familypeace.org" className="text-primary hover:underline">kenya@familypeaceassociation.org</a>
+                            General Inquiries: <a href="mailto:kenya@familypeace.org" className="text-primary hover:underline">kenya@familypeace.org</a>
                           </p>
                         </div>
                       </div>

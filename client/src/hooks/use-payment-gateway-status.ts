@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
+import { apiClient } from '@/lib/api';
+
 
 interface PaymentGatewayStatus {
   gateway: string;
@@ -13,17 +15,14 @@ export function usePaymentGatewayStatus(gateway: 'paypal' | 'mpesa') {
   const { data: status, isLoading, error } = useQuery<PaymentGatewayStatus>({
     queryKey: ['payment-gateway-status', gateway],
     queryFn: async () => {
-      const response = await fetch('/api/admin/payment-gateway-status');
-      if (!response.ok) {
-        throw new Error('Failed to fetch gateway status');
-      }
-      const statuses: PaymentGatewayStatus[] = await response.json();
+      const statuses: PaymentGatewayStatus[] = await apiClient('/admin/payment-gateway-status');
       return statuses.find(s => s.gateway === gateway) || {
         gateway,
         status: 'maintenance',
         updatedAt: new Date().toISOString()
       };
     },
+
   });
 
   const isLive = status?.status === 'live';

@@ -131,14 +131,7 @@ export default function Donate() {
                 Your generous support helps us provide essential family counseling services, 
                 conflict resolution programs, and community outreach to those who need it most.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3">
-                  Donate Now
-                </Button>
-                <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3">
-                  Learn About Our Impact
-                </Button>
-              </div>
+            
             </div>
           </ScrollAnimationWrapper>
         </div>
@@ -387,7 +380,7 @@ export default function Donate() {
                     <Smartphone className="w-8 h-8 text-purple-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900">Mobile Payments</h3>
-                  <p className="text-gray-600">PayPal, Apple Pay, and Google Pay accepted</p>
+                  <p className="text-gray-600">PayPal, and Mpesa</p>
                 </CardContent>
               </Card>
             </ScrollAnimationWrapper>
