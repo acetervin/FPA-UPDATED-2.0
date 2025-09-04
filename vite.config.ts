@@ -1,29 +1,32 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
+// This configuration is designed for building from the project root.
 export default defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-
-  ],
+  plugins: [react()],
+  
+  // No 'root' property at the top level. This makes the config more explicit for build environments like Vercel.
+  
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      // Aliases are resolved from the project root.
+      "@": path.resolve(__dirname, "client/src"),
+      "@shared": path.resolve(__dirname, "shared"),
+      "@assets": path.resolve(__dirname, "attached_assets"),
     },
   },
-  publicDir: "../public",
-  root: path.resolve(import.meta.dirname, "client"),
+  
   build: {
-
-    outDir: path.resolve(import.meta.dirname, "dist/client"),
-
+    // The output directory is relative to the project root.
+    outDir: "dist/client",
     emptyOutDir: true,
+    
+    // Explicitly define the entry point for the build.
     rollupOptions: {
+      input: {
+        app: path.resolve(__dirname, "client/index.html"),
+      },
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
@@ -45,70 +48,5 @@ export default defineConfig({
     cssCodeSplit: true,
     sourcemap: true,
     minify: 'terser',
-  },
-  server: {
-    host: process.env.NODE_ENV === 'production' ? 'localhost' : false, // Only expose localhost in development
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-
-        secure: true,
-        xfwd: true,
-        cookieDomainRewrite: 'localhost',
-        headers: {
-          'X-Forwarded-Proto': 'https',
-        },
-        configure: (proxy, _options) => {
-          proxy.on('error', (err, _req, _res) => {
-            console.log('proxy error', err);
-          });
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
-            // Add original client IP to headers
-            if (req.socket.remoteAddress) {
-              proxyReq.setHeader('X-Forwarded-For', req.socket.remoteAddress);
-            }
-          });
-        }
-      },
-      '/admin': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-
-        secure: true,
-        xfwd: true,
-        cookieDomainRewrite: 'localhost',
-        headers: {
-          'X-Forwarded-Proto': 'https',
-        },
-        // Validate admin routes
-        configure: (proxy, _options) => {
-          proxy.on('error', (err, _req, _res) => {
-            console.log('proxy error', err);
-          });
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
-            if (req.socket.remoteAddress) {
-              proxyReq.setHeader('X-Forwarded-For', req.socket.remoteAddress);
-            }
-          });
-        }
-      }
-    },
-    fs: {
-      strict: true,
-      deny: [
-        "**/.*",
-        "**/node_modules/**",
-        "**/dist/**",
-        "**/coverage/**",
-        "**/.git/**",
-        "**/.env*"
-      ],
-      allow: [
-        ".."
-      ]
-    },
-
   },
 });
