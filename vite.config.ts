@@ -2,15 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// This configuration is designed for building from the project root.
 export default defineConfig({
-  plugins: [react()],
+  // Set the project root to the 'client' directory.
+  // This tells Vite where to find the index.html and source files.
+  root: 'client',
   
-  // No 'root' property at the top level. This makes the config more explicit for build environments like Vercel.
+  plugins: [react()],
   
   resolve: {
     alias: {
-      // Aliases are resolved from the project root.
+      // Aliases still need to be resolved from the repository root (__dirname)
       "@": path.resolve(__dirname, "client/src"),
       "@shared": path.resolve(__dirname, "shared"),
       "@assets": path.resolve(__dirname, "attached_assets"),
@@ -18,35 +19,14 @@ export default defineConfig({
   },
   
   build: {
-    // The output directory is relative to the project root.
-    outDir: "dist/client",
+    // The output directory is resolved from the repository root.
+    // This ensures the output is always in a predictable location.
+    outDir: path.resolve(__dirname, 'dist/client'),
     emptyOutDir: true,
     
-    // Explicitly define the entry point for the build.
+    // Since 'root' is 'client', rollup knows to look for 'index.html' there.
     rollupOptions: {
-      input: {
-        app: path.resolve(__dirname, "client/index.html"),
-      },
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-label',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-select',
-          ],
-          'payment-vendor': ['@paypal/react-paypal-js'],
-        },
-      },
+      input: path.resolve(__dirname, 'client/index.html'),
     },
-    chunkSizeWarningLimit: 1000,
-    cssCodeSplit: true,
-    sourcemap: true,
-    minify: 'terser',
   },
 });
