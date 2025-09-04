@@ -44,14 +44,8 @@ app.use(compression());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Cache control for static assets
-app.use(serveStatic('dist/public', {
-  
-  etag: true,
-  lastModified: true
-}));
-
 // Basic middleware (order matters!)
+
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10kb' })); // Limit JSON payload size
 app.use(bodyParser.urlencoded({ extended: false, limit: '10kb' }));
@@ -83,9 +77,10 @@ app.use(helmet({
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://your-production-domain.com' 
+    ? process.env.CORS_ORIGIN
     : ['http://localhost:5173', 'http://localhost:3002', 'http://localhost:5174'],
   credentials: true,
+
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'X-Requested-With'],
   exposedHeaders: ['x-csrf-token'],
@@ -230,16 +225,12 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
     // Register API routes first
     const httpServer = await registerRoutes(app);
     
-    // Then set up Vite middleware
+    // In development, Vite handles serving the frontend.
+    // In production, the frontend is a separate deployment, so we don't serve static files.
     if (process.env.NODE_ENV === 'development') {
       await setupVite(app, httpServer);
-    } else {
-      // Serve static files in production
-      app.use(serveStatic(path.join(__dirname, '../dist/public')));
-      app.get('*', (req: Request, res: Response) => {
-        res.sendFile(path.join(__dirname, '../dist/public/index.html'));
-      });
     }
+
 
     // Start listening
     httpServer.listen(port, () => {
