@@ -27,7 +27,8 @@ Use the following settings for your web service:
 
 *   **Region**: Choose a region close to you.
 *   **Branch**: Select your main branch (e.g., `main` or `master`).
-*   **Root Directory**: `CompassionClone` (or the subdirectory where your `package.json` is located).
+*   **Root Directory**: Leave this as the default (the root of your repository).
+
 *   **Runtime**: `Node`.
 *   **Build Command**: `npm install && npm run build:server`
 *   **Start Command**: `npm start`
@@ -61,11 +62,16 @@ Your React frontend will be deployed as a static site on Vercel.
 
 ### **Step 2: Configure the Project**
 
-1.  **Root Directory**: Navigate and select the `client` directory inside your `CompassionClone` folder.
-2.  Vercel should automatically configure the build and output settings correctly for Vite. If not, ensure they are set as follows:
-    *   **Build Command**: `npm run build` (or `vite build`)
-    *   **Output Directory**: `dist`
-    *   **Install Command**: `npm install`
+When you select your repository, Vercel will try to detect the framework. You will likely need to adjust the settings.
+
+Click "Build & Development Settings" and set the following:
+
+*   **Build Command**: `npm run build:client`
+*   **Output Directory**: `dist/client`
+*   **Install Command**: `npm install`
+
+Make sure the **Root Directory** is the base of your project (it should default to this).
+
 
 ### **Step 3: Add Environment Variables**
 
