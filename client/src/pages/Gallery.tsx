@@ -3,8 +3,10 @@ import { Helmet } from "react-helmet";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import SEO from "@/components/SEO";
+import { apiClient } from "@/lib/api";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+
 
 // --- TYPE DEFINITIONS ---
 interface GalleryImage {
@@ -40,20 +42,19 @@ const ImagesGallery: React.FC = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    fetch('/api/gallery')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch images');
-        return res.json();
-      })
+    apiClient<{ images: GalleryImage[] }>('/gallery')
       .then(data => {
         setImages(data.images || []);
-        setLoading(false);
       })
       .catch(err => {
-        setError(err.message);
+        console.error("Gallery Error:", err);
+        setError(err.message || 'Failed to load images. The gallery might be empty or the server is unavailable.');
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
+
 
   const filteredImages = selectedCategory === 'All Categories'
     ? images
