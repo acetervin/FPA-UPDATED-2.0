@@ -11,15 +11,19 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Search, Calendar, Tag } from "lucide-react";
 import type { BlogPost } from "@shared/schema";
 import SEO from "@/components/SEO";
+import { apiClient } from "@/lib/api";
 
 export default function Blog() {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [location, setLocation] = useLocation();
 
-  const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog-posts"],
+  const { data: blogPosts, isLoading } = useQuery({
+    queryKey: ["blog-posts"],
+    queryFn: () => apiClient<BlogPost[]>('/blog-posts'),
   });
+
 
   // Handle URL parameters for category
   useEffect(() => {
