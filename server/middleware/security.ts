@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import cors, { CorsOptions } from 'cors';
+import cors from 'cors';
+import type { CorsOptions } from 'cors';
 import { z } from 'zod';
 import { doubleCsrf } from 'csrf-csrf';
 import crypto from 'crypto';
@@ -301,22 +302,22 @@ export function requireRole(roles: string[]) {
 }
 
 // Error handling middleware
-export function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {
-  console.error(err.stack);
+export function errorHandler(err: Error | any, req: Request, res: Response, next: NextFunction) {
+  console.error(err?.stack || err);
 
-  if (err.name === 'UnauthorizedError') {
+  if (err?.name === 'UnauthorizedError') {
     res.status(401).json({ message: 'Invalid token' });
     return;
   }
 
-  if (err.code === 'EBADCSRFTOKEN') {
+  if (err?.code === 'EBADCSRFTOKEN') {
     res.status(403).json({ message: 'Invalid CSRF token' });
     return;
   }
 
-  res.status(500).json({ 
-    message: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : err.message 
+  res.status(500).json({
+    message: process.env.NODE_ENV === 'production'
+      ? 'Internal server error'
+      : err?.message || 'An error occurred'
   });
 }
