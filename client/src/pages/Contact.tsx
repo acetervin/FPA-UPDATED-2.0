@@ -245,7 +245,7 @@ export default function Contact() {
                             Telephone: <a href="tel:0208020770" className="text-primary hover:underline">0208020770</a>
                           </p>
                           <p className="text-gray-600 mb-2">
-                            Telephone: <a href="tel:0208020770" className="text-primary hover:underline">07331155199</a>
+                            Telephone: <a href="tel:0208020770" className="text-primary hover:underline">0733155199</a>
                           </p>
                         </div>
                       </div>
