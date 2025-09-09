@@ -165,6 +165,12 @@ export default function Donate() {
               <div className="mt-6 text-yellow-800 text-base font-semibold">
                 <span>After making your donation, please leave a message with your name and donation details so we can thank you and send a receipt.</span>
               </div>
+              <Button
+                className="mt-6 w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                onClick={() => window.location.href = '/contact'}
+              >
+                Leave a Message
+              </Button>
             </div>
           </ScrollAnimationWrapper>
 
