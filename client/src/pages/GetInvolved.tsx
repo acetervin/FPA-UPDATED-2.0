@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
 import { Link } from "wouter";
 import { useForm } from "react-hook-form";
@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { 
   Heart, 
   Users, 
@@ -63,29 +63,48 @@ export default function GetInvolved() {
     },
   });
 
-  const volunteerMutation = useMutation({
-    mutationFn: (data: VolunteerApplicationForm) => 
-      apiRequest("POST", "/api/volunteer-applications", data),
-    onSuccess: () => {
-      toast({
-        title: "Application Submitted!",
-        description: "Thank you for your interest in volunteering. We'll be in touch soon.",
+  const onSubmit = async (data: VolunteerApplicationForm) => {
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          from_name: data.name,
+          subject: `Volunteer Application: ${data.program}`,
+          email: data.email,
+          phone: data.phone,
+          program: data.program,
+          experience: data.experience,
+          availability: data.availability,
+          message: data.message,
+          botcheck: "",
+        }),
       });
-      form.reset();
-      setSelectedProgram("");
-      queryClient.invalidateQueries({ queryKey: ["/api/volunteer-applications"] });
-    },
-    onError: (error: any) => {
+      const result = await response.json();
+      if (result.success) {
+        toast({
+          title: "Application Submitted!",
+          description: "Thank you for your interest in volunteering. We'll be in touch soon.",
+        });
+        form.reset();
+        setSelectedProgram("");
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to submit application. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to submit application. Please try again.",
+        description: error?.message || "Failed to submit application. Please try again.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: VolunteerApplicationForm) => {
-    volunteerMutation.mutate(data);
+    }
   };
 
   return (
@@ -417,9 +436,9 @@ export default function GetInvolved() {
                       <Button 
                         type="submit" 
                         className="w-full primary-bg text-white hover:opacity-90"
-                        disabled={volunteerMutation.isPending}
+                        disabled={false}
                       >
-                        {volunteerMutation.isPending ? "Submitting..." : "Submit Application"}
+                        Submit Application
                       </Button>
                     </form>
                   </Form>
@@ -499,17 +518,17 @@ export default function GetInvolved() {
                 <div className="text-center">
                   <Phone className="w-8 h-8 text-white mx-auto mb-3" />
                   <h3 className="text-lg font-semibold text-white mb-2">Call Us</h3>
-                  <p className="text-white/90">(555) 123-PEACE</p>
+                  <p className="text-white/90">+254 733 155 199</p>
                 </div>
                 <div className="text-center">
                   <Mail className="w-8 h-8 text-white mx-auto mb-3" />
                   <h3 className="text-lg font-semibold text-white mb-2">Email Us</h3>
-                  <p className="text-white/90">volunteer@familypeace.org</p>
+                  <p className="text-white/90">kenya@familypeace.org</p>
                 </div>
                 <div className="text-center">
                   <MapPin className="w-8 h-8 text-white mx-auto mb-3" />
                   <h3 className="text-lg font-semibold text-white mb-2">Visit Us</h3>
-                  <p className="text-white/90">123 Peace Ave<br />Community City, PC 12345</p>
+                  <p className="text-white/90">Wu Yi Plaza, 3rd Floor, Block E8, Galana Road, Kilimani, Nairobi</p>
                 </div>
               </div>
 

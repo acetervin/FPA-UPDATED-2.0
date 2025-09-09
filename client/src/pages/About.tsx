@@ -228,7 +228,7 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <ScrollAnimationWrapper animation="slide-in-left">
               <OptimizedImage 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
+                src="https://cdn.pixabay.com/photo/2017/12/27/16/40/world-3043067_1280.jpg" 
                 alt="Family counseling session" 
                 className="rounded-xl shadow-lg w-full"
               />
@@ -241,27 +241,27 @@ export default function About() {
                 </h2>
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2015 - Foundation</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2017 – Foundation</h3>
                     <p className="text-gray-600">
-                      Founded by Dr. Sarah Johnson with a vision to provide accessible family counseling and conflict resolution services to underserved communities.
+                      Launched in Seoul, South Korea, by Dr. Hyun Jin Preston Moon and Junsook Moon, with a vision to promote peace through God-centered families.
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2018 - Expansion</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2018 – Expansion</h3>
                     <p className="text-gray-600">
-                      Expanded our programs to include educational workshops and community outreach initiatives, reaching over 500 families in our first three years.
+                      Established branches across Asia and the Americas, introducing education and leadership programs for youth and families.
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2021 - Growth</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2020 – Growth</h3>
                     <p className="text-gray-600">
-                      Launched our volunteer training program and established partnerships with local schools, healthcare providers, and social services.
+                      Strengthened international presence in Africa and Europe, building partnerships with local communities and faith groups.
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2024 - Today</h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">2024 – Today</h3>
                     <p className="text-gray-600">
-                      Now serving over 2,500 families with a team of dedicated professionals and volunteers, continuing to expand our impact in the community.
+                      Now active in more than 20 countries including Kenya, FPA continues to inspire families worldwide to live with purpose, harmony, and shared values.
                     </p>
                   </div>
                 </div>
