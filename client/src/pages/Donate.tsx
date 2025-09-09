@@ -151,6 +151,23 @@ export default function Donate() {
             </div>
           </ScrollAnimationWrapper>
 
+          {/* Manual Bank Donation Section */}
+          <ScrollAnimationWrapper>
+            <div className="max-w-xl mx-auto mb-16 bg-yellow-50 border border-yellow-200 rounded-xl p-8 text-center">
+              <h3 className="text-2xl font-bold text-yellow-700 mb-4">Manual Bank Donation</h3>
+              <p className="text-gray-700 mb-2">You can donate directly via bank or M-Pesa Paybill:</p>
+              <div className="space-y-2 text-lg font-medium">
+                <div><span className="font-semibold">Bank Name:</span> KCB Bank</div>
+                <div><span className="font-semibold">Paybill Number:</span> 522533</div>
+                <div><span className="font-semibold">Account Number:</span> 7999918</div>
+                <div><span className="font-semibold">Account Name:</span> USHIRIKA WA FAMILIA FOUNDATION</div>
+              </div>
+              <div className="mt-6 text-yellow-800 text-base font-semibold">
+                <span>After making your donation, please leave a message with your name and donation details so we can thank you and send a receipt.</span>
+              </div>
+            </div>
+          </ScrollAnimationWrapper>
+
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             <ScrollAnimationWrapper delay={100}>
               <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
