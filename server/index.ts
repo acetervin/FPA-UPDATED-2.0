@@ -226,9 +226,20 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
     const httpServer = await registerRoutes(app);
     
     // In development, Vite handles serving the frontend.
-    // In production, the frontend is a separate deployment, so we don't serve static files.
+    // In production, serve static files from the client build.
     if (process.env.NODE_ENV === 'development') {
       await setupVite(app, httpServer);
+    } else {
+      // Serve static files from the client build directory
+      app.use(express.static(path.join(__dirname, '../../dist/client'), {
+        index: false, // Don't serve index.html automatically
+        maxAge: '1y', // Cache static assets for 1 year
+      }));
+
+      // Catch all handler: send back index.html for client-side routing
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../../dist/client/index.html'));
+      });
     }
 
 
