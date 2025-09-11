@@ -13,7 +13,7 @@ import {
   donations,
   createInsertSchema,
   galleryImages
-} from "../shared/schema.js";
+} from "../shared/schema";
 
 
 

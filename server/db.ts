@@ -1,7 +1,9 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
+import { eq } from 'drizzle-orm';
 import 'dotenv/config';
-import * as schema from '../../shared/schema.js';
+import { IStorage } from './storage.js';
+import * as schema from '../shared/schema';
 import {
   users, blogPosts, teamMembers, causes, volunteerApplications,
   contactSubmissions, newsletterSubscriptions,
@@ -10,7 +12,7 @@ import {
   type VolunteerApplication, type InsertVolunteerApplication,
   type ContactSubmission, type InsertContactSubmission,
   type NewsletterSubscription, type InsertNewsletterSubscription
-} from '../../shared/schema.js';
+} from '../shared/schema';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

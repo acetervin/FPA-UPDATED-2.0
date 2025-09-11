@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { db } from '../db.js';
-import { events, blogPosts } from '../../shared/schema.js';
+import { events, blogPosts } from '../../shared/schema';
 import { asc, desc, gte, and, eq } from 'drizzle-orm';
 
 

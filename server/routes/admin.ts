@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import { sql, desc } from 'drizzle-orm';
 
 import { db } from '../db.js';
-import { donations, eventRegistrations, users, blogPosts, events, volunteerApplications } from '../../shared/schema.js';
+import { donations, eventRegistrations, users, blogPosts, events, volunteerApplications } from '../../shared/schema';
 import type { PaymentGatewayStatus, PaymentGatewayConfig } from '../types/payment.js';
 import { paymentGatewayStatus } from '../schema/payment_gateway_status.js';
 import { paymentGatewayConfig } from '../schema/payment_gateway_config.js';

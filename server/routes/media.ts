@@ -3,7 +3,7 @@ import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from '../db';
-import { media } from '../../shared/schema.js';
+import { media } from '../../shared/schema';
 import { eq } from 'drizzle-orm';
 
 const router = Router();

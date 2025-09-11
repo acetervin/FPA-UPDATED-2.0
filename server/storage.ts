@@ -5,7 +5,7 @@ import type {
   VolunteerApplication, InsertVolunteerApplication,
   ContactSubmission, InsertContactSubmission,
   NewsletterSubscription, InsertNewsletterSubscription
-} from '../../shared/schema.js';
+} from '../shared/schema';
 
 export interface IStorage {
   // Users

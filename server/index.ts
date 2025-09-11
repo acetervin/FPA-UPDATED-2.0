@@ -78,7 +78,7 @@ app.use(helmet({
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? process.env.CORS_ORIGIN
-    : ['http://localhost:5173', 'http://localhost:3002', 'http://localhost:5174'],
+    : ['http://localhost:5000', 'http://0.0.0.0:5000', 'http://localhost:5173', 'http://localhost:3002', 'http://localhost:5174'],
   credentials: true,
 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -205,7 +205,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Error handling middleware
+// Register API routes first
+const httpServerPromise = registerRoutes(app);
+
+// Error handling middleware - MUST come after routes
 interface ServerError extends Error {
   status?: number;
   statusCode?: number;
@@ -217,25 +220,19 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
   res.status(status).json({ message });
 });
 
-// Register API routes first
-const httpServerPromise = registerRoutes(app);
-
 // Export the app and httpServerPromise for serverless usage
 export { app, httpServerPromise };
 
-// Comment out the server listen code to prevent running a persistent server in serverless environment
-/*
+// Start the server for development in Replit environment
 (async () => {
   try {
-    const port = process.env.PORT || 3002;
+    const port = process.env.PORT || 3001; // Use 3001 to avoid conflict with frontend port 5000
     
     const httpServer = await httpServerPromise;
     
-    // In development, Vite handles serving the frontend.
+    // In development, don't setup Vite here since frontend runs separately on port 5000
     // In production, serve static files from the client build.
-    if (process.env.NODE_ENV === 'development') {
-      await setupVite(app, httpServer);
-    } else {
+    if (process.env.NODE_ENV === 'production') {
       // Serve static files from the client build directory
       app.use(express.static(path.join(__dirname, '../../dist/client'), {
         index: false, // Don't serve index.html automatically
@@ -248,9 +245,9 @@ export { app, httpServerPromise };
       });
     }
 
-    // Start listening
-    httpServer.listen(port, () => {
-      console.log(`Server started: listening on port ${port}`);
+    // Start listening on localhost for backend
+    httpServer.listen(port, 'localhost', () => {
+      console.log(`Backend server started: listening on localhost:${port}`);
       console.log(`Health check available at: http://localhost:${port}/api/health`);
       console.log(`Environment: ${process.env.NODE_ENV}`);
       console.log(`CORS origin: ${process.env.CORS_ORIGIN}`);
@@ -270,4 +267,3 @@ export { app, httpServerPromise };
     process.exit(1);
   }
 })();
-*/
