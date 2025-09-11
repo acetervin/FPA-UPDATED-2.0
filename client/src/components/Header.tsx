@@ -104,6 +104,7 @@ export default function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <NavLink href="/events">Events</NavLink>
             {/* Get Involved Dropdown */}
             {/* Get Involved Dropdown - open on hover, show chevron */}
             <DropdownMenu>

@@ -20,6 +20,8 @@ const CausePage = lazy(() => import("@/pages/CausePage"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Legal = lazy(() => import("@/pages/Legal"));
 const Gallery = lazy(() => import("@/pages/Gallery"));
+const Events = lazy(() => import("@/pages/Events"));
+const EventDetail = lazy(() => import("@/pages/EventDetail"));
 const EventRegistration = lazy(() => import("@/pages/EventRegistration"));
 
 // Admin Pages (Lazy Loaded)
@@ -141,6 +143,20 @@ function Router() {
               {() => (
                 <Suspense fallback={<LoadingSpinner />}>
                   <Gallery />
+                </Suspense>
+              )}
+            </Route>
+            <Route path="/events">
+              {() => (
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Events />
+                </Suspense>
+              )}
+            </Route>
+            <Route path="/events/:slug">
+              {() => (
+                <Suspense fallback={<LoadingSpinner />}>
+                  <EventDetail />
                 </Suspense>
               )}
             </Route>

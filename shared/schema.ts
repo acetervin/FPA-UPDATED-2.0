@@ -119,7 +119,39 @@ export const events = pgTable("events", {
   active: boolean("active").default(true),
   name: text("name").notNull().unique(),
   description: text("description").notNull(),
+  fullDescription: text("full_description"), // Extended description for detail page
   imageUrl: text("image_url").notNull(),
+  slug: text("slug").notNull().unique(), // URL-friendly identifier
+  featured: boolean("featured").default(false),
+  category: text("category").default("general"), // Event category
+  tags: text("tags").array(), // Event tags
+  contactEmail: text("contact_email"),
+  contactPhone: text("contact_phone"),
+  registrationUrl: text("registration_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Event images for multiple photos per event
+export const eventImages = pgTable("event_images", {
+  id: serial("id").primaryKey(),
+  eventId: integer("event_id").references(() => events.id, { onDelete: 'cascade' }),
+  imageUrl: text("image_url").notNull(),
+  caption: text("caption"),
+  isPrimary: boolean("is_primary").default(false),
+  order: integer("order").default(0),
+  uploadedAt: timestamp("uploaded_at").defaultNow(),
+});
+
+// Event supporters/sponsors
+export const eventSupporters = pgTable("event_supporters", {
+  id: serial("id").primaryKey(),
+  eventId: integer("event_id").references(() => events.id, { onDelete: 'cascade' }),
+  name: text("name").notNull(),
+  logo: text("logo"),
+  website: text("website"),
+  type: text("type", { enum: ['sponsor', 'partner', 'organizer', 'supporter'] }).default('supporter'),
+  level: text("level", { enum: ['platinum', 'gold', 'silver', 'bronze', 'standard'] }).default('standard'),
+  order: integer("order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
