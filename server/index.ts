@@ -50,41 +50,56 @@ app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10kb' })); // Limit JSON payload size
 app.use(bodyParser.urlencoded({ extended: false, limit: '10kb' }));
 
-// Security Headers
+// Security Headers with environment-specific CSP
+const cspDirectives = {
+  defaultSrc: ["'self'"],
+  scriptSrc: process.env.NODE_ENV === 'production' 
+    ? ["'self'", "https://*.paypal.com", "https://js.stripe.com", "https://*.safaricom.co.ke"]
+    : ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://*.paypal.com", "https://js.stripe.com", "https://*.safaricom.co.ke"],
+  styleSrc: process.env.NODE_ENV === 'production'
+    ? ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"]
+    : ["'self'", "'unsafe-inline'", "https:", "http:"],
+  imgSrc: ["'self'", "data:", "https:", "blob:", "https://*.paypal.com", "https://*.safaricom.co.ke"],
+  fontSrc: ["'self'", "data:", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
+  connectSrc: ["'self'", 
+              "https://*.paypal.com", "https://api.paypal.com", "https://api-m.sandbox.paypal.com",
+              "https://api.stripe.com",
+              "https://sandbox.safaricom.co.ke", "https://api.safaricom.co.ke"],
+  frameSrc: ["'self'", "https://*.paypal.com", "https://*.safaricom.co.ke"],
+  formAction: ["'self'", "https://*.paypal.com", "https://*.safaricom.co.ke"],
+  mediaSrc: ["'self'", "data:", "https:"],
+  objectSrc: ["'none'"],
+  workerSrc: ["'self'", "blob:"],
+  baseUri: ["'self'"],
+  ...(process.env.NODE_ENV === 'production' && { upgradeInsecureRequests: [] })
+};
+
 app.use(helmet({
   contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'", "'unsafe-inline'", "data:", "https:"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://*.paypal.com", "https://js.stripe.com", "https://*.safaricom.co.ke"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https:", "http:"],
-      imgSrc: ["'self'", "data:", "https:", "http:", "blob:", "https://*.paypal.com", "https://*.safaricom.co.ke"],
-      fontSrc: ["'self'", "data:", "https:", "http:"],
-      connectSrc: ["'self'", "https:", "wss:", "http:", "ws:",
-                  "https://*.paypal.com", "https://api.paypal.com", "https://api-m.sandbox.paypal.com",
-                  "https://api.stripe.com",
-                  "https://sandbox.safaricom.co.ke", "https://api.safaricom.co.ke"],
-      frameSrc: ["'self'", "https://*.paypal.com", "https://*.safaricom.co.ke"],
-      formAction: ["'self'", "https://*.paypal.com", "https://*.safaricom.co.ke"],
-      mediaSrc: ["'self'", "data:", "https:", "http:"],
-      objectSrc: ["'none'"],
-      workerSrc: ["'self'", "blob:"]
-    },
+    directives: cspDirectives,
   },
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: { policy: "cross-origin" },
+  hsts: {
+    maxAge: process.env.NODE_ENV === 'production' ? 31536000 : 0, // 1 year in production
+    includeSubDomains: true,
+    preload: true
+  }
 }));
 
-// CORS configuration
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CORS_ORIGIN
-    : ['http://localhost:5000', 'http://0.0.0.0:5000', 'http://localhost:5173', 'http://localhost:3002', 'http://localhost:5174'],
-  credentials: true,
+// CORS configuration with environment-specific settings
+const corsOrigins = process.env.NODE_ENV === 'production' 
+  ? (process.env.CORS_ORIGIN ? [process.env.CORS_ORIGIN] : ['https://familypeace.org'])
+  : ['http://localhost:5000', 'http://0.0.0.0:5000', 'http://localhost:5173', 'http://localhost:3002', 'http://localhost:5174'];
 
+app.use(cors({
+  origin: corsOrigins,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'X-Requested-With'],
   exposedHeaders: ['x-csrf-token'],
-  maxAge: 86400
+  maxAge: process.env.NODE_ENV === 'production' ? 86400 : 600, // 24 hours in production, 10 minutes in dev
+  optionsSuccessStatus: 200
 }));
 
 // Session management
@@ -226,7 +241,7 @@ export { app, httpServerPromise };
 // Start the server for development in Replit environment
 (async () => {
   try {
-    const port = process.env.PORT || 3001; // Use 3001 to avoid conflict with frontend port 5000
+    const port = parseInt(process.env.PORT || '3001', 10); // Use 3001 to avoid conflict with frontend port 5000
     
     const httpServer = await httpServerPromise;
     
@@ -234,21 +249,24 @@ export { app, httpServerPromise };
     // In production, serve static files from the client build.
     if (process.env.NODE_ENV === 'production') {
       // Serve static files from the client build directory
-      app.use(express.static(path.join(__dirname, '../../dist/client'), {
+      app.use(express.static(path.join(__dirname, '..', 'dist', 'client'), {
         index: false, // Don't serve index.html automatically
         maxAge: '1y', // Cache static assets for 1 year
       }));
 
       // Catch all handler: send back index.html for client-side routing
       app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../../dist/client/index.html'));
+        res.sendFile(path.join(__dirname, '..', 'dist', 'client', 'index.html'));
       });
     }
 
-    // Start listening on localhost for backend
-    httpServer.listen(port, 'localhost', () => {
-      console.log(`Backend server started: listening on localhost:${port}`);
-      console.log(`Health check available at: http://localhost:${port}/api/health`);
+    // Determine the host based on environment
+    const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+    
+    // Start listening on the determined host
+    httpServer.listen(port, host, () => {
+      console.log(`Backend server started: listening on ${host}:${port}`);
+      console.log(`Health check available at: http://${host}:${port}/api/health`);
       console.log(`Environment: ${process.env.NODE_ENV}`);
       console.log(`CORS origin: ${process.env.CORS_ORIGIN}`);
     });
