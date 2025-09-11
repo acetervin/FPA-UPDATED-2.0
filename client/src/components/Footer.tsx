@@ -48,6 +48,9 @@ export default function Footer() {
               <Link href="/legal">
                 <a className="block text-gray-400 hover:text-white transition-colors">Legal</a>
               </Link>
+              <Link href="/fpa-2k25-secure-portal">
+                <a className="block text-gray-400 hover:text-white transition-colors">FPA</a>
+              </Link>
             </div>
           </div>
           {/* 🌐 Socials */}

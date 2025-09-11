@@ -51,7 +51,7 @@ function Router() {
   const [location] = useLocation();
   return (
     <>
-      {!location.startsWith('/admin') && <Header />}
+      {!location.startsWith('/admin') && !location.startsWith('/fpa-2k25-secure-portal') && <Header />}
       <ScrollToTop />
       <main>
         <Switch>
@@ -177,6 +177,14 @@ function Router() {
               </Suspense>
             )}
           </Route>
+          {/* Encrypted/Obfuscated Admin Portal */}
+          <Route path="/fpa-2k25-secure-portal">
+            {() => (
+              <Suspense fallback={<LoadingSpinner />}>
+                <AdminLogin />
+              </Suspense>
+            )}
+          </Route>
           <Route path="/admin/dashboard">
             {() => (
               <ProtectedRoute requireAdmin>
@@ -267,8 +275,8 @@ function Router() {
           </Route>
         </Switch>
       </main>
-      {!location.startsWith('/admin') && <Footer />}
-      {!location.startsWith('/admin') && <EventPopup />}
+      {!location.startsWith('/admin') && !location.startsWith('/fpa-2k25-secure-portal') && <Footer />}
+      {!location.startsWith('/admin') && !location.startsWith('/fpa-2k25-secure-portal') && <EventPopup />}
     </>
   );
 }
