@@ -2,24 +2,25 @@
   "version": 2,
   "builds": [
     {
-      "src": "server/index.ts",
-      "use": "@vercel/node",
+      "src": "client/vite.config.ts",
+      "use": "@vercel/vite",
       "config": {
-        "includeFiles": ["server/**", "dist/**"]
+        "project": "client/tsconfig.json"
       }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server/index.ts"
     },
     {
-      "src": "/(.*)",
-      "dest": "/server/index.ts"
+      "src": "api/index.ts",
+      "use": "@vercel/node"
     }
   ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }

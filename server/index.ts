@@ -217,13 +217,19 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
   res.status(status).json({ message });
 });
 
-// Start server
+// Register API routes first
+const httpServerPromise = registerRoutes(app);
+
+// Export the app and httpServerPromise for serverless usage
+export { app, httpServerPromise };
+
+// Comment out the server listen code to prevent running a persistent server in serverless environment
+/*
 (async () => {
   try {
     const port = process.env.PORT || 3002;
     
-    // Register API routes first
-    const httpServer = await registerRoutes(app);
+    const httpServer = await httpServerPromise;
     
     // In development, Vite handles serving the frontend.
     // In production, serve static files from the client build.
@@ -241,7 +247,6 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
         res.sendFile(path.join(__dirname, '../../dist/client/index.html'));
       });
     }
-
 
     // Start listening
     httpServer.listen(port, () => {
@@ -265,3 +270,4 @@ app.use((err: ServerError, _req: Request, res: Response, _next: NextFunction) =>
     process.exit(1);
   }
 })();
+*/
