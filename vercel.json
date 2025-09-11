@@ -1,6 +1,25 @@
 {
   "version": 2,
   "buildCommand": "npm run vercel-build",
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "../dist/client"
+      }
+    },
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node@3.2.29",
+      "config": {
+        "includeFiles": [
+          "server/**",
+          "shared/**"
+        ]
+      }
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -15,6 +34,8 @@
     "NODE_ENV": "production"
   },
   "functions": {
-    "api/**/*.ts": { "runtime": "nodejs20.X" }
+    "api/index.ts": {
+      "maxDuration": 30
+    }
   }
 }
