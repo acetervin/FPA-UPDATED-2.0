@@ -9,6 +9,7 @@
     "dev:client": "vite",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "npm run generate:static && vite build",
+    "vercel-build": "npm run generate:static && vite build",
     "generate:static": "node scripts/generate-static-data.js",
     "build:client": "vite build",
     "check": "tsc",
@@ -166,7 +167,8 @@
     "yet-another-react-lightbox": "^3.25.0",
     "zod": "^3.25.76",
     "zod-validation-error": "^3.4.0",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "@vercel/node": "^3.2.29"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -174,8 +176,7 @@
     "@types/express-session": "^1.17.8",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/multer": "^1.4.7",
-    "@types/node": "^20.19.13",
-    "@vercel/node": "^3.2.29"
+    "@types/node": "^20.19.13"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
