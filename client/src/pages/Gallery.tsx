@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import SEO from "@/components/SEO";
-import { apiClient } from "@/lib/api";
+import { getGallery } from "@/lib/staticData";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -42,7 +42,7 @@ const ImagesGallery: React.FC = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    apiClient<{ images: GalleryImage[] }>('/gallery')
+    getGallery()
       .then(data => {
         setImages(data.images || []);
       })

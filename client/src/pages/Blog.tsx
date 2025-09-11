@@ -11,7 +11,7 @@ import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import { Search, Calendar, Tag } from "lucide-react";
 import type { BlogPost } from "@shared/schema";
 import SEO from "@/components/SEO";
-import { apiClient } from "@/lib/api";
+import { getBlogPosts } from "@/lib/staticData";
 
 export default function Blog() {
 
@@ -21,7 +21,7 @@ export default function Blog() {
 
   const { data: blogPosts, isLoading } = useQuery({
     queryKey: ["blog-posts"],
-    queryFn: () => apiClient<BlogPost[]>('/blog-posts'),
+    queryFn: () => getBlogPosts(),
   });
 
 

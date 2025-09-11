@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import type { Cause } from "@shared/schema";
 import SEO from "@/components/SEO";
+import { getActiveCauses } from "@/lib/staticData";
 
 const volunteerApplicationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -47,7 +48,8 @@ export default function GetInvolved() {
   const { toast } = useToast();
 
   const { data: causes } = useQuery<Cause[]>({
-    queryKey: ["/api/causes/active"],
+    queryKey: ["active-causes"],
+    queryFn: () => getActiveCauses(),
   });
 
   const form = useForm<VolunteerApplicationForm>({

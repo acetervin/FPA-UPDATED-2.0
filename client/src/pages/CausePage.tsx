@@ -9,6 +9,7 @@ import { ArrowLeft, Users, Target, Calendar, CheckCircle, Heart } from "lucide-r
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import type { Cause } from "@shared/schema";
 import SEO from "@/components/SEO";
+import { getActiveCauses } from "@/lib/staticData";
 
 export default function CausePage() {
   const { slug } = useParams();
@@ -19,7 +20,8 @@ export default function CausePage() {
   });
 
   const { data: allCauses } = useQuery<Cause[]>({
-    queryKey: ["/api/causes/active"],
+    queryKey: ["active-causes"],
+    queryFn: () => getActiveCauses(),
   });
 
   if (isLoading) {

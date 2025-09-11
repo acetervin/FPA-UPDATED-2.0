@@ -23,17 +23,19 @@ import {
   Shield
 } from "lucide-react";
 import type { BlogPost, Cause } from "@shared/schema";
+import { getFeaturedBlogPosts, getActiveCauses } from "@/lib/staticData";
 
 export default function Home() {
 
 
   const { data: featuredPosts } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog-posts/featured"],
+    queryKey: ["featured-blog-posts"],
+    queryFn: () => getFeaturedBlogPosts(),
   });
 
-
   const { data: activeCauses } = useQuery<Cause[]>({
-    queryKey: ["/api/causes/active"],
+    queryKey: ["active-causes"],
+    queryFn: () => getActiveCauses(),
   });
 
   return (
