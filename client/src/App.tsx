@@ -41,6 +41,7 @@ const AdminEventRegistrations = lazy(() => import("@/pages/admin/event-registrat
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import EventPopup from "@/components/EventPopup";
 
 import ProtectedRoute from "@/components/admin/ProtectedRoute";
 
@@ -267,6 +268,7 @@ function Router() {
         </Switch>
       </main>
       {!location.startsWith('/admin') && <Footer />}
+      {!location.startsWith('/admin') && <EventPopup />}
     </>
   );
 }

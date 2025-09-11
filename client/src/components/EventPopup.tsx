@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { X, MapPin, Calendar, DollarSign, Clock } from 'lucide-react';
-import { getFeaturedActiveEvents } from '../lib/api';
-import type { Event } from '../types/admin';
-import { Button } from './ui/button';
+import { Link } from 'wouter';
+import { X, MapPin, Calendar, DollarSign, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { getEvents } from '@/lib/staticData';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 
 
@@ -16,12 +17,24 @@ const EventPopup: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const { data: events, isLoading, error } = useQuery<any[]>({
-    queryKey: ['featuredActiveEvents'],
-
-    queryFn: getFeaturedActiveEvents,
+  const { data: allEvents, isLoading, error } = useQuery<any[]>({
+    queryKey: ['events'],
+    queryFn: getEvents,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
+
+  // Filter for featured and ongoing events
+  const events = allEvents?.filter(event => {
+    const now = new Date();
+    const startDate = new Date(event.date);
+    const endDate = new Date(event.endDate);
+    
+    // Featured events or currently ongoing events
+    return event.active && (
+      event.featured || 
+      (now >= startDate && now <= endDate)
+    );
+  }) || [];
 
   const handleNext = useCallback(() => {
     if (events) {
@@ -34,7 +47,7 @@ const EventPopup: React.FC = () => {
 
     const timer = setInterval(() => {
       handleNext();
-    }, 5000); // 5 seconds loop
+    }, 3000); // 3 seconds loop
 
     return () => clearInterval(timer);
   }, [isPaused, events, handleNext]);
@@ -67,7 +80,7 @@ const EventPopup: React.FC = () => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.9 }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className="fixed bottom-5 right-5 w-full max-w-sm z-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={() => setIsPaused(true)}
@@ -76,16 +89,23 @@ const EventPopup: React.FC = () => {
           aria-atomic="true"
         >
           <motion.div
-            className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden ring-1 ring-black ring-opacity-5"
+            className="bg-white rounded-xl shadow-2xl overflow-hidden ring-1 ring-black ring-opacity-5 max-w-2xl w-full max-h-[90vh]"
             whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
           >
-            <button
-              onClick={handleClose}
-              className="absolute top-3 right-3 text-white bg-black/40 rounded-full p-1.5 z-20 hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white transition-all"
-              aria-label="Close event popup"
-            >
-              <X size={20} />
-            </button>
+            {/* Header */}
+            <div className="relative bg-gradient-to-r from-yellow-600 to-yellow-700 text-white p-4">
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 p-1 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                aria-label="Close event popup"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="text-center">
+                <h2 className="text-2xl font-bold mb-1">🎉 Don't Miss Out!</h2>
+                <p className="text-yellow-100">Featured & Ongoing Events</p>
+              </div>
+            </div>
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -96,51 +116,113 @@ const EventPopup: React.FC = () => {
                 transition={{ duration: 0.6 }}
                 className="relative"
               >
-                <div className="relative h-48 w-full">
-                  <img
+                <div className="relative h-80 w-full overflow-hidden">
+                  <OptimizedImage
                     src={currentEvent.imageUrl || 'https://via.placeholder.com/400x200?text=Event'}
-                    alt={currentEvent.title}
-
+                    alt={currentEvent.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                  <h3 className="absolute bottom-3 left-4 right-4 text-white text-xl font-bold leading-tight">
-                    {currentEvent.title}
-                  </h3>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                  
+                  {/* Event Info Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge className="bg-yellow-600 text-white border-0">
+                        {currentEvent.featured ? 'Featured' : 'Live Now'}
+                      </Badge>
+                      <Badge variant="outline" className="text-white border-white">
+                        {currentEvent.category || 'Event'}
+                      </Badge>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold mb-2 leading-tight">
+                      {currentEvent.name}
+                    </h3>
+                    
+                    <p className="text-gray-200 text-sm mb-3 line-clamp-2">
+                      {currentEvent.description}
+                    </p>
+                  </div>
+
+                  {/* Navigation Arrows */}
+                  {events.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setCurrentIndex(prev => prev === 0 ? events.length - 1 : prev - 1)}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-full transition-all"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={handleNext}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-full transition-all"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Slide Indicators */}
+                  {events.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                      {events.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentIndex(index)}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            index === currentIndex 
+                              ? 'bg-white scale-125' 
+                              : 'bg-white bg-opacity-50'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                <div className="p-4 space-y-3">
-                  <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2.5">
-                    <li className="flex items-start gap-2.5">
-                      <MapPin size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                      <span>{currentEvent.location}</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <Calendar size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                      <span>
-                        {formatDate(currentEvent.date)}
+                <div className="p-6 bg-gray-50">
+                  <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-yellow-600" />
+                      <span className="text-gray-600">{formatDate(currentEvent.date)}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-yellow-600" />
+                      <span className="text-gray-600">{currentEvent.location?.split(',')[0] || 'TBA'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-yellow-600" />
+                      <span className="text-gray-600">
+                        {currentEvent.fee ? `KSh ${currentEvent.fee.toLocaleString()}` : 'Free Event'}
                       </span>
+                    </div>
+                  </div>
 
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <DollarSign size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                      <span>
-                        Free Event
-                      </span>
-
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <Clock size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                      <span>Deadline: {formatDate(currentEvent.date)}</span>
-
-                    </li>
-                  </ul>
-
-                  <Button asChild className="w-full !mt-4" size="lg">
-                    <Link to={`/event-registration/${currentEvent.slug}`}>
-                      Register Now
+                  <div className="flex gap-3">
+                    <Link href={`/events/${currentEvent.slug}`} className="flex-1">
+                      <Button 
+                        className="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                        onClick={handleClose}
+                      >
+                        Learn More & Register
+                      </Button>
                     </Link>
-                  </Button>
+                    <Link href="/events" className="flex-1">
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-yellow-600 text-yellow-600 hover:bg-yellow-50"
+                        onClick={handleClose}
+                      >
+                        View All Events
+                      </Button>
+                    </Link>
+                  </div>
+                  
+                  {events.length > 1 && (
+                    <p className="text-center text-xs text-gray-500 mt-3">
+                      Images change every 3 seconds • {currentIndex + 1} of {events.length}
+                    </p>
+                  )}
                 </div>
               </motion.div>
             </AnimatePresence>
