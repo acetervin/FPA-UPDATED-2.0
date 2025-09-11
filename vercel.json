@@ -15,6 +15,6 @@
     "NODE_ENV": "production"
   },
   "functions": {
-    "api/**/*.ts": { "runtime": "nodejs20.x" }
+    "api/**/*.ts": { "runtime": "nodejs20" }
   }
 }
