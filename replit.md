@@ -104,6 +104,12 @@ The Family Peace Association website is a full-stack web application designed to
 
 ## Changelog
 - July 04, 2025. Initial setup
+- September 11, 2025. Migrated to fully database-driven architecture, optimized for Vercel deployment
+  - Events, blog posts, and causes now fetch directly from database APIs
+  - Removed static JSON file dependencies
+  - Added missing database columns for complete schema compatibility
+  - Configured serverless database connections for Vercel deployment
+  - Updated build process to be database-only
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.

@@ -73,7 +73,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   // Fetch event by name
   app.get("/api/events/by-name/:name", async (req: Request, res: Response) => {
-
     try {
       const { name } = req.params;
       
@@ -89,6 +88,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error fetching event by name:', error);
       res.status(500).json({ message: "Failed to fetch event by name" });
+    }
+  });
+
+  // Fetch event by slug (for database-driven approach)
+  app.get("/api/events/by-slug/:slug", async (req: Request, res: Response) => {
+    try {
+      const { slug } = req.params;
+      
+      const event = await db.select().from(events)
+        .where(sql`${events.slug} = ${slug} AND ${events.active} = true`)
+        .limit(1);
+
+      if (!event.length) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      res.json(event[0]);
+    } catch (error) {
+      console.error('Error fetching event by slug:', error);
+      res.status(500).json({ message: "Failed to fetch event by slug" });
     }
   });
   // Payment routes
