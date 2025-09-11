@@ -18,7 +18,7 @@ import {
   Mail,
   Share2
 } from "lucide-react";
-import { apiClient } from "@/lib/api";
+import { getEventBySlug } from "@/lib/staticData";
 import SEO from "@/components/SEO";
 
 interface Event {
@@ -63,21 +63,14 @@ export default function EventDetail() {
   
   const { data: event, isLoading } = useQuery<Event>({
     queryKey: [`event-${slug}`],
-    queryFn: () => apiClient(`/events/${slug}`),
+    queryFn: () => getEventBySlug(slug!),
     enabled: !!slug,
   });
 
-  const { data: eventImages } = useQuery<EventImage[]>({
-    queryKey: [`event-images-${event?.id}`],
-    queryFn: () => apiClient(`/events/${event?.id}/images`),
-    enabled: !!event?.id,
-  });
-
-  const { data: eventSupporters } = useQuery<EventSupporter[]>({
-    queryKey: [`event-supporters-${event?.id}`],
-    queryFn: () => apiClient(`/events/${event?.id}/supporters`),
-    enabled: !!event?.id,
-  });
+  // Note: Event images and supporters will be loaded from static data in future
+  // For now, these features require the API endpoints to be implemented
+  const eventImages: EventImage[] = [];
+  const eventSupporters: EventSupporter[] = [];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {

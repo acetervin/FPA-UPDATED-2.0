@@ -16,7 +16,7 @@ import {
   Filter,
   DollarSign
 } from "lucide-react";
-import { apiClient } from "@/lib/api";
+import { getEvents } from "@/lib/staticData";
 import SEO from "@/components/SEO";
 
 interface Event {
@@ -41,11 +41,11 @@ export default function Events() {
 
   const { data: events, isLoading } = useQuery<Event[]>({
     queryKey: ["events"],
-    queryFn: () => apiClient('/events'),
+    queryFn: () => getEvents(),
   });
 
   const categories = events 
-    ? ["all", ...Array.from(new Set(events.map(event => event.category)))]
+    ? ["all", ...Array.from(new Set(events.map(event => event.category).filter(Boolean)))]
     : ["all"];
 
   const filteredEvents = events?.filter(event => {

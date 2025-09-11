@@ -35,7 +35,8 @@ async function generateStaticData() {
       { path: '/api/blog-posts', filename: 'blog-posts.json' },
       { path: '/api/blog-posts/featured', filename: 'featured-posts.json' },
       { path: '/api/gallery', filename: 'gallery.json' },
-      { path: '/api/causes/active', filename: 'active-causes.json' }
+      { path: '/api/causes/active', filename: 'active-causes.json' },
+      { path: '/api/events', filename: 'events.json' }
     ];
     
     for (const { path, filename } of endpoints) {

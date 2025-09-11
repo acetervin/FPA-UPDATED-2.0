@@ -41,3 +41,11 @@ export const getGalleryByCategory = async (category: string) => {
 
 // Active Causes
 export const getActiveCauses = () => loadStaticData<any[]>('active-causes.json');
+
+// Events
+export const getEvents = () => loadStaticData<any[]>('events.json');
+
+export const getEventBySlug = async (slug: string) => {
+  const events = await getEvents();
+  return events.find(event => event.slug === slug) || null;
+};
