@@ -1,9 +1,9 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Pool } from 'pg';
+import { drizzle } from 'drizzle-orm/neon-serverless';
+import { neon } from '@neondatabase/serverless';
 import { eq } from 'drizzle-orm';
 import 'dotenv/config';
 import { IStorage } from './storage.js';
-import * as schema from '../shared/schema';
+import * as schema from '../shared/schema.js';
 import {
   users, blogPosts, teamMembers, causes, volunteerApplications,
   contactSubmissions, newsletterSubscriptions,
@@ -12,13 +12,11 @@ import {
   type VolunteerApplication, type InsertVolunteerApplication,
   type ContactSubmission, type InsertContactSubmission,
   type NewsletterSubscription, type InsertNewsletterSubscription
-} from '../shared/schema';
+} from '../shared/schema.js';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-const db = drizzle(pool, { schema });
+// Create serverless-optimized database connection
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle(sql, { schema });
 
 export class DbStorage implements IStorage {
   // Users
