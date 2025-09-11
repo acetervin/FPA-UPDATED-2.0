@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
-import { X, MapPin, Calendar, DollarSign, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, MapPin, Calendar, DollarSign, Clock, ChevronLeft, ChevronRight, Share2 } from 'lucide-react';
 import { getEvents } from '@/lib/staticData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -53,6 +53,42 @@ const EventPopup: React.FC = () => {
   const handleClose = () => {
     setIsVisible(false);
     // Note: Will reappear on next page reload
+  };
+
+  const shareEvent = async (event: any) => {
+    const eventUrl = `${window.location.origin}/events/${event.slug}`;
+    const shareData = {
+      title: event?.name || 'Family Peace Association Event',
+      text: event?.description || 'Join us for this amazing event!',
+      url: eventUrl,
+    };
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(eventUrl);
+        // Show user feedback for clipboard copy
+        const button = document.querySelector('[data-popup-share-button]') as HTMLElement;
+        if (button) {
+          const originalText = button.textContent;
+          button.textContent = 'Link Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.error('Error sharing event:', error);
+      // Fallback to clipboard copy
+      try {
+        await navigator.clipboard.writeText(eventUrl);
+        alert('Event link copied to clipboard!');
+      } catch (clipboardError) {
+        console.error('Clipboard access failed:', clipboardError);
+        alert('Unable to share event. Please copy the URL manually.');
+      }
+    }
   };
 
   if (isLoading || error || !events || events.length === 0 || !isVisible) {
@@ -205,15 +241,27 @@ const EventPopup: React.FC = () => {
                         Learn More & Register
                       </Button>
                     </Link>
-                    <Link href="/events" className="flex-1">
+                    <div className="flex gap-2 flex-1">
+                      <Link href="/events" className="flex-1">
+                        <Button 
+                          variant="outline" 
+                          className="w-full border-yellow-600 text-yellow-600 hover:bg-yellow-50"
+                          onClick={handleClose}
+                        >
+                          View All Events
+                        </Button>
+                      </Link>
                       <Button 
                         variant="outline" 
-                        className="w-full border-yellow-600 text-yellow-600 hover:bg-yellow-50"
-                        onClick={handleClose}
+                        size="sm"
+                        className="border-yellow-600 text-yellow-600 hover:bg-yellow-50 px-3"
+                        onClick={() => shareEvent(currentEvent)}
+                        data-popup-share-button
+                        title="Share Event"
                       >
-                        View All Events
+                        <Share2 className="w-4 h-4" />
                       </Button>
-                    </Link>
+                    </div>
                   </div>
                   
                   {events.length > 1 && (

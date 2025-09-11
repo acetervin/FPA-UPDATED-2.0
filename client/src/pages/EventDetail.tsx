@@ -151,15 +151,38 @@ export default function EventDetail() {
     return { status: 'completed', color: 'bg-gray-100 text-gray-800' };
   };
 
-  const shareEvent = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: event?.name,
-        text: event?.description,
-        url: window.location.href,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
+  const shareEvent = async () => {
+    const shareData = {
+      title: event?.name || 'Family Peace Association Event',
+      text: event?.description || 'Join us for this amazing event!',
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        // Show user feedback for clipboard copy
+        const button = document.querySelector('[data-share-button]') as HTMLElement;
+        if (button) {
+          const originalText = button.textContent;
+          button.textContent = 'Link Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.error('Error sharing event:', error);
+      // Fallback to clipboard copy
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Event link copied to clipboard!');
+      } catch (clipboardError) {
+        console.error('Clipboard access failed:', clipboardError);
+        alert('Unable to share event. Please copy the URL manually.');
+      }
     }
   };
 
@@ -272,6 +295,7 @@ export default function EventDetail() {
                       size="lg" 
                       variant="outline" 
                       onClick={shareEvent}
+                      data-share-button
                     >
                       <Share2 className="w-4 h-4 mr-2" />
                       Share Event
