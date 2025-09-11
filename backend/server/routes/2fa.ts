@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { TwoFactorAuthService } from '../services/2fa';
+import { TwoFactorAuthService } from '../services/2fa.js';
 
 const router = Router();
 

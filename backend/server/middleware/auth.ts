@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { db } from '../db';
-import { users } from '../../shared/schema';
+import { db } from '../db.js';
+import { users } from '../../shared/schema.js';
 
 interface JWTPayload {
   id: number;

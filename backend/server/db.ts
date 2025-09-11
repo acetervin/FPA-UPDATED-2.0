@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 import { eq } from 'drizzle-orm';
 import 'dotenv/config';
 import { IStorage } from './storage.js';
-import * as schema from '../shared/schema.js';
+import * as schema from '@shared/schema';
 import {
   users, blogPosts, teamMembers, causes, volunteerApplications,
   contactSubmissions, newsletterSubscriptions,
@@ -12,7 +12,7 @@ import {
   type VolunteerApplication, type InsertVolunteerApplication,
   type ContactSubmission, type InsertContactSubmission,
   type NewsletterSubscription, type InsertNewsletterSubscription
-} from '../shared/schema.js';
+} from '@shared/schema';
 
 // Create connection pool for Neon database (serverless-compatible)
 const pool = new Pool({

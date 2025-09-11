@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { db } from './db';
+import { db } from './db.js';
 
 //
-import { eventRegistrations, events, donations } from '../shared/schema';
+import { eventRegistrations, events, donations } from '@shared/schema';
 import { sql } from 'drizzle-orm';
 
 export async function processDonation(donationData: any) {

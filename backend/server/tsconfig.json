@@ -23,6 +23,6 @@
       "./types"
     ]
   },
-  "include": ["./**/*"],
+  "include": ["./**/*", "../shared/**/*"],
   "exclude": ["../node_modules", "../client", "../dist"]
 }

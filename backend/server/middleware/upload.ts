@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { randomBytes } from 'crypto';
 import { lookup } from 'mime-types';
 import { existsSync, mkdirSync } from 'fs';
-import { sanitizeFilename } from '../utils/sanitize';
+import { sanitizeFilename } from '../utils/sanitize.js';
 import winston from 'winston';
 
 // Configure logger
@@ -112,7 +112,7 @@ const isValidFile = (file: Express.Multer.File): boolean => {
 };
 
 // Import winston logger
-import { logSecurity, logError } from '../utils/logger';
+import { logSecurity, logError } from '../utils/logger.js';
 
 // Configure multer
 export const upload = multer({
