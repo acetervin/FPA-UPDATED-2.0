@@ -13,14 +13,24 @@ export interface BlogPost {
 
 export interface Event {
   id: number;
-  title: string;
+  name: string;
   description: string;
   date: string;
+  endDate: string;
   location: string;
-  capacity: number;
-  registeredCount: number;
-  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  fee: number;
+  maxParticipants?: number;
+  registrations?: number;
+  active: boolean;
   imageUrl: string;
+  slug: string;
+  featured: boolean;
+  category?: string;
+  tags?: string[];
+  contactEmail?: string;
+  contactPhone?: string;
+  registrationUrl?: string;
+  createdAt: string;
 }
 
 export interface User {

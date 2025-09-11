@@ -37,11 +37,11 @@ export default function AdminEvents() {
     
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
-      (event.title?.toLowerCase() || '').includes(searchLower) ||
+      (event.name?.toLowerCase() || '').includes(searchLower) ||
       (event.description?.toLowerCase() || '').includes(searchLower) ||
       (event.location?.toLowerCase() || '').includes(searchLower);
     
-    const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? ['upcoming', 'ongoing'].includes(event.status) : event.status === 'completed' || event.status === 'cancelled');
+    const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? event.active : !event.active);
     
     return matchesSearch && matchesStatus;
   });
@@ -121,20 +121,20 @@ export default function AdminEvents() {
                     <div className="relative h-48">
                           <OptimizedImage
                             src={event.imageUrl}
-                        alt={event.title}
+                        alt={event.name}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute top-2 right-2">
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          ['upcoming', 'ongoing'].includes(event.status) ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-600'
+                          event.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
                         }`}>
-                           {statusFilter === 'active' ? 'Active' : 'Inactive'}
+                           {event.active ? 'Active' : 'Inactive'}
                          </span>
                        </div>
                      </div>
                     
                     <CardContent className="p-4">
-                  <h3 className="font-bold text-lg mb-2">{event.title}</h3>
+                  <h3 className="font-bold text-lg mb-2">{event.name}</h3>
                       <p className="text-sm text-neutral-600 mb-4 line-clamp-2">
                         {event.description}
                       </p>
@@ -150,7 +150,7 @@ export default function AdminEvents() {
                         </div>
                         <div className="flex items-center">
                           <i className="fas fa-users w-5"></i>
-                          <span>{event.registeredCount} / {event.capacity} registered</span>
+                          <span>{event.registrations || 0} / {event.maxParticipants || 'Unlimited'} registered</span>
                         </div>
                       </div>
 

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, Link } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft } from 'lucide-react';
 import { login } from '@/lib/auth';
 
 export default function AdminLogin() {
@@ -41,6 +42,14 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="text-center">
+          <div className="flex items-center justify-between mb-4">
+            <Link href="/">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Site
+              </Button>
+            </Link>
+          </div>
           <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
         </CardHeader>
         <CardContent>
