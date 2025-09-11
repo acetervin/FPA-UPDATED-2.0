@@ -11,9 +11,7 @@ import { OptimizedImage } from '@/components/ui/optimized-image';
 
 
 const EventPopup: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(
-    sessionStorage.getItem('eventPopupClosed') !== 'true'
-  );
+  const [isVisible, setIsVisible] = useState(true); // Always show on page load
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -47,14 +45,14 @@ const EventPopup: React.FC = () => {
 
     const timer = setInterval(() => {
       handleNext();
-    }, 3000); // 3 seconds loop
+    }, 5000); // 5 seconds loop
 
     return () => clearInterval(timer);
   }, [isPaused, events, handleNext]);
 
   const handleClose = () => {
     setIsVisible(false);
-    sessionStorage.setItem('eventPopupClosed', 'true');
+    // Note: Will reappear on next page reload
   };
 
   if (isLoading || error || !events || events.length === 0 || !isVisible) {
@@ -220,7 +218,7 @@ const EventPopup: React.FC = () => {
                   
                   {events.length > 1 && (
                     <p className="text-center text-xs text-gray-500 mt-3">
-                      Images change every 3 seconds • {currentIndex + 1} of {events.length}
+                      Images change every 5 seconds • {currentIndex + 1} of {events.length}
                     </p>
                   )}
                 </div>
