@@ -15,6 +15,6 @@
     "NODE_ENV": "production"
   },
   "functions": {
-    "api/**/*.ts": { "runtime": "vercel-node@3.0.0" }
+    "api/**/*.ts": { "runtime": "nodejs20.x" }
   }
 }
