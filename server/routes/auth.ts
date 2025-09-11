@@ -2,7 +2,7 @@ import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { db } from '../db';
-import { users } from '@shared/schema';
+import { users } from '../../shared/schema.js';
 import { eq } from 'drizzle-orm';
 
 const router = Router();

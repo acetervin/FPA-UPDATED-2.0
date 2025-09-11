@@ -3,16 +3,14 @@ import bcrypt from 'bcryptjs';
 import rateLimit from 'express-rate-limit';
 import { sql, desc } from 'drizzle-orm';
 
-import { db } from '../db';
-import { donations, eventRegistrations, users, blogPosts, events, volunteerApplications } from '@shared/schema';
-import type { PaymentGatewayStatus, PaymentGatewayConfig } from '../types/payment';
-import { paymentGatewayStatus } from '../schema/payment_gateway_status';
-import { paymentGatewayConfig } from '../schema/payment_gateway_config';
-import { requireAuth, requireAdmin } from '../middleware/auth';
-import { encrypt, decrypt, sanitizeError, EncryptionError } from '../utils/encryption';
-import { logAuditEvent, logSecurityEvent } from '../utils/logger';
-
-
+import { db } from '../db.js';
+import { donations, eventRegistrations, users, blogPosts, events, volunteerApplications } from '../../shared/schema.js';
+import type { PaymentGatewayStatus, PaymentGatewayConfig } from '../types/payment.js';
+import { paymentGatewayStatus } from '../schema/payment_gateway_status.js';
+import { paymentGatewayConfig } from '../schema/payment_gateway_config.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
+import { encrypt, decrypt, sanitizeError, EncryptionError } from '../utils/encryption.js';
+import { logAuditEvent, logSecurityEvent } from '../utils/logger.js';
 
 // Rate limiting to prevent brute force attacks
 const apiLimiter = rateLimit({
@@ -361,7 +359,6 @@ router.get('/volunteer-applications', async (req: Request, res: Response, next: 
   }
 });
 
-
 // Get all event registrations (optionally filtered by eventId)
 router.get('/event-registrations', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -385,6 +382,5 @@ router.get('/event-registrations', async (req: Request, res: Response, next: Nex
     res.status(500).json({ error: 'Failed to fetch event registrations' });
   }
 });
-
 
 export default router;

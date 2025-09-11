@@ -1,7 +1,7 @@
 import speakeasy from 'speakeasy';
 import QRCode from 'qrcode';
 import { db } from '../db';
-import { users } from '@shared/schema';
+import { users } from '../../shared/schema.js';
 import { eq } from 'drizzle-orm';
 
 export class TwoFactorAuthService {

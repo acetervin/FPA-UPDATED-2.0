@@ -14,14 +14,14 @@
     "baseUrl": ".",
     "paths": {
       "@shared/*": ["../shared/*"],
-      "@/*": ["./*"],
-      "*": ["*", "types/*"]
+      "@shared/schema": ["../shared/schema"],
+      "@/*": ["./*"]
     },
     "typeRoots": [
       "../node_modules/@types",
       "./types"
-    ]
-
+    ],
+    "allowImportingTsExtensions": true
   },
   "include": ["./**/*"],
   "exclude": ["../node_modules", "../client", "../dist"]

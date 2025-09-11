@@ -3,7 +3,7 @@ import axios from 'axios';
 import { db } from './db';
 
 //
-import { eventRegistrations, events, donations } from '@shared/schema';
+import { eventRegistrations, events, donations } from '../../shared/schema.js';
 import { sql } from 'drizzle-orm';
 
 export async function processDonation(donationData: any) {

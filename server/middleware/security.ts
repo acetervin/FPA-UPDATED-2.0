@@ -18,16 +18,6 @@ declare module 'express-session' {
   }
 }
 
-// Augment the Request object to include validatedData for custom middleware
-declare global {
-  namespace Express {
-    interface Request {
-      validatedData?: any;
-    }
-  }
-}
-
-
 // Encryption configuration
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || crypto.randomBytes(32);
 const IV_LENGTH = 16;
@@ -151,8 +141,6 @@ const corsOptions: CorsOptions = {
 };
 
 export const corsMiddleware = cors(corsOptions);
-
-// ...existing code...
 
 // Sanitize error messages
 export function sanitizeError(error: any): { message: string; code?: string } {
