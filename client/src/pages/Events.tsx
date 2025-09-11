@@ -154,20 +154,21 @@ export default function Events() {
                 const status = getEventStatus(event);
                 return (
                   <ScrollAnimationWrapper key={event.id}>
-                    <Card className="overflow-hidden hover:shadow-xl transition-shadow">
-                      <div className="relative">
-                        <OptimizedImage
-                          src={event.imageUrl}
-                          alt={event.name}
-                          className="w-full h-64 object-cover"
-                        />
-                        <div className="absolute top-4 right-4">
-                          <Badge className={status.color}>
-                            {status.status}
-                          </Badge>
+                    <Link href={`/events/${event.slug}`} className="block">
+                      <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                        <div className="relative">
+                          <OptimizedImage
+                            src={event.imageUrl}
+                            alt={event.name}
+                            className="w-full h-64 object-cover"
+                          />
+                          <div className="absolute top-4 right-4">
+                            <Badge className={status.color}>
+                              {status.status}
+                            </Badge>
+                          </div>
                         </div>
-                      </div>
-                      <CardContent className="p-6">
+                        <CardContent className="p-6">
                         <div className="flex items-center gap-2 mb-3">
                           <Badge variant="outline">{event.category}</Badge>
                           {event.featured && (
@@ -199,14 +200,13 @@ export default function Events() {
                           )}
                         </div>
                         
-                        <Link href={`/events/${event.slug}`}>
-                          <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
-                            Learn More
-                            <ChevronRight className="w-4 h-4 ml-2" />
-                          </Button>
-                        </Link>
-                      </CardContent>
-                    </Card>
+                        <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
+                          Learn More
+                          <ChevronRight className="w-4 h-4 ml-2" />
+                        </Button>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   </ScrollAnimationWrapper>
                 );
               })}
@@ -226,13 +226,14 @@ export default function Events() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => (
                 <ScrollAnimationWrapper key={event.id}>
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                    <OptimizedImage
-                      src={event.imageUrl}
-                      alt={event.name}
-                      className="w-full h-48 object-cover"
-                    />
-                    <CardContent className="p-6">
+                  <Link href={`/events/${event.slug}`} className="block">
+                    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                      <OptimizedImage
+                        src={event.imageUrl}
+                        alt={event.name}
+                        className="w-full h-48 object-cover"
+                      />
+                      <CardContent className="p-6">
                       <Badge variant="outline" className="mb-3">{event.category}</Badge>
                       <h3 className="text-lg font-bold mb-2">{event.name}</h3>
                       <p className="text-gray-600 mb-4 text-sm line-clamp-2">{event.description}</p>
@@ -248,13 +249,12 @@ export default function Events() {
                         </div>
                       </div>
                       
-                      <Link href={`/events/${event.slug}`}>
-                        <Button size="sm" className="w-full">
-                          View Details
-                        </Button>
-                      </Link>
+                      <Button size="sm" className="w-full">
+                        View Details
+                      </Button>
                     </CardContent>
                   </Card>
+                </Link>
                 </ScrollAnimationWrapper>
               ))}
             </div>
@@ -273,19 +273,21 @@ export default function Events() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {pastEvents.slice(0, 8).map((event) => (
                 <ScrollAnimationWrapper key={event.id}>
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow opacity-75">
-                    <OptimizedImage
-                      src={event.imageUrl}
-                      alt={event.name}
-                      className="w-full h-32 object-cover"
-                    />
-                    <CardContent className="p-4">
-                      <h4 className="font-medium mb-2 text-sm">{event.name}</h4>
-                      <div className="text-xs text-gray-500">
-                        {formatDate(event.date)}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <Link href={`/events/${event.slug}`} className="block">
+                    <Card className="overflow-hidden hover:shadow-lg transition-shadow opacity-75 cursor-pointer">
+                      <OptimizedImage
+                        src={event.imageUrl}
+                        alt={event.name}
+                        className="w-full h-32 object-cover"
+                      />
+                      <CardContent className="p-4">
+                        <h4 className="font-medium mb-2 text-sm">{event.name}</h4>
+                        <div className="text-xs text-gray-500">
+                          {formatDate(event.date)}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </ScrollAnimationWrapper>
               ))}
             </div>
