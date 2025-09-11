@@ -67,10 +67,63 @@ export default function EventDetail() {
     enabled: !!slug,
   });
 
-  // Note: Event images and supporters will be loaded from static data in future
-  // For now, these features require the API endpoints to be implemented
-  const eventImages: EventImage[] = [];
-  const eventSupporters: EventSupporter[] = [];
+  // Sample event images and supporters for demonstration
+  const eventImages: EventImage[] = event ? [
+    {
+      id: 1,
+      eventId: event.id,
+      imageUrl: event.imageUrl || '/images/events/default-event.jpg',
+      altText: event.name,
+      isPrimary: true,
+      caption: `Main image for ${event.name}`
+    },
+    {
+      id: 2,
+      eventId: event.id,
+      imageUrl: '/images/events/workshop-1.jpg',
+      altText: 'Workshop activities',
+      isPrimary: false,
+      caption: 'Participants engaging in group activities'
+    },
+    {
+      id: 3,
+      eventId: event.id,
+      imageUrl: '/images/events/workshop-2.jpg', 
+      altText: 'Community involvement',
+      isPrimary: false,
+      caption: 'Community members participating'
+    }
+  ] : [];
+
+  const eventSupporters: EventSupporter[] = event ? [
+    {
+      id: 1,
+      eventId: event.id,
+      name: 'Community Foundation',
+      type: 'organization',
+      level: 'platinum',
+      logoUrl: '/images/supporters/community-foundation.jpg',
+      website: 'https://communityfoundation.org'
+    },
+    {
+      id: 2,
+      eventId: event.id,
+      name: 'Local Government',
+      type: 'government',
+      level: 'gold',
+      logoUrl: '/images/supporters/local-government.jpg',
+      website: 'https://local.gov'
+    },
+    {
+      id: 3,
+      eventId: event.id,
+      name: 'Peace Initiative Group',
+      type: 'organization',
+      level: 'silver',
+      logoUrl: '/images/supporters/peace-group.jpg',
+      website: 'https://peaceinitiative.org'
+    }
+  ] : [];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {

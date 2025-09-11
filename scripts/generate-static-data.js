@@ -38,6 +38,11 @@ async function generateStaticData() {
       { path: '/api/causes/active', filename: 'active-causes.json' },
       { path: '/api/events', filename: 'events.json' }
     ];
+
+    // Enhanced events data - also fetch images and supporters for each event
+    const enhancedEndpoints = [
+      { path: '/api/events/enhanced', filename: 'events-enhanced.json' }
+    ];
     
     for (const { path, filename } of endpoints) {
       try {
