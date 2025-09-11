@@ -20,8 +20,7 @@
     "typeRoots": [
       "../node_modules/@types",
       "./types"
-    ],
-    "allowImportingTsExtensions": true
+    ]
   },
   "include": ["./**/*"],
   "exclude": ["../node_modules", "../client", "../dist"]
