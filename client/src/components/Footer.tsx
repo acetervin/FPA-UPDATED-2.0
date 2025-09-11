@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Heart, MapPin, Phone, Mail, Facebook, Linkedin, Instagram, Twitter } from "lucide-react";
+import { Heart, MapPin, Phone, Mail, Facebook, Linkedin, Instagram, Twitter, Lock } from "lucide-react";
 import { SiTiktok, SiYoutube } from "react-icons/si";
 import Newsletter from "./Newsletter";
 
@@ -47,9 +47,6 @@ export default function Footer() {
               </Link>
               <Link href="/legal">
                 <a className="block text-gray-400 hover:text-white transition-colors">Legal</a>
-              </Link>
-              <Link href="/fpa-2k25-secure-portal">
-                <a className="block text-gray-400 hover:text-white transition-colors">FPA</a>
               </Link>
             </div>
           </div>
@@ -107,6 +104,12 @@ export default function Footer() {
             </Link>
             <Link href="/legal">
               <a className="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a>
+            </Link>
+            <Link href="/fpa-2k25-secure-portal">
+              <a className="flex items-center space-x-1 text-gray-400 hover:text-white transition-colors text-sm">
+                <Lock className="w-3 h-3" />
+                <span>FPA</span>
+              </a>
             </Link>
           {/*<Link href="/licenses">
               <a className="text-gray-400 hover:text-white transition-colors text-sm">Licenses</a>
