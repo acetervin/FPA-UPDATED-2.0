@@ -3,7 +3,9 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
+  root: 'client',
   plugins: [react()],
+
   
   server: {
     host: '0.0.0.0',
@@ -21,12 +23,14 @@ export default defineConfig({
   
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": path.resolve(__dirname, "client/src"),
     },
   },
+
   
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
     emptyOutDir: true,
   },
+
 });
