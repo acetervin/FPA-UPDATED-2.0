@@ -1,11 +1,11 @@
-import { DbStorage } from './db';
+import { DbStorage } from './db.js';
 import type { 
   User, InsertUser, BlogPost, InsertBlogPost,
   TeamMember, InsertTeamMember, Cause, InsertCause,
   VolunteerApplication, InsertVolunteerApplication,
   ContactSubmission, InsertContactSubmission,
   NewsletterSubscription, InsertNewsletterSubscription
-} from '../shared/schema';
+} from '../shared/schema.js';
 
 export interface IStorage {
   // Users

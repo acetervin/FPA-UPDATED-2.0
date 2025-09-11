@@ -1,5 +1,5 @@
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
 import { eq } from 'drizzle-orm';
 import 'dotenv/config';
 import { IStorage } from './storage.js';
@@ -14,9 +14,15 @@ import {
   type NewsletterSubscription, type InsertNewsletterSubscription
 } from '../shared/schema.js';
 
-// Create serverless-optimized database connection
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle(sql, { schema });
+// Create connection pool for Neon database (serverless-compatible)
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL!,
+  max: 1, // Minimize connections for serverless
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
+
+const db = drizzle(pool, { schema });
 
 export class DbStorage implements IStorage {
   // Users
@@ -30,7 +36,7 @@ export class DbStorage implements IStorage {
     return result[0];
   }
 
-  async createUser(user: Omit<InsertUser, 'id'>): Promise<User> {
+  async createUser(user: InsertUser): Promise<User> {
     const result = await db.insert(users).values(user).returning();
     return result[0];
   }
@@ -98,7 +104,7 @@ export class DbStorage implements IStorage {
   }
 
   async createVolunteerApplication(application: InsertVolunteerApplication): Promise<VolunteerApplication> {
-    const result = await db.insert(volunteerApplications).values({ ...application, submittedAt: new Date() }).returning();
+    const result = await db.insert(volunteerApplications).values(application).returning();
     return result[0];
   }
 
@@ -108,7 +114,7 @@ export class DbStorage implements IStorage {
   }
 
   async createContactSubmission(submission: InsertContactSubmission): Promise<ContactSubmission> {
-    const result = await db.insert(contactSubmissions).values({ ...submission, submittedAt: new Date() }).returning();
+    const result = await db.insert(contactSubmissions).values(submission).returning();
     return result[0];
   }
 
@@ -118,7 +124,7 @@ export class DbStorage implements IStorage {
   }
 
   async createNewsletterSubscription(subscription: InsertNewsletterSubscription): Promise<NewsletterSubscription> {
-    const result = await db.insert(newsletterSubscriptions).values({ ...subscription, subscribedAt: new Date() }).returning();
+    const result = await db.insert(newsletterSubscriptions).values(subscription).returning();
     return result[0];
   }
 }

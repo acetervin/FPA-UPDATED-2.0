@@ -188,7 +188,7 @@ export const volunteerApplications = pgTable("volunteer_applications", {
   experience: text("experience"),
   availability: text("availability").notNull(),
   message: text("message"),
-  submittedAt: timestamp("submitted_at").notNull(),
+  submittedAt: timestamp("submitted_at").notNull().defaultNow(),
 });
 
 export const contactSubmissions = pgTable("contact_submissions", {
@@ -197,13 +197,13 @@ export const contactSubmissions = pgTable("contact_submissions", {
   email: text("email").notNull(),
   subject: text("subject").notNull(),
   message: text("message").notNull(),
-  submittedAt: timestamp("submitted_at").notNull(),
+  submittedAt: timestamp("submitted_at").notNull().defaultNow(),
 });
 
 export const newsletterSubscriptions = pgTable("newsletter_subscriptions", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
-  subscribedAt: timestamp("subscribed_at").notNull(),
+  subscribedAt: timestamp("subscribed_at").notNull().defaultNow(),
 });
 
 export const galleryImages = pgTable("gallery_images", {
@@ -216,9 +216,10 @@ export const galleryImages = pgTable("gallery_images", {
 });
 
 // Insert schemas
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  lastLogin: true,
 });
 
 export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
