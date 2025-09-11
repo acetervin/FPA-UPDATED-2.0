@@ -1,6 +1,6 @@
 import { useAuth } from './auth';
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export class ApiError extends Error {
 
@@ -52,7 +52,7 @@ export async function apiClient<T = any>(
     (headers as Record<string, string>)['x-csrf-token'] = csrfToken;
   }
 
-  const response = await fetch(`${API_URL}/api${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}/api${endpoint}`, {
     ...options,
     headers,
     credentials: 'include', // Important for CSRF
@@ -78,7 +78,7 @@ export const adminApi = {
   uploadMedia: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return fetch(`${API_URL}/api/media/upload`, {
+    return fetch(`${API_BASE_URL}/api/media/upload`, {
       method: 'POST',
       body: formData,
     }).then(handleResponse);
