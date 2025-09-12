@@ -60,11 +60,8 @@ const ImagesGallery: React.FC = () => {
     ? images
     : images.filter(img => img.category.toLowerCase() === selectedCategory.toLowerCase());
 
-  const imagesByCategory = filteredImages.reduce((acc, img) => {
-    if (!acc[img.category]) acc[img.category] = [];
-    acc[img.category].push(img);
-    return acc;
-  }, {} as Record<string, GalleryImage[]>);
+  // Don't group by category when showing all categories - create masonry layout
+  const shouldShowMasonry = selectedCategory === 'All Categories';
 
   const slides = filteredImages.map(({ imageUrl, title, description }) => ({
     src: imageUrl,
@@ -74,21 +71,43 @@ const ImagesGallery: React.FC = () => {
 
   return (
     <>
-      {/* Category Filter Bar */}
-      <div className="flex flex-wrap gap-3 justify-center mb-10">
-        {CATEGORY_LIST.map((cat) => (
-          <button
-            key={cat}
-            className={`px-5 py-2 rounded-md border font-medium transition-colors duration-200 ${
-              selectedCategory === cat
-                ? 'bg-yellow-400 text-black border-yellow-400 shadow'
-                : 'bg-white text-black border-gray-200 hover:bg-yellow-100'
-            }`}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
+      {/* Modern Category Filter */}
+      <div className="mb-12">
+        <div className="flex flex-wrap gap-3 justify-center max-w-5xl mx-auto">
+          {CATEGORY_LIST.map((cat, index) => (
+            <button
+              key={cat}
+              className={`group relative px-6 py-3 rounded-full border-2 font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === cat
+                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black border-yellow-400 shadow-lg shadow-yellow-400/25 scale-105'
+                  : 'bg-white/80 backdrop-blur-sm text-gray-700 border-gray-200/50 hover:bg-yellow-50 hover:border-yellow-300 hover:shadow-md'
+              }`}
+              onClick={() => setSelectedCategory(cat)}
+              style={{
+                animationDelay: `${index * 100}ms`
+              }}
+            >
+              <span className="relative z-10">
+                {cat === 'All Categories' && '🎯 '}
+                {cat === 'Character Education' && '📚 '}
+                {cat === 'Women Empowerment' && '💪 '}
+                {cat === 'Youth Mentorship' && '🌟 '}
+                {cat === 'Couples Enrichment' && '💑 '}
+                {cat === 'Men Fellowship' && '🤝 '}
+                {cat === 'Other' && '✨ '}
+                {cat}
+              </span>
+              
+              {/* Hover Ring Effect */}
+              <div className="absolute inset-0 rounded-full border-2 border-yellow-400/0 group-hover:border-yellow-400/30 transition-all duration-300 scale-110 opacity-0 group-hover:opacity-100"></div>
+              
+              {/* Active State Glow */}
+              {selectedCategory === cat && (
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-20 animate-pulse"></div>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Gallery Grid */}
@@ -101,40 +120,52 @@ const ImagesGallery: React.FC = () => {
           <div className="text-center text-red-500">{error}</div>
         ) : filteredImages.length === 0 ? (
           <div className="text-center text-gray-500">No images found for this category.</div>
+        ) : shouldShowMasonry ? (
+          /* Masonry Layout for All Categories */
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 [column-gap:1.5rem]">
+            {filteredImages.map((img, index) => (
+              <ScrollAnimationWrapper key={img.imageUrl + index} delay={index * 50}>
+                <div
+                  className="break-inside-avoid-column inline-block w-full mb-6 cursor-pointer group"
+                  onClick={() => {
+                    setIndex(index);
+                    setOpen(true);
+                  }}
+                >
+                  <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform group-hover:scale-[1.02]">
+                    <OptimizedImage
+                      src={img.imageUrl}
+                      alt={`Gallery image ${index + 1}`}
+                      className="w-full h-auto object-cover transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+              </ScrollAnimationWrapper>
+            ))}
+          </div>
         ) : (
-          Object.entries(imagesByCategory).map(([category, imgs]) => (
-            <div key={category} className="mb-16">
-              {selectedCategory === 'All Categories' && (
-                <h2 className="text-2xl md:text-3xl font-bold text-primary mb-8 text-center">{category}</h2>
-              )}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {imgs.map((img, index) => {
-                  const globalIndex = filteredImages.findIndex(i => i.imageUrl === img.imageUrl);
-                  return (
-                    <ScrollAnimationWrapper key={img.imageUrl + index} delay={index * 100}>
-                      <div
-                        className="overflow-hidden rounded-lg shadow-lg aspect-w-4 aspect-h-3 cursor-pointer"
-                        onClick={() => {
-                          if (globalIndex !== -1) {
-                            setIndex(globalIndex);
-                            setOpen(true);
-                          }
-                        }}
-                      >
-                        <OptimizedImage
-                          src={img.imageUrl}
-                          alt={img.title || `Gallery image ${index + 1}`}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                        />
-                      </div>
-                      {img.title && <div className="mt-2 text-center font-medium">{img.title}</div>}
-                      {img.description && <div className="text-center text-gray-500 text-sm">{img.description}</div>}
-                    </ScrollAnimationWrapper>
-                  );
-                })}
-              </div>
-            </div>
-          ))
+          /* Regular Grid for Specific Categories */
+          <div className="columns-1 sm:columns-2 lg:columns-3 [column-gap:1.5rem]">
+            {filteredImages.map((img, index) => (
+              <ScrollAnimationWrapper key={img.imageUrl + index} delay={index * 50}>
+                <div
+                  className="break-inside-avoid-column inline-block w-full mb-6 cursor-pointer group"
+                  onClick={() => {
+                    setIndex(index);
+                    setOpen(true);
+                  }}
+                >
+                  <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform group-hover:scale-[1.02]">
+                    <OptimizedImage
+                      src={img.imageUrl}
+                      alt={`Gallery image ${index + 1}`}
+                      className="w-full h-auto object-cover transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+              </ScrollAnimationWrapper>
+            ))}
+          </div>
         )}
       </div>
 
@@ -158,35 +189,97 @@ const videoData: VideoItem[] = [
   { url: 'https://www.youtube.com/watch?v=w5i2qdmAD7s', title: 'Couples Enrichment Workshop' },
 ];
 
-const getYouTubeEmbedUrl = (url: string) => {
+const getYouTubeVideoId = (url: string) => {
   const videoIdMatch = url.match(/(?:v=)([\w-]+)/);
-  if (!videoIdMatch) return '';
-  return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+  return videoIdMatch ? videoIdMatch[1] : '';
+};
+
+const getYouTubeThumbnail = (url: string) => {
+  const videoId = getYouTubeVideoId(url);
+  return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
 };
 
 const VideosGallery: React.FC = () => {
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
+
+  const handlePlayVideo = (videoUrl: string) => {
+    const videoId = getYouTubeVideoId(videoUrl);
+    if (videoId) {
+      // Open YouTube video in new tab
+      window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+    }
+  };
+
   return (
     <div>
       <h2 className="text-2xl md:text-3xl font-bold text-primary mb-8 text-center">Our Videos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {videoData.map((video, index) => (
-          <ScrollAnimationWrapper key={video.url + index} delay={index * 100}>
-            <div className="overflow-hidden rounded-lg shadow-lg">
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  src={getYouTubeEmbedUrl(video.url)}
-                  title={video.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                ></iframe>
+        {videoData.map((video, index) => {
+          const thumbnailUrl = getYouTubeThumbnail(video.url);
+          return (
+            <ScrollAnimationWrapper key={video.url + index} delay={index * 100}>
+              <div className="group cursor-pointer" onClick={() => handlePlayVideo(video.url)}>
+                <div className="relative overflow-hidden rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105">
+                  {/* Video Thumbnail Background */}
+                  <div className="aspect-video relative">
+                    <img
+                      src={thumbnailUrl}
+                      alt={video.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    
+                    {/* Dark Overlay for Better Contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 group-hover:from-black/40"></div>
+                    
+                    {/* Animated Play Button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative">
+                        {/* Expanding Rings */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-20 h-20 rounded-full border-2 border-white/30 animate-ping animation-delay-0"></div>
+                          <div className="absolute w-16 h-16 rounded-full border-2 border-white/20 animate-ping animation-delay-300"></div>
+                          <div className="absolute w-12 h-12 rounded-full border-2 border-white/10 animate-ping animation-delay-600"></div>
+                        </div>
+                        
+                        {/* Main Play Button */}
+                        <div className="relative w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 group-hover:bg-white group-hover:scale-110">
+                          <div className="w-0 h-0 border-l-[12px] border-l-black border-t-[8px] border-b-[8px] border-t-transparent border-b-transparent ml-1"></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Video Title Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg">
+                        {video.title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            {video.title && <div className="mt-2 text-center font-medium">{video.title}</div>}
-          </ScrollAnimationWrapper>
-        ))}
+            </ScrollAnimationWrapper>
+          );
+        })}
       </div>
+      
+      {/* Add custom CSS for animation delays */}
+      <style jsx>{`
+        .animation-delay-0 {
+          animation-delay: 0s;
+        }
+        .animation-delay-300 {
+          animation-delay: 0.3s;
+        }
+        .animation-delay-600 {
+          animation-delay: 0.6s;
+        }
+        @keyframes ping {
+          75%, 100% {
+            transform: scale(2);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 };
@@ -220,28 +313,38 @@ const Gallery: React.FC = () => {
         </div>
       </section>
       
-      {/* Main Tab Switcher */}
-      <div className="flex justify-center mb-10 gap-4">
-        <button
-          onClick={() => setActiveTab('images')}
-          className={`px-6 py-3 rounded-md text-lg font-semibold transition-colors duration-300 ${
-            activeTab === 'images'
-              ? 'bg-primary text-white shadow-lg'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Images
-        </button>
-        <button
-          onClick={() => setActiveTab('videos')}
-          className={`px-6 py-3 rounded-md text-lg font-semibold transition-colors duration-300 ${
-            activeTab === 'videos'
-              ? 'bg-primary text-white shadow-lg'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Videos
-        </button>
+      {/* Modern Tab Switcher */}
+      <div className="flex justify-center mb-16">
+        <div className="relative bg-gray-100/80 backdrop-blur-sm p-1.5 rounded-2xl shadow-lg border border-white/20">
+          <div className="flex gap-1">
+            <button
+              onClick={() => setActiveTab('images')}
+              className={`relative px-8 py-3 rounded-xl text-sm font-semibold transition-all duration-300 transform ${
+                activeTab === 'images'
+                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-lg shadow-yellow-400/25 scale-105'
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
+              }`}
+            >
+              <span className="relative z-10">📸 Images</span>
+              {activeTab === 'images' && (
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl animate-pulse opacity-20"></div>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab('videos')}
+              className={`relative px-8 py-3 rounded-xl text-sm font-semibold transition-all duration-300 transform ${
+                activeTab === 'videos'
+                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-lg shadow-yellow-400/25 scale-105'
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
+              }`}
+            >
+              <span className="relative z-10">🎥 Videos</span>
+              {activeTab === 'videos' && (
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl animate-pulse opacity-20"></div>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Content Section */}
