@@ -20,43 +20,9 @@ import {
 } from "lucide-react";
 import { getEventBySlug } from "@/lib/staticData";
 import SEO from "@/components/SEO";
-
-interface Event {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  fullDescription?: string;
-  date: string;
-  endDate: string;
-  location: string;
-  fee: number;
-  maxParticipants?: number;
-  imageUrl: string;
-  featured: boolean;
-  category: string;
-  tags?: string[];
-  contactEmail?: string;
-  contactPhone?: string;
-  registrationUrl?: string;
-  active: boolean;
-}
-
-interface EventImage {
-  id: number;
-  imageUrl: string;
-  caption?: string;
-  isPrimary: boolean;
-}
-
-interface EventSupporter {
-  id: number;
-  name: string;
-  logo?: string;
-  website?: string;
-  type: 'sponsor' | 'partner' | 'organizer' | 'supporter';
-  level: 'platinum' | 'gold' | 'silver' | 'bronze' | 'standard';
-}
+import { Event } from "@/types/event";
+import { EventImage } from "@/types/eventImage";
+import { EventSupporter } from "@/types/eventSupporter";
 
 export default function EventDetail() {
   const { slug } = useParams();

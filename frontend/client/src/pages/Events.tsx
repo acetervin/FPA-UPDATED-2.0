@@ -18,23 +18,7 @@ import {
 } from "lucide-react";
 import { getEvents } from "@/lib/staticData";
 import SEO from "@/components/SEO";
-
-interface Event {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  date: string;
-  endDate: string;
-  location: string;
-  fee: number;
-  maxParticipants?: number;
-  imageUrl: string;
-  featured: boolean;
-  category: string;
-  tags?: string[];
-  active: boolean;
-}
+import { Event } from "@/types/event";
 
 export default function Events() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");

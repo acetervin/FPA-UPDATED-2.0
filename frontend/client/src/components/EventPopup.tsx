@@ -7,6 +7,7 @@ import { getEvents } from '@/lib/staticData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { OptimizedImage } from '@/components/ui/optimized-image';
+import { Event } from '@/types/event';
 
 
 
@@ -15,7 +16,7 @@ const EventPopup: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const { data: allEvents, isLoading, error } = useQuery<any[]>({
+  const { data: allEvents, isLoading, error } = useQuery<Event[]>({
     queryKey: ['events'],
     queryFn: getEvents,
     staleTime: 5 * 60 * 1000, // 5 minutes

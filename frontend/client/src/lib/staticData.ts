@@ -1,4 +1,5 @@
 // Static data loader for serverless content
+import { Event } from '@/types/event';
 export async function loadStaticData<T>(filename: string): Promise<T> {
   try {
     const response = await fetch(`${import.meta.env.BASE_URL}data/${filename}`);
@@ -192,30 +193,9 @@ export const getActiveCauses = async () => {
 };
 
 // Events - Fetch directly from database API
-export const getEvents = async () => {
-  // For static deployment, return fallback data directly
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(fallbackEvents), 100); // Small delay to simulate API call
-  });
-};
+export const getEvents = () => loadStaticData<Event[]>('events.json');
 
 export const getEventBySlug = async (slug: string) => {
-  try {
-    const response = await fetch(`/api/events/by-slug/${slug}`);
-    if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
-      throw new Error(`Failed to fetch event: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching event by slug:', error);
-    // Find fallback event by slug
-    const fallbackEvent = fallbackEvents.find(event => event.slug === slug);
-    if (fallbackEvent) {
-      return fallbackEvent;
-    }
-    throw error;
-  }
+  const events = await getEvents();
+  return events.find(event => event.slug === slug) || null;
 };
