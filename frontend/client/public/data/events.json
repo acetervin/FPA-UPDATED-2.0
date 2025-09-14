@@ -29,7 +29,24 @@
     "featured": true,
     "description": "WOFAB 2025: Women Family Breakfast Meeting. Chief Guest: Hon. Hanna Wendot Cheptumo (Cabinet Secretary for Gender, Culture and Children Services). Key Note Speaker: Dr Gilda Odera (President, Federation of Kenya Employees). Panelists: Lady Justice Caroline Kendagor, Josephine Kirumba, Rebecca Gitau, Mrs. Anne Mbugua. Theme: 'Actions for Peace: Our Ambition for PEACEFUL Families'. Date: 16th September 2025, 8AM-11AM, The Heron Hotel, Nairobi.",
     "imageUrl": "https://images.pexels.com/photos/7176319/pexels-photo-7176319.jpeg",
-    "createdAt": "2025-07-24T10:09:46.691Z"
+    "createdAt": "2025-07-24T10:09:46.691Z",
+    "gallery": [
+      {
+        "imageUrl": "/src/assets/9a7c6232-ec94-42bd-bb4e-7ff4718a7278 (2).jpg",
+        "altText": "Main image for Women Family Breakfast Meeting 2025",
+        "caption": "Main image for Women Family Breakfast Meeting 2025"
+      },
+      {
+        "imageUrl": "/src/assets/17274164-2e97-4391-b4ac-4a94e0ee0e09.jpg",
+        "altText": "Participants engaging in group activities",
+        "caption": "Participants engaging in group activities"
+      },
+      {
+        "imageUrl": "/src/assets/ee1963e8-6fde-4638-a678-1e6ef2d8ccb3.jpg",
+        "altText": "Community members participating",
+        "caption": "Community members participating"
+      }
+    ]
   },
   {
     "id": 2,

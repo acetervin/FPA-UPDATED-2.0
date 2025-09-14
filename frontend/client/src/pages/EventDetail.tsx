@@ -21,8 +21,8 @@ import {
 import { getEventBySlug } from "@/lib/staticData";
 import SEO from "@/components/SEO";
 import { Event } from "@/types/event";
-import { EventImage } from "@/types/eventImage";
 import { EventSupporter } from "@/types/eventSupporter";
+
 
 export default function EventDetail() {
   const { slug } = useParams();
@@ -34,32 +34,8 @@ export default function EventDetail() {
   });
 
   // Sample event images and supporters for demonstration
-  const eventImages: EventImage[] = event ? [
-    {
-      id: 1,
-      eventId: event.id,
-      imageUrl: event.imageUrl || '/images/events/default-event.jpg',
-      altText: event.name,
-      isPrimary: true,
-      caption: `Main image for ${event.name}`
-    },
-    {
-      id: 2,
-      eventId: event.id,
-      imageUrl: '/images/events/workshop-1.jpg',
-      altText: 'Workshop activities',
-      isPrimary: false,
-      caption: 'Participants engaging in group activities'
-    },
-    {
-      id: 3,
-      eventId: event.id,
-      imageUrl: '/images/events/workshop-2.jpg', 
-      altText: 'Community involvement',
-      isPrimary: false,
-      caption: 'Community members participating'
-    }
-  ] : [];
+  const eventImages = (event as any)?.gallery ?? [];
+
 
   const eventSupporters: EventSupporter[] = event ? [
     {
@@ -286,13 +262,13 @@ export default function EventDetail() {
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Event Gallery</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {eventImages.map((image) => (
-                        <div key={image.id} className="relative">
+                    <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+                      {eventImages.map((image, index) => (
+                        <div key={index} className="relative break-inside-avoid mb-4">
                           <OptimizedImage
                             src={image.imageUrl}
-                            alt={image.caption || event.name}
-                            className="w-full h-48 object-cover rounded-lg"
+                            alt={image.altText || event.name}
+                            className="w-full rounded-lg shadow-lg"
                           />
                           {image.caption && (
                             <p className="text-sm text-gray-600 mt-2">{image.caption}</p>
@@ -397,7 +373,7 @@ export default function EventDetail() {
                         <MapPin className="w-5 h-5 text-yellow-600 mt-1" />
                         <div>
                           <p className="font-medium">Location</p>
-                          <p className="text-sm text-gray-600">{event.location}</p>
+                          <p className="text-sm text-gray-600">{event.location}</p>.
                         </div>
                       </div>
                       
