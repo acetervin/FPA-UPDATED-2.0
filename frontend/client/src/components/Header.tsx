@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+} from "./ui/dropdown-menu";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "./ui/accordion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
-} from "@/components/ui/sheet";
-import FpaLogo from "@/assets/Fpa-logo.jpg";
+} from "./ui/sheet";
+import FpaLogo from "../assets/Fpa-logo.jpg";
 import { OptimizedImage } from "./ui/optimized-image";
 
 export default function Header() {
@@ -231,6 +231,13 @@ export default function Header() {
                     </AccordionItem>
                   </Accordion>
 
+                  <NavLink
+                    href="/events"
+                    className="text-lg py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Events
+                  </NavLink>
                   <NavLink
                     href="/gallery"
                     className="text-lg py-2"

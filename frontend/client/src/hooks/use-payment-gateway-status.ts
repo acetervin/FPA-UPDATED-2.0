@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
-import { apiClient } from '@/lib/api';
+import { useToast } from '../components/ui/use-toast';
+import { apiClient } from '../lib/api';
 
 
 interface PaymentGatewayStatus {
@@ -14,13 +14,13 @@ export function usePaymentGatewayStatus(gateway: 'paypal' | 'mpesa') {
 
   const { data: status, isLoading, error } = useQuery<PaymentGatewayStatus>({
     queryKey: ['payment-gateway-status', gateway],
-    queryFn: async () => {
-      const statuses: PaymentGatewayStatus[] = await apiClient('/admin/payment-gateway-status');
-      return statuses.find(s => s.gateway === gateway) || {
+    queryFn: () => {
+      // Forcing maintenance mode for all gateways as per the task.
+      return Promise.resolve({
         gateway,
         status: 'maintenance',
         updatedAt: new Date().toISOString()
-      };
+      });
     },
 
   });

@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { usePaymentGatewayStatus } from "@/hooks/use-payment-gateway-status";
@@ -129,6 +131,17 @@ export default function PayPalDonateButton({
       onError?.(error);
     }
   };
+
+  if (isMaintenance) {
+    return (
+      <div className="p-4 text-center text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <h3 className="text-lg font-semibold">Service Temporarily Unavailable</h3>
+        <p className="mt-2">
+          Online donations are currently under maintenance. We apologize for any inconvenience. Please consider making a manual donation.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

@@ -1,5 +1,8 @@
+/// <reference types="vite/client" />
+
 // Static data loader for serverless content
-import { Event } from '@/types/event';
+import type { Event } from '../types/event';
+import type { BlogPost } from '../../../../backend/shared/schema.js';
 export async function loadStaticData<T>(filename: string): Promise<T> {
   try {
     const response = await fetch(`${import.meta.env.BASE_URL}data/${filename}`);
@@ -65,33 +68,6 @@ const fallbackEvents = [
   }
 ];
 
-const fallbackBlogPosts = [
-  {
-    id: '1',
-    title: 'Making a Difference in Our Community',
-    slug: 'making-difference-community',
-    excerpt: 'Discover how small actions can create big changes in our local communities.',
-    content: 'Our recent community initiatives have shown remarkable results in improving the lives of families in need. Through collaborative efforts and dedicated volunteers, we have been able to provide essential services and support to those who need it most.',
-    imageUrl: 'https://via.placeholder.com/600x400?text=Community+Impact',
-    authorName: 'FPA Team',
-    publishedAt: '2024-12-01T00:00:00Z',
-    featured: true,
-    tags: ['Community', 'Impact'],
-  },
-  {
-    id: '2',
-    title: 'Supporting Education for All',
-    slug: 'supporting-education-for-all',
-    excerpt: 'Education is the foundation of a better future. Learn about our education initiatives.',
-    content: 'Education remains one of the most powerful tools for breaking the cycle of poverty. Our programs focus on providing access to quality education for children from disadvantaged backgrounds.',
-    imageUrl: 'https://via.placeholder.com/600x400?text=Education+Support',
-    authorName: 'Education Team',
-    publishedAt: '2024-11-28T00:00:00Z',
-    featured: true,
-    tags: ['Education', 'Children'],
-  }
-];
-
 const fallbackCauses = [
   {
     id: '1',
@@ -115,61 +91,22 @@ const fallbackCauses = [
   }
 ];
 
-// Blog Posts - Fetch directly from database API
-export const getBlogPosts = async () => {
-  try {
-    const response = await fetch('/api/blog-posts');
-    if (!response.ok) {
-      throw new Error(`Failed to fetch blog posts: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching blog posts:', error);
-    return fallbackBlogPosts;
-  }
-};
+// Blog Posts - Fetch from static JSON
+export const getBlogPosts = () => loadStaticData<BlogPost[]>('blog-posts.json');
 
 export const getFeaturedBlogPosts = async () => {
-  // For static deployment, return fallback data directly
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(fallbackBlogPosts), 100);
-  });
+  const posts = await getBlogPosts();
+  return posts.filter(post => post.featured);
 };
 
 export const getBlogPostsByCategory = async (category: string) => {
-  try {
-    const response = await fetch(`/api/blog-posts/category/${category}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch posts by category: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching posts by category:', error);
-    // In a client-only scenario, you might want to filter fallback data or return an empty array if no fallback matches.
-    // For simplicity here, we'll return all fallback posts if the API fails.
-    return fallbackBlogPosts;
-  }
+  const posts = await getBlogPosts();
+  return posts.filter(post => post.category === category);
 };
 
 export const getBlogPost = async (slug: string) => {
-  try {
-    const response = await fetch(`/api/blog-posts/${slug}`);
-    if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
-      throw new Error(`Failed to fetch blog post: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching blog post:', error);
-    // Find fallback post by slug
-    const fallbackPost = fallbackBlogPosts.find(post => post.slug === slug);
-    if (fallbackPost) {
-      return fallbackPost;
-    }
-    throw error;
-  }
+  const posts = await getBlogPosts();
+  return posts.find(post => post.slug === slug) || null;
 };
 
 // Gallery

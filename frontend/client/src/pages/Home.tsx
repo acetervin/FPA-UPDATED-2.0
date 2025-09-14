@@ -66,7 +66,7 @@ export default function Home() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/blog?category=events">
+                  <Link href="/events">
                     <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded-md font-medium">
                       Featured Events
                     </Button> 

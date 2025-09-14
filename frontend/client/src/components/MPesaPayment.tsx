@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import { usePaymentGatewayStatus } from '@/hooks/use-payment-gateway-status';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { useToast } from './ui/use-toast';
+import { usePaymentGatewayStatus } from '../hooks/use-payment-gateway-status';
 import { z } from 'zod';
-import { apiClient } from '@/lib/api';
-import CurrencyAmount from '@/components/ui/CurrencyAmount';
+import { apiClient } from '../lib/api';
+import CurrencyAmount from './ui/CurrencyAmount';
 
 
 interface MPesaPaymentProps {
@@ -23,34 +23,24 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
   const [kesAmount, setKesAmount] = useState<number | null>(null);
   const { toast } = useToast();
-  const { checkStatus, isMaintenance } = usePaymentGatewayStatus('mpesa');
+  const { checkStatus, isMaintenance, isLoading: isStatusLoading } = usePaymentGatewayStatus('mpesa');
 
   // Fetch KES conversion when amount changes
   useEffect(() => {
-    const fetchKesAmount = async () => {
-      try {
-        const data = await apiClient<{ amount: number }>('/currency/convert', {
-          method: 'POST',
-          body: JSON.stringify({
-            amount: Number(amount),
-            from: 'USD',
-            to: 'KES',
-          }),
-        });
-        setKesAmount(data.amount);
-      } catch (error) {
+    if (isStatusLoading) return; // Wait for status check
 
-        console.error('Failed to convert currency:', error);
-        toast({
-          variant: "destructive",
-          title: "Currency Conversion Failed",
-          description: "Unable to convert USD to KES. Please try again.",
-        });
-      }
-    };
-
-    fetchKesAmount();
-  }, [amount, toast]);
+    // Using a fixed conversion rate instead of an API call.
+    if (isMaintenance) {
+      setKesAmount(null);
+      return;
+    }
+    if (amount && Number(amount) > 0) {
+      const fixedRate = 150; // Using a fixed rate of 1 USD = 150 KES
+      setKesAmount(Math.round(Number(amount) * fixedRate));
+    } else {
+      setKesAmount(null);
+    }
+  }, [amount, isMaintenance, isStatusLoading]);
 
   const formatPhoneNumber = (number: string) => {
     // Remove any non-digit characters
@@ -124,11 +114,19 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
       phoneNumberSchema.parse(phoneNumber);
 
       setIsLoading(true);
+      if (!kesAmount) {
+        toast({
+          title: 'Error',
+          description: 'Could not determine KES amount for donation.',
+          variant: 'destructive',
+        });
+        return;
+      }
       const data = await apiClient<{ CheckoutRequestID?: string; error?: string }>('/mpesa/initiate', {
         method: 'POST',
         body: JSON.stringify({
           phoneNumber,
-          amount: parseFloat(amount),
+          amount: kesAmount,
           reference: 'Donation',
           description: 'Donation to Family Peace Association',
         }),
@@ -161,6 +159,25 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
     }
   };
 
+  if (isStatusLoading) {
+    return (
+      <div className="p-4 text-center text-gray-600">
+        <p>Checking payment service status...</p>
+      </div>
+    );
+  }
+
+  if (isMaintenance) {
+    return (
+      <div className="p-4 text-center text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <h3 className="text-lg font-semibold">Service Temporarily Unavailable</h3>
+        <p className="mt-2">
+          Online donations are currently under maintenance. We apologize for any inconvenience. Please consider making a manual donation.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div className="space-y-2">
@@ -189,10 +206,10 @@ export default function MPesaPayment({ amount, onSuccess, onError }: MPesaPaymen
       <Button
         type="submit"
         className="w-full bg-green-600 hover:bg-green-700 text-white"
-        disabled={isLoading}
+        disabled={isLoading || !kesAmount}
         aria-busy={isLoading}
       >
-        {isLoading ? 'Processing...' : `Pay ${amount} KES via M-Pesa`}
+        {isLoading ? 'Processing...' : `Pay KES ${kesAmount || '0'} via M-Pesa`}
       </Button>
 
       {isLoading && checkoutId && (

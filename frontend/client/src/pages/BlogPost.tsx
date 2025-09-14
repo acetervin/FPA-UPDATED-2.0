@@ -1,26 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { Helmet } from "react-helmet";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
-import { MarkdownContent } from "@/components/MarkdownContent";
+import { Card, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import ScrollAnimationWrapper from "../components/ScrollAnimationWrapper";
+import { MarkdownContent } from "../components/MarkdownContent";
 import { Calendar, Tag, ArrowLeft, User } from "lucide-react";
-import type { BlogPost } from "@shared/schema";
-import { OptimizedImage } from "@/components/ui/optimized-image";
-import SEO from "@/components/SEO";
+import type { BlogPost } from "../../../../backend/shared/schema.js";
+import { OptimizedImage } from "../components/ui/optimized-image";
+import SEO from "../components/SEO";
+import { getBlogPost, getBlogPostsByCategory } from "../lib/staticData";
 
 export default function BlogPost() {
   const { slug } = useParams();
   
-  const { data: post, isLoading } = useQuery<BlogPost>({
-    queryKey: [`/api/blog-posts/${slug}`],
+  const { data: post, isLoading } = useQuery({
+    queryKey: ["blog-post", slug],
+    queryFn: () => getBlogPost(slug!),
     enabled: !!slug,
   });
 
-  const { data: relatedPosts } = useQuery<BlogPost[]>({
-    queryKey: [`/api/blog-posts/category/${post?.category}`],
+  const { data: relatedPosts } = useQuery({
+    queryKey: ["blog-posts-by-category", post?.category],
+    queryFn: () => getBlogPostsByCategory(post!.category),
     enabled: !!post?.category,
   });
 
