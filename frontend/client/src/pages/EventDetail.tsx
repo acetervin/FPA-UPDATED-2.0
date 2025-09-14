@@ -22,6 +22,8 @@ import { getEventBySlug } from "@/lib/staticData";
 import SEO from "@/components/SEO";
 import { Event } from "@/types/event";
 import { EventSupporter } from "@/types/eventSupporter";
+import SupporterLogoSlider from "@/components/SupporterLogoSlider";
+
 
 
 export default function EventDetail() {
@@ -299,53 +301,11 @@ export default function EventDetail() {
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
                     <h2 className="text-2xl font-bold mb-6">Event Partners & Supporters</h2>
-                    
-                    {/* Group supporters by type */}
-                    {['sponsor', 'partner', 'organizer', 'supporter'].map((type) => {
-                      const typeSupporters = eventSupporters.filter(s => s.type === type);
-                      if (typeSupporters.length === 0) return null;
-                      
-                      return (
-                        <div key={type} className="mb-6">
-                          <h3 className="text-lg font-semibold mb-3 capitalize">
-                            {type}s
-                          </h3>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {typeSupporters.map((supporter) => (
-                              <div key={supporter.id} className="text-center">
-                                {supporter.logo ? (
-                                  <div className="bg-white p-4 rounded-lg shadow border">
-                                    <OptimizedImage
-                                      src={supporter.logo}
-                                      alt={supporter.name}
-                                      className="w-20 h-20 object-contain mx-auto mb-2"
-                                    />
-                                    <p className="text-sm font-medium">{supporter.name}</p>
-                                  </div>
-                                ) : (
-                                  <div className="bg-gray-100 p-4 rounded-lg border">
-                                    <p className="text-sm font-medium">{supporter.name}</p>
-                                  </div>
-                                )}
-                                {supporter.website && (
-                                  <a 
-                                    href={supporter.website} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-yellow-600 hover:underline mt-1 block"
-                                  >
-                                    Visit Website
-                                  </a>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <SupporterLogoSlider supporters={eventSupporters} />
                   </div>
                 </ScrollAnimationWrapper>
               )}
+
             </div>
 
             {/* Sidebar */}
