@@ -46,6 +46,35 @@
         "altText": "Community members participating",
         "caption": "Community members participating"
       }
+    ],
+    "supporters": [
+      {
+        "id": 1,
+        "eventId": 4,
+        "name": "Community Foundation",
+        "type": "organization",
+        "level": "platinum",
+        "logoUrl": "https://media.joomeo.com/large/68776bfeef2aa.jpg",
+        "website": "https://communityfoundation.org"
+      },
+      {
+        "id": 2,
+        "eventId": 4,
+        "name": "Local Government",
+        "type": "government",
+        "level": "gold",
+        "logoUrl": "/images/supporters/local-government.jpg",
+        "website": "https://local.gov"
+      },
+      {
+        "id": 3,
+        "eventId": 4,
+        "name": "Peace Initiative Group",
+        "type": "organization",
+        "level": "silver",
+        "logoUrl": "/images/supporters/peace-group.jpg",
+        "website": "https://peaceinitiative.org"
+      }
     ]
   },
   {
