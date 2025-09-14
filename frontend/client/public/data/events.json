@@ -32,26 +32,22 @@
     "createdAt": "2025-07-24T10:09:46.691Z",
     "gallery": [
       {
-        "imageUrl": "/src/assets/9a7c6232-ec94-42bd-bb4e-7ff4718a7278 (2).jpg",
+        "imageUrl": "https://media.joomeo.com/large/68c3e2fd28077.jpg",
         "altText": "Main image for Women Family Breakfast Meeting 2025",
         "caption": "Main image for Women Family Breakfast Meeting 2025"
       },
       {
-        "imageUrl": "/src/assets/17274164-2e97-4391-b4ac-4a94e0ee0e09.jpg",
+        "imageUrl": "https://media.joomeo.com/large/6899d94d9a97c.jpg",
         "altText": "Participants engaging in group activities",
         "caption": "Participants engaging in group activities"
-      },
-      {
-        "imageUrl": "/src/assets/ee1963e8-6fde-4638-a678-1e6ef2d8ccb3.jpg",
-        "altText": "Community members participating",
-        "caption": "Community members participating"
       }
+    
     ],
     "supporters": [
       {
         "id": 1,
         "eventId": 4,
-        "name": "Community Foundation",
+        "name": "Family Peace association kenya",
         "type": "organization",
         "level": "platinum",
         "logoUrl": "https://media.joomeo.com/large/68776bfeef2aa.jpg",
@@ -60,20 +56,47 @@
       {
         "id": 2,
         "eventId": 4,
-        "name": "Local Government",
+        "name": "Global Peace Foundation",
         "type": "government",
         "level": "gold",
-        "logoUrl": "/images/supporters/local-government.jpg",
+        "logoUrl": "https://media.joomeo.com/large/68c40304929a1.jpg",
         "website": "https://local.gov"
       },
       {
         "id": 3,
         "eventId": 4,
-        "name": "Peace Initiative Group",
+        "name": "Kenya christian Professionals Forum",
         "type": "organization",
         "level": "silver",
-        "logoUrl": "/images/supporters/peace-group.jpg",
+        "logoUrl": "https://media.joomeo.com/large/68c402ec0f9fe.jpg",
         "website": "https://peaceinitiative.org"
+      },
+      {
+        "id": 4,
+        "eventId": 4,
+        "name": "The Heron Portico",
+        "type": "organization",
+        "level": "bronze",
+        "logoUrl": "https://media.joomeo.com/large/68c402c813964.jpg",
+        "website": "https://www.sarovarhotels.com/the-heron-portico-nairobi/"
+      },
+       {
+        "id": 5,
+        "eventId": 4,
+        "name": "unicaf",
+        "type": "organization",
+        "level": "bronze",
+        "logoUrl": "https://media.joomeo.com/large/68c4031b7f4b0.jpg",
+        "website": "https://www.sarovarhotels.com/thec-heron-portico-nairobi/"
+      },
+       {
+        "id": 6,
+        "eventId": 4,
+        "name": "Zetech University",
+        "type": "organization",
+        "level": "bronze",
+        "logoUrl": "https://media.joomeo.com/large/68c40293bf1f8.jpg",
+        "website": "https://www.sarovarhotels.com/the-hecron-portico-nairobi/"
       }
     ]
   },
