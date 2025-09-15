@@ -20,6 +20,37 @@ import { getEvents } from "@/lib/staticData";
 import SEO from "@/components/SEO";
 import { Event } from "@/types/event";
 
+// Utility to strip Markdown formatting for previews
+function stripMarkdown(markdown: string): string {
+  return markdown
+    // Remove code blocks
+    .replace(/```.([\s\S]*?)```/g, '')
+    // Remove inline code
+    .replace(/`([^`]+)`/g, '$1')
+    // Remove images
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    // Remove links but keep text
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    // Remove headings
+    .replace(/^#+\s+/gm, '')
+    // Remove emphasis (bold, italic, strikethrough)
+    .replace(/([*_~]{1,3})(\S.*?\S)\1/g, '$2')
+    // Remove blockquotes
+    .replace(/^>\s?/gm, '')
+    // Remove unordered list markers
+    .replace(/^\s*[-+*]\s+/gm, '')
+    // Remove ordered list markers
+    .replace(/^\s*\d+\.\s+/gm, '')
+    // Remove horizontal rules
+    .replace(/^---$/gm, '')
+    // Remove extra newlines
+    .replace(/\n{2,}/g, ' ')
+    // Remove remaining newlines and trim
+    .replace(/\n|\r/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export default function Events() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -161,7 +192,9 @@ export default function Events() {
                         </div>
                         
                         <h3 className="text-xl font-bold mb-3">{event.name}</h3>
-                        <p className="text-gray-600 mb-4 line-clamp-2">{event.description}</p>
+                        <p className="text-gray-600 mb-4 line-clamp-2">
+                          {stripMarkdown(event.description)}
+                        </p>
                         
                         <div className="space-y-2 mb-4">
                           <div className="flex items-center text-sm text-gray-500">
@@ -220,7 +253,7 @@ export default function Events() {
                       <CardContent className="p-6">
                       <Badge variant="outline" className="mb-3">{event.category}</Badge>
                       <h3 className="text-lg font-bold mb-2">{event.name}</h3>
-                      <p className="text-gray-600 mb-4 text-sm line-clamp-2">{event.description}</p>
+                      <p className="text-gray-600 mb-4 text-sm line-clamp-2">{stripMarkdown(event.description)}</p>
                       
                       <div className="space-y-1 mb-4">
                         <div className="flex items-center text-xs text-gray-500">
