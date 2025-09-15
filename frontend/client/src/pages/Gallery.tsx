@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
-import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
-import { OptimizedImage } from "@/components/ui/optimized-image";
-import SEO from "@/components/SEO";
-import { getGallery } from "@/lib/staticData";
+import ScrollAnimationWrapper from "../components/ScrollAnimationWrapper";
+import { OptimizedImage } from "../components/ui/optimized-image";
+import SEO from "../components/SEO";
+import { getGallery } from "../lib/staticData";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -185,12 +185,12 @@ const videoData: VideoItem[] = [
 //  { url: 'https://www.youtube.com/watch?v=3JZ_D3p_elo', title: 'Youth Mentorship Program Highlights' },
  // { url: 'https://www.youtube.com/watch?v=xvFZjo5PgG0', title: 'A Look at Our Women Empowerment Initiative' },
  // { url: 'https://www.youtube.com/watch?v=QH2-TGUlwu4', title: 'Family Peace Festival 2023' },
-//  { url: 'https://www.youtube.com/watch?v=8ybW48rKBME', title: 'Volunteer Stories: Making a Difference' },
+  { url: 'https://www.youtube.com/live/GNbZLrxfRqs', title: 'Interview with Kmaba Tv' },
   { url: 'https://www.youtube.com/watch?v=w5i2qdmAD7s', title: 'Couples Enrichment Workshop' },
 ];
 
 const getYouTubeVideoId = (url: string) => {
-  const videoIdMatch = url.match(/(?:v=)([\w-]+)/);
+  const videoIdMatch = url.match(/(?:watch\?v=|live\/)([\w-]+)/);
   return videoIdMatch ? videoIdMatch[1] : '';
 };
 
@@ -263,7 +263,7 @@ const VideosGallery: React.FC = () => {
       </div>
       
       {/* Add custom CSS for animation delays */}
-      <style jsx>{`
+      <style>{`
         .animation-delay-0 {
           animation-delay: 0s;
         }

@@ -32,26 +32,46 @@
     "createdAt": "2025-07-24T10:09:46.691Z",
     "gallery": [
       {
-        "imageUrl": "https://media.joomeo.com/large/68c3e2fd28077.jpg",
-        "altText": "Main image for Women Family Breakfast Meeting 2025",
-        "caption": "Main image for Women Family Breakfast Meeting 2025"
+        "imageUrl": "https://media.joomeo.com/large/68c7eb5087d58.jpg",
+        "altText": "Women Family Breakfast Meeting 2025",
+        "caption": "HON. HANNA WENDOT CHEPTUMO, CABINET SECRETARY FOR GENDER, CULTURE AND CHILDREN SERVICES"
       },
       {
-        "imageUrl": "https://media.joomeo.com/large/6899d94d9a97c.jpg",
-        "altText": "Participants engaging in group activities",
-        "caption": "Participants engaging in group activities"
+        "imageUrl": "https://media.joomeo.com/large/68c7eb9d681a2.jpg",
+        "altText": "Women Family Breakfast Meeting 2025",
+        "caption": "DR GILDA ODERA, PRESIDENT, FEDERATION OF KENYA EMPLOYEES"
+      },
+            {
+        "imageUrl": "https://media.joomeo.com/large/68c7ec4305f4f.jpg",
+        "altText": "Women Family Breakfast Meeting 2025",
+        "caption": "LADY JUSTICE CAROLINE KENDAGOR, JUDGE OF THE HIGH COURT OF KENYA"
+      },
+            {
+        "imageUrl": "https://media.joomeo.com/large/68c7ed1ec9bef.jpg",
+        "altText": "Women Family Breakfast Meeting 2025",
+        "caption": "JOSEPHINE KIRUMBA, CEO, BETTER BEST HUBS"
+      },
+            {
+        "imageUrl": "https://media.joomeo.com/large/68c7ed441101a.jpg",
+        "altText": "Women Family Breakfast Meeting 2025",
+        "caption": "MRS. ANNE MBUGUA, AFRICA CHRISTIAN PROFESSIONALS FORUM"
+      },
+            {
+        "imageUrl": "https://media.joomeo.com/large/68c7ee2742490.jpg",
+        "altText": "Women Family Breakfast Meeting 2025",
+        "caption": "REBECCA GITAU, MSC, MENTAL HEALTH AND GENDER SPECIALIST"
       }
     ],
     "posters": [
       {
-        "imageUrl": "https://images.pexels.com/photos/2058130/pexels-photo-2058130.jpeg",
+        "imageUrl": "https://media.joomeo.com/large/68c3e2fd28077.jpg",
         "altText": "Event Poster 1",
         "caption": "Official Poster for the Event"
       },
       {
-        "imageUrl": "https://images.pexels.com/photos/1709003/pexels-photo-1709003.jpeg",
+        "imageUrl": "https://media.joomeo.com/large/6899d94d9a97c.jpg",
         "altText": "Event Poster 2",
-        "caption": "Promotional Flyer"
+        "caption": "Promotional Poster"
       }
     ],
     "supporters": [
@@ -62,7 +82,7 @@
         "type": "organization",
         "level": "platinum",
         "logoUrl": "https://media.joomeo.com/large/68776bfeef2aa.jpg",
-        "website": "https://communityfoundation.org"
+        "website": "https://familypeaceassociationkenya.org/"
       },
       {
         "id": 2,
@@ -71,16 +91,16 @@
         "type": "government",
         "level": "gold",
         "logoUrl": "https://media.joomeo.com/large/68c40304929a1.jpg",
-        "website": "https://local.gov"
+        "website": "https://globalpeace.org/"
       },
       {
         "id": 3,
         "eventId": 4,
-        "name": "Kenya christian Professionals Forum",
+        "name": "Kenya Christian Professionals Forum",
         "type": "organization",
         "level": "silver",
         "logoUrl": "https://media.joomeo.com/large/68c402ec0f9fe.jpg",
-        "website": "https://peaceinitiative.org"
+        "website": "https://kcpf.or.ke/"
       },
       {
         "id": 4,
@@ -94,11 +114,11 @@
        {
         "id": 5,
         "eventId": 4,
-        "name": "unicaf",
+        "name": "UNICAF",
         "type": "organization",
         "level": "bronze",
         "logoUrl": "https://media.joomeo.com/large/68c4031b7f4b0.jpg",
-        "website": "https://www.sarovarhotels.com/thec-heron-portico-nairobi/"
+        "website": "https://www.unicaf.org/"
       },
        {
         "id": 6,
@@ -107,7 +127,25 @@
         "type": "organization",
         "level": "bronze",
         "logoUrl": "https://media.joomeo.com/large/68c40293bf1f8.jpg",
-        "website": "https://www.sarovarhotels.com/the-hecron-portico-nairobi/"
+        "website": "https://www.zetech.ac.ke/"
+      },
+             {
+        "id": 7,
+        "eventId": 4,
+        "name": "ACPF",
+        "type": "organization",
+        "level": "bronze",
+        "logoUrl": "https://media.joomeo.com/medium/68c7f4f0cc416.jpg",
+        "website": "https://www.facebook.com/p/Africa-Christian-Professionals-Forum-ACPF-100076728879621/"
+      },
+             {
+        "id": 6,
+        "eventId": 4,
+        "name": "Candid Hope",
+        "type": "organization",
+        "level": "bronze",
+        "logoUrl": "https://media.joomeo.com/large/68c7f5064689b.jpg",
+        "website": "https://www.facebook.com/hopecandid/"
       }
     ]
   },

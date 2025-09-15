@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { Helmet } from "react-helmet";
@@ -24,11 +25,11 @@ import { MarkdownContent } from "@/components/MarkdownContent";
 import { Event } from "@/types/event";
 import { EventSupporter } from "@/types/eventSupporter";
 import SupporterLogoSlider from "@/components/SupporterLogoSlider";
-
-
+import { ImageModal } from "@/components/ImageModal";
 
 export default function EventDetail() {
   const { slug } = useParams();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   
   const { data: event, isLoading } = useQuery<Event>({
     queryKey: [`event-${slug}`],
@@ -36,28 +37,30 @@ export default function EventDetail() {
     enabled: !!slug,
   });
 
-  // Sample event images and supporters for demonstration
   const eventImages = (event as any)?.gallery ?? [];
   const eventPosters = (event as any)?.posters ?? [];
   const eventSupporters = (event as any)?.supporters ?? [];
-
-
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
+      timeZone: 'UTC'
     });
   };
+
 
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString('en-US', {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      timeZone: 'UTC'
     });
   };
+
+
 
   const getEventStatus = (event: Event) => {
     const now = new Date();
@@ -81,7 +84,6 @@ export default function EventDetail() {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(window.location.href);
-        // Show user feedback for clipboard copy
         const button = document.querySelector('[data-share-button]') as HTMLElement;
         if (button) {
           const originalText = button.textContent;
@@ -93,7 +95,6 @@ export default function EventDetail() {
       }
     } catch (error) {
       console.error('Error sharing event:', error);
-      // Fallback to clipboard copy
       try {
         await navigator.clipboard.writeText(window.location.href);
         alert('Event link copied to clipboard!');
@@ -154,7 +155,6 @@ export default function EventDetail() {
         <meta property="og:image" content={event.imageUrl} />
       </Helmet>
 
-      {/* Breadcrumb */}
       <section className="pt-24 pb-8 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-4">
@@ -174,11 +174,9 @@ export default function EventDetail() {
         </div>
       </section>
 
-      {/* Hero Section */}
       <section className="pb-16 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Content */}
             <div className="lg:col-span-2">
               <ScrollAnimationWrapper>
                 <div className="mb-6">
@@ -222,7 +220,6 @@ export default function EventDetail() {
                 </div>
               </ScrollAnimationWrapper>
               
-              {/* Event Image */}
               <ScrollAnimationWrapper>
                 <div className="relative mb-8">
                   <OptimizedImage
@@ -233,14 +230,13 @@ export default function EventDetail() {
                 </div>
               </ScrollAnimationWrapper>
 
-              {/* Event Gallery */}
               {eventImages && eventImages.length > 0 && (
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Event Gallery</h2>
+                    <h2 className="text-2xl font-bold mb-4">Event Gallery & Special Guests</h2>
                     <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
                       {eventImages.map((image, index) => (
-                        <div key={index} className="relative break-inside-avoid mb-4">
+                        <div key={index} className="relative break-inside-avoid mb-4 cursor-pointer" onClick={() => setSelectedImage(image.imageUrl)}>
                           <OptimizedImage
                             src={image.imageUrl}
                             alt={image.altText || event.name}
@@ -256,14 +252,13 @@ export default function EventDetail() {
                 </ScrollAnimationWrapper>
               )}
 
-              {/* Event Posters */}
               {eventPosters && eventPosters.length > 0 && (
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Event Posters</h2>
                     <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
                       {eventPosters.map((image, index) => (
-                        <div key={index} className="relative break-inside-avoid mb-4">
+                        <div key={index} className="relative break-inside-avoid mb-4 cursor-pointer" onClick={() => setSelectedImage(image.imageUrl)}>
                           <OptimizedImage
                             src={image.imageUrl}
                             alt={image.altText || event.name}
@@ -279,7 +274,6 @@ export default function EventDetail() {
                 </ScrollAnimationWrapper>
               )}
 
-              {/* Event Description */}
               {event.fullDescription && (
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
@@ -293,7 +287,6 @@ export default function EventDetail() {
                 </ScrollAnimationWrapper>
               )}
 
-              {/* Event Supporters */}
               {eventSupporters && eventSupporters.length > 0 && (
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
@@ -303,7 +296,6 @@ export default function EventDetail() {
                 </ScrollAnimationWrapper>
               )}
 
-              {/* Important Links */}
               {eventSupporters && eventSupporters.length > 0 && (
                 <ScrollAnimationWrapper>
                   <div className="mb-8">
@@ -328,7 +320,6 @@ export default function EventDetail() {
 
             </div>
 
-            {/* Sidebar */}
             <div className="lg:col-span-1">
               <ScrollAnimationWrapper>
                 <Card className="sticky top-24">
@@ -427,6 +418,15 @@ export default function EventDetail() {
           </div>
         </div>
       </section>
+
+      {selectedImage && (
+        <ImageModal
+          isOpen={!!selectedImage}
+          onClose={() => setSelectedImage(null)}
+          imageUrl={selectedImage}
+          altText="Event Image"
+        />
+      )}
     </>
   );
 }
