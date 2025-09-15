@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { getEventBySlug } from "@/lib/staticData";
 import SEO from "@/components/SEO";
+import { MarkdownContent } from "@/components/MarkdownContent";
 import { Event } from "@/types/event";
 import { EventSupporter } from "@/types/eventSupporter";
 import SupporterLogoSlider from "@/components/SupporterLogoSlider";
@@ -193,9 +194,9 @@ export default function EventDetail() {
                     {event.name}
                   </h1>
                   
-                  <p className="text-xl text-gray-600 mb-6">
-                    {event.description}
-                  </p>
+                  <div className="text-xl text-gray-600 mb-6">
+                    <MarkdownContent content={event.description} />
+                  </div>
                   
                   <div className="flex flex-wrap gap-4">
                     {event.registrationUrl && (

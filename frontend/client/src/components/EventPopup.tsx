@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 import { Event } from '@/types/event';
+import MarkdownContent from '@/components/MarkdownContent';
 
 
 
@@ -175,7 +176,7 @@ const EventPopup: React.FC = () => {
                     </h3>
                     
                     <p className="text-gray-200 text-sm mb-3 line-clamp-2">
-                      {currentEvent.description}
+                      {currentEvent.description.replace(/\*\*|\*|_|`|~|\n|\r/g, '').replace(/\s+/g, ' ').trim()}
                     </p>
                   </div>
 
@@ -267,7 +268,7 @@ const EventPopup: React.FC = () => {
                   
                   {events.length > 1 && (
                     <p className="text-center text-xs text-gray-500 mt-3">
-                      Images change every 5 seconds • {currentIndex + 1} of {events.length}
+                       {currentIndex + 1} of {events.length}
                     </p>
                   )}
                 </div>
