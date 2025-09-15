@@ -41,7 +41,18 @@
         "altText": "Participants engaging in group activities",
         "caption": "Participants engaging in group activities"
       }
-
+    ],
+    "posters": [
+      {
+        "imageUrl": "https://images.pexels.com/photos/2058130/pexels-photo-2058130.jpeg",
+        "altText": "Event Poster 1",
+        "caption": "Official Poster for the Event"
+      },
+      {
+        "imageUrl": "https://images.pexels.com/photos/1709003/pexels-photo-1709003.jpeg",
+        "altText": "Event Poster 2",
+        "caption": "Promotional Flyer"
+      }
     ],
     "supporters": [
       {

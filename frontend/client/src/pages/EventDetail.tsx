@@ -38,7 +38,9 @@ export default function EventDetail() {
 
   // Sample event images and supporters for demonstration
   const eventImages = (event as any)?.gallery ?? [];
+  const eventPosters = (event as any)?.posters ?? [];
   const eventSupporters = (event as any)?.supporters ?? [];
+
 
 
   const formatDate = (dateString: string) => {
@@ -254,6 +256,29 @@ export default function EventDetail() {
                 </ScrollAnimationWrapper>
               )}
 
+              {/* Event Posters */}
+              {eventPosters && eventPosters.length > 0 && (
+                <ScrollAnimationWrapper>
+                  <div className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4">Event Posters</h2>
+                    <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+                      {eventPosters.map((image, index) => (
+                        <div key={index} className="relative break-inside-avoid mb-4">
+                          <OptimizedImage
+                            src={image.imageUrl}
+                            alt={image.altText || event.name}
+                            className="w-full rounded-lg shadow-lg"
+                          />
+                          {image.caption && (
+                            <p className="text-sm text-gray-600 mt-2">{image.caption}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </ScrollAnimationWrapper>
+              )}
+
               {/* Event Description */}
               {event.fullDescription && (
                 <ScrollAnimationWrapper>
@@ -274,6 +299,29 @@ export default function EventDetail() {
                   <div className="mb-8">
                     <h2 className="text-2xl font-bold mb-6">Event Partners & Supporters</h2>
                     <SupporterLogoSlider supporters={eventSupporters} />
+                  </div>
+                </ScrollAnimationWrapper>
+              )}
+
+              {/* Important Links */}
+              {eventSupporters && eventSupporters.length > 0 && (
+                <ScrollAnimationWrapper>
+                  <div className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4">Important Links</h2>
+                    <div className="space-y-3">
+                      {eventSupporters.map((supporter: EventSupporter) => (
+                        <a
+                          key={supporter.id}
+                          href={supporter.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                          <span className="flex-grow font-medium text-gray-800">{supporter.name}</span>
+                          <ExternalLink className="w-5 h-5 text-yellow-600" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </ScrollAnimationWrapper>
               )}
