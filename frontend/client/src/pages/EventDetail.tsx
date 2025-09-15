@@ -51,7 +51,6 @@ export default function EventDetail() {
     });
   };
 
-
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString('en-US', {
       hour: '2-digit',
@@ -59,8 +58,6 @@ export default function EventDetail() {
       timeZone: 'UTC'
     });
   };
-
-
 
   const getEventStatus = (event: Event) => {
     const now = new Date();
@@ -144,6 +141,100 @@ export default function EventDetail() {
 
   const status = getEventStatus(event);
 
+  const EventDetailsCard = () => (
+    <Card className="shadow-lg">
+      <CardContent className="p-6">
+        <h3 className="text-lg font-bold mb-4">Event Details</h3>
+        
+        <div className="space-y-4">
+          <div className="flex items-start space-x-3">
+            <Calendar className="w-5 h-5 text-yellow-600 mt-1" />
+            <div>
+              <p className="font-medium">Date & Time</p>
+              <p className="text-sm text-gray-600">
+                {formatDate(event.date)}
+              </p>
+              <p className="text-sm text-gray-600">
+                {formatTime(event.date)} - {formatTime(event.endDate)}
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-start space-x-3">
+            <MapPin className="w-5 h-5 text-yellow-600 mt-1" />
+            <div>
+              <p className="font-medium">Location</p>
+              <p className="text-sm text-gray-600">{event.location}</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start space-x-3">
+            <DollarSign className="w-5 h-5 text-yellow-600 mt-1" />
+            <div>
+              <p className="font-medium">Registration Fee</p>
+              <p className="text-sm text-gray-600">
+                KSh {event.fee.toLocaleString()}
+              </p>
+            </div>
+          </div>
+          
+          {event.maxParticipants && (
+            <div className="flex items-start space-x-3">
+              <Users className="w-5 h-5 text-yellow-600 mt-1" />
+              <div>
+                <p className="font-medium">Capacity</p>
+                <p className="text-sm text-gray-600">
+                  Max {event.maxParticipants} participants
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {(event.contactEmail || event.contactPhone) && (
+          <div className="mt-6 pt-6 border-t">
+            <h4 className="font-medium mb-3">Contact Information</h4>
+            <div className="space-y-2">
+              {event.contactEmail && (
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4 text-gray-400" />
+                  <a 
+                    href={`mailto:${event.contactEmail}`}
+                    className="text-sm text-yellow-600 hover:underline"
+                  >
+                    {event.contactEmail}
+                  </a>
+                </div>
+              )}
+              {event.contactPhone && (
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4 text-gray-400" />
+                  <a 
+                    href={`tel:${event.contactPhone}`}
+                    className="text-sm text-yellow-600 hover:underline"
+                  >
+                    {event.contactPhone}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        
+        {event.registrationUrl && (
+          <div className="mt-6">
+            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer">
+              <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
+                Register Now
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </Button>
+            </a>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <>
       <SEO />
@@ -220,6 +311,10 @@ export default function EventDetail() {
                 </div>
               </ScrollAnimationWrapper>
               
+              <div className="mb-8 lg:hidden">
+                <EventDetailsCard />
+              </div>
+
               <ScrollAnimationWrapper>
                 <div className="relative mb-8">
                   <OptimizedImage
@@ -320,100 +415,10 @@ export default function EventDetail() {
 
             </div>
 
-            <div className="lg:col-span-1">
-              <ScrollAnimationWrapper>
-                <Card className="sticky top-24">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold mb-4">Event Details</h3>
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-start space-x-3">
-                        <Calendar className="w-5 h-5 text-yellow-600 mt-1" />
-                        <div>
-                          <p className="font-medium">Date & Time</p>
-                          <p className="text-sm text-gray-600">
-                            {formatDate(event.date)}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {formatTime(event.date)} - {formatTime(event.endDate)}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-3">
-                        <MapPin className="w-5 h-5 text-yellow-600 mt-1" />
-                        <div>
-                          <p className="font-medium">Location</p>
-                          <p className="text-sm text-gray-600">{event.location}</p>.
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-3">
-                        <DollarSign className="w-5 h-5 text-yellow-600 mt-1" />
-                        <div>
-                          <p className="font-medium">Registration Fee</p>
-                          <p className="text-sm text-gray-600">
-                            KSh {event.fee.toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      {event.maxParticipants && (
-                        <div className="flex items-start space-x-3">
-                          <Users className="w-5 h-5 text-yellow-600 mt-1" />
-                          <div>
-                            <p className="font-medium">Capacity</p>
-                            <p className="text-sm text-gray-600">
-                              Max {event.maxParticipants} participants
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {(event.contactEmail || event.contactPhone) && (
-                      <div className="mt-6 pt-6 border-t">
-                        <h4 className="font-medium mb-3">Contact Information</h4>
-                        <div className="space-y-2">
-                          {event.contactEmail && (
-                            <div className="flex items-center space-x-2">
-                              <Mail className="w-4 h-4 text-gray-400" />
-                              <a 
-                                href={`mailto:${event.contactEmail}`}
-                                className="text-sm text-yellow-600 hover:underline"
-                              >
-                                {event.contactEmail}
-                              </a>
-                            </div>
-                          )}
-                          {event.contactPhone && (
-                            <div className="flex items-center space-x-2">
-                              <Phone className="w-4 h-4 text-gray-400" />
-                              <a 
-                                href={`tel:${event.contactPhone}`}
-                                className="text-sm text-yellow-600 hover:underline"
-                              >
-                                {event.contactPhone}
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {event.registrationUrl && (
-                      <div className="mt-6">
-                        <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer">
-                          <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
-                            Register Now
-                            <ExternalLink className="w-4 h-4 ml-2" />
-                          </Button>
-                        </a>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </ScrollAnimationWrapper>
+            <div className="lg:col-span-1 hidden lg:block">
+              <div className="sticky top-24">
+                <EventDetailsCard />
+              </div>
             </div>
           </div>
         </div>
