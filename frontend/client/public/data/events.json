@@ -15,49 +15,47 @@
     "imageUrl": "https://images.pexels.com/photos/6936066/pexels-photo-6936066.jpeg",
     "createdAt": "2025-07-24T10:09:46.691Z"
   },
-{
-  "id": 4,
-  "date": "2025-09-16T08:00:00.000Z",
-  "endDate": "2025-09-16T11:00:00.000Z",
-  "fee": 2000,
-  "location": "The Heron Hotel, Jakaya Kikwete Road, Nairobi",
-  "maxParticipants": 100,
-  "active": true,
-  "name": "Women Family Breakfast Meeting 2025",
-  "slug": "women-family-breakfast-meeting-2025",
-  "category": "meeting",
-  "featured": true,
-  "description": {
-    "title": "WOFAB 2025: Women Family Breakfast Meeting",
-    "chiefGuest": "Hon. Hanna Wendot Cheptumo (Cabinet Secretary for Gender, Culture and Children Services)",
-    "keyNoteSpeaker": "Dr Gilda Odera (President, Federation of Kenya Employees)",
-    "panelists": [
-      "Lady Justice Caroline Kendagor",
-      "Josephine Kirumba",
-      "Rebecca Gitau",
-      "Mrs. Anne Mbugua"
-    ],
-    "theme": "Actions for Peace: Our Ambition for PEACEFUL Families",
-    "date": "16th September 2025",
-    "time": "8AM - 11AM",
-    "venue": "The Heron Hotel, Nairobi"
-  },
-  "imageUrl": "https://images.pexels.com/photos/1181415/pexels-photo-1181415.jpeg",
-  "createdAt": "2025-07-24T10:09:46.691Z",
-  "gallery": [
-    {
-      "imageUrl": "https://media.joomeo.com/large/68c3e2fd28077.jpg",
-      "altText": "Main image for Women Family Breakfast Meeting 2025",
-      "caption": "Main image for Women Family Breakfast Meeting 2025"
+  {
+    "id": 4,
+    "date": "2025-09-16T08:00:00.000Z",
+    "endDate": "2025-09-16T11:00:00.000Z",
+    "fee": 2000,
+    "location": "The Heron Hotel, Jakaya Kikwete Road, Nairobi",
+    "maxParticipants": 100,
+    "active": true,
+    "name": "Women Family Breakfast Meeting 2025",
+    "slug": "women-family-breakfast-meeting-2025",
+    "category": "meeting",
+    "featured": true,
+    "description": {
+      "title": "WOFAB 2025: Women Family Breakfast Meeting",
+      "chiefGuest": "Hon. Hanna Wendot Cheptumo (Cabinet Secretary for Gender, Culture and Children Services)",
+      "keyNoteSpeaker": "Dr Gilda Odera (President, Federation of Kenya Employees)",
+      "panelists": [
+        "Lady Justice Caroline Kendagor",
+        "Josephine Kirumba",
+        "Rebecca Gitau",
+        "Mrs. Anne Mbugua"
+      ],
+      "theme": "Actions for Peace: Our Ambition for PEACEFUL Families",
+      "date": "16th September 2025",
+      "time": "8AM - 11AM",
+      "venue": "The Heron Hotel, Nairobi"
     },
-    {
-      "imageUrl": "https://media.joomeo.com/large/6899d94d9a97c.jpg",
-      "altText": "Participants engaging in group activities",
-      "caption": "Participants engaging in group activities"
-    }
-  ]
-},
-
+    "imageUrl": "https://images.pexels.com/photos/1181415/pexels-photo-1181415.jpeg",
+    "createdAt": "2025-07-24T10:09:46.691Z",
+    "gallery": [
+      {
+        "imageUrl": "https://media.joomeo.com/large/68c3e2fd28077.jpg",
+        "altText": "Main image for Women Family Breakfast Meeting 2025",
+        "caption": "Main image for Women Family Breakfast Meeting 2025"
+      },
+      {
+        "imageUrl": "https://media.joomeo.com/large/6899d94d9a97c.jpg",
+        "altText": "Participants engaging in group activities",
+        "caption": "Participants engaging in group activities"
+      }
+    ],
     "supporters": [
       {
         "id": 1,
@@ -95,7 +93,7 @@
         "logoUrl": "https://media.joomeo.com/large/68c402c813964.jpg",
         "website": "https://www.sarovarhotels.com/the-heron-portico-nairobi/"
       },
-       {
+      {
         "id": 5,
         "eventId": 4,
         "name": "unicaf",
@@ -104,7 +102,7 @@
         "logoUrl": "https://media.joomeo.com/large/68c4031b7f4b0.jpg",
         "website": "https://www.sarovarhotels.com/thec-heron-portico-nairobi/"
       },
-       {
+      {
         "id": 6,
         "eventId": 4,
         "name": "Zetech University",
