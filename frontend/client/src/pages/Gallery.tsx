@@ -184,7 +184,7 @@ const videoData: VideoItem[] = [
 //  { url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', title: 'Inspiring Change in the Community' },
 //  { url: 'https://www.youtube.com/watch?v=3JZ_D3p_elo', title: 'Youth Mentorship Program Highlights' },
  // { url: 'https://www.youtube.com/watch?v=xvFZjo5PgG0', title: 'A Look at Our Women Empowerment Initiative' },
- // { url: 'https://www.youtube.com/watch?v=QH2-TGUlwu4', title: 'Family Peace Festival 2023' },
+  { url: 'https://www.youtube.com/live/ZA4xY9FF_Hw', title: 'Women Family Breakfast 2025' },
   { url: 'https://www.youtube.com/live/GNbZLrxfRqs', title: 'Interview with Kamba Tv' },
   { url: 'https://www.youtube.com/watch?v=w5i2qdmAD7s', title: 'Couples Enrichment Workshop' },
 ];
